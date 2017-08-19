@@ -27,8 +27,12 @@ set sessionoptions=buffers
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'airblade/vim-gitgutter'
+Plug 'ap/vim-css-color'
 Plug 'bling/vim-bufferline'
+Plug 'brookhong/cscope.vim'
+Plug 'dbgx/lldb.nvim'
 Plug 'derekwyatt/vim-fswitch'
+Plug 'dhruvasagar/vim-table-mode'
 Plug 'garbas/vim-snipmate'
 Plug 'godlygeek/tabular'
 Plug 'kien/ctrlp.vim'
@@ -69,23 +73,52 @@ let g:deoplete#sources#clang#clang_header="/usr/lib/clang/"
 colorscheme gruvbox
 
 """ Mappings "
-map gf :e <cfile><cr>
-map <F2> :NERDTreeToggle<CR>
-map <F3> :GundoToggle<CR>
-map <F4> :Tagbar<CR>
 
-map <leader>f :FSHere<CR>
+" extra windows
+nnoremap <F2> :NERDTreeToggle<CR>
+nnoremap <F3> :GundoToggle<CR>
+nnoremap <F4> :Tagbar<CR>
 
+nnoremap gc :cd %:p:h<CR>:pwd<CR>
+map <leader>w :FSHere<CR>
 map <leader>t :call Toggle_task_status()<CR>
-
-" easy subverting
 map <leader>s :S/
-
-" tabs navigation (breaks unimpaired mappings for tag navigation)
-" nmap ]t :tabnext<CR>
-" nmap [t :tabprev<CR>
-
+tnoremap <Esc> <C-\><C-n>
 nmap <C-l> :silent nohl\|redraw<CR>
+
+" tab navigation
+nnoremap <silent> [d :tabprevious<CR>
+nnoremap <silent> ]d :tabnext<CR>
+nnoremap <silent> [D :tabfirst<CR>
+nnoremap <silent> ]D :tablast<CR>
+
+" lldb.vim navigation
+nnoremap <leader>db <Plug>LLBreakSwitch<CR>
+nnoremap <leader>dn :LL next<CR>
+nnoremap <leader>dc :LL continue<CR>
+nnoremap <leader>di :LL stepi<CR>
+nnoremap <leader>du :LL up<CR>
+
+" cscove shortcuts
+nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
+" find symbol
+nnoremap <leader>fs :call CscopeFind('s', expand('<cword>'))<CR>
+" find definition
+nnoremap <leader>fg :call CscopeFind('g', expand('<cword>'))<CR>
+" find functions called by this function
+nnoremap <leader>fd :call CscopeFind('d', expand('<cword>'))<CR>
+" find functions calling this function
+nnoremap <leader>fc :call CscopeFind('c', expand('<cword>'))<CR>
+" find this text string
+nnoremap <leader>ft :call CscopeFind('t', expand('<cword>'))<CR>
+" find this egrep pattern
+nnoremap <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
+" find this file
+nnoremap <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
+" find files #including this file
+nnoremap <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
+
+let g:cscope_silent=1
 
 """ NERDTree show line numbers "
 let g:NERDTreeShowLineNumbers=1
@@ -110,12 +143,17 @@ let g:airline_left_sep          = ''
 let g:airline_left_alt_sep      = ''
 let g:airline_right_sep         = ''
 let g:airline_right_alt_sep     = ''
-"let g:airline_symbols.branch   = ''
-"let g:airline_symbols.readonly = ''
-"let g:airline_symbols.linenr   = ''
+let g:airline_section_c = '%t'
 
 """ UltiSnips configuration """
 let g:UltiSnipsExpandTrigger="<C-j>"
 
 """ Signature colorize """
 highlight SignatureMarkText ctermfg=205
+
+" --- Neomake --- "
+let g:neomake_cpp_enabled_makers = ['clangtidy']
+let g:neomake_cpp_clangtidy_maker = {
+   \ 'exe': '/usr/bin/clang-tidy',
+   \ 'args': ['-checks=*', '-p build' ],
+   \}
