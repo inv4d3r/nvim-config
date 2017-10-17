@@ -16,10 +16,6 @@ set background=dark
 " highlight search matches
 set hlsearch
 
-" current line highlight
-hi CursorLine ctermbg=black ctermfg=None
-set cursorline
-
 " mksession options
 set sessionoptions=buffers
 
@@ -35,11 +31,13 @@ Plug 'derekwyatt/vim-fswitch'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'garbas/vim-snipmate'
 Plug 'godlygeek/tabular'
+Plug 'honza/vim-snippets'
 Plug 'kien/ctrlp.vim'
 Plug 'kshenoy/vim-signature'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'majutsushi/tagbar'
+Plug 'mileszs/ack.vim'
 Plug 'morhetz/gruvbox'
 Plug 'neomake/neomake'
 Plug 'Raimondi/delimitMate'
@@ -59,6 +57,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-sensible'
 Plug 'Valloric/ListToggle'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -72,6 +71,14 @@ let g:deoplete#sources#clang#clang_header="/usr/lib/clang/"
 
 colorscheme gruvbox
 
+" current line highlight
+set cursorline
+highlight CursorLine ctermbg=black ctermfg=None
+
+" ending column highlight
+set colorcolumn=101
+highlight ColorColumn ctermbg=167
+
 """ Mappings "
 
 " extra windows
@@ -84,13 +91,17 @@ map <leader>w :FSHere<CR>
 map <leader>t :call Toggle_task_status()<CR>
 map <leader>s :S/
 tnoremap <Esc> <C-\><C-n>
-nmap <C-l> :silent nohl\|redraw<CR>
 
 " tab navigation
 nnoremap <silent> [d :tabprevious<CR>
 nnoremap <silent> ]d :tabnext<CR>
 nnoremap <silent> [D :tabfirst<CR>
 nnoremap <silent> ]D :tablast<CR>
+
+" ack.vim use silver searcher
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " lldb.vim navigation
 nnoremap <leader>db <Plug>LLBreakSwitch<CR>
@@ -117,6 +128,8 @@ nnoremap <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
 nnoremap <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
 " find files #including this file
 nnoremap <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
+
+"nnoremap <leader>\cI :call NERDComInsertComment<CR>
 
 let g:cscope_silent=1
 
@@ -146,10 +159,15 @@ let g:airline_right_alt_sep     = ''
 let g:airline_section_c = '%t'
 
 """ UltiSnips configuration """
+let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
 let g:UltiSnipsExpandTrigger="<C-j>"
+let g:UltiSnipsEnableSnipMate=0
 
 """ Signature colorize """
 highlight SignatureMarkText ctermfg=205
+highlight Whitespace ctermfg=167
+highlight NonText ctermfg=239
+set list
 
 " --- Neomake --- "
 let g:neomake_cpp_enabled_makers = ['clangtidy']
