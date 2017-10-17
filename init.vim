@@ -20,52 +20,52 @@ set hlsearch
 set sessionoptions=buffers
 
 " ---- Plugins ---- "
-call plug#begin('~/.local/share/nvim/plugged')
+packadd minpac
+call minpac#init()
 
-Plug 'airblade/vim-gitgutter'
-Plug 'ap/vim-css-color'
-Plug 'bling/vim-bufferline'
-Plug 'brookhong/cscope.vim'
-Plug 'dbgx/lldb.nvim'
-Plug 'derekwyatt/vim-fswitch'
-Plug 'dhruvasagar/vim-table-mode'
-Plug 'garbas/vim-snipmate'
-Plug 'godlygeek/tabular'
-Plug 'honza/vim-snippets'
-Plug 'kien/ctrlp.vim'
-Plug 'kshenoy/vim-signature'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'majutsushi/tagbar'
-Plug 'mileszs/ack.vim'
-Plug 'morhetz/gruvbox'
-Plug 'neomake/neomake'
-Plug 'Raimondi/delimitMate'
-Plug 'samsonw/vim-task'
-Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/neoinclude.vim'
-Plug 'sirver/UltiSnips'
-Plug 'sjl/gundo.vim'
-Plug 'tommcdo/vim-exchange'
-Plug 'tomtom/tlib_vim'
-Plug 'tpope/tpope-vim-abolish'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-sleuth'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-sensible'
-Plug 'Valloric/ListToggle'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'zchee/deoplete-clang'
+call minpac#add('airblade/vim-gitgutter')
+call minpac#add('ap/vim-css-color')
+call minpac#add('bling/vim-bufferline')
+call minpac#add('brookhong/cscope.vim')
+call minpac#add('dbgx/lldb.nvim')
+call minpac#add('derekwyatt/vim-fswitch')
+call minpac#add('dhruvasagar/vim-table-mode')
+call minpac#add('garbas/vim-snipmate')
+call minpac#add('godlygeek/tabular')
+call minpac#add('honza/vim-snippets')
+call minpac#add('k-takata/minpac', { 'type' : 'opt' })
+call minpac#add('kien/ctrlp.vim')
+call minpac#add('kshenoy/vim-signature')
+call minpac#add('ludovicchabant/vim-gutentags')
+call minpac#add('MarcWeber/vim-addon-mw-utils')
+call minpac#add('majutsushi/tagbar')
+call minpac#add('mileszs/ack.vim')
+call minpac#add('morhetz/gruvbox')
+call minpac#add('neomake/neomake')
+call minpac#add('Raimondi/delimitMate')
+call minpac#add('samsonw/vim-task')
+call minpac#add('scrooloose/nerdcommenter')
+call minpac#add('scrooloose/nerdtree')
+call minpac#add('Shougo/deoplete.nvim')
+call minpac#add('Shougo/neoinclude.vim')
+call minpac#add('sirver/UltiSnips')
+call minpac#add('sjl/gundo.vim')
+call minpac#add('tommcdo/vim-exchange')
+call minpac#add('tomtom/tlib_vim')
+call minpac#add('tpope/tpope-vim-abolish')
+call minpac#add('tpope/vim-endwise')
+call minpac#add('tpope/vim-fugitive')
+call minpac#add('tpope/vim-repeat')
+call minpac#add('tpope/vim-sleuth')
+call minpac#add('tpope/vim-surround')
+call minpac#add('tpope/vim-unimpaired')
+call minpac#add('tpope/vim-sensible')
+call minpac#add('Valloric/ListToggle')
+call minpac#add('vim-airline/vim-airline')
+call minpac#add('vim-airline/vim-airline-themes')
+call minpac#add('zchee/deoplete-clang')
 
-call plug#end()
-
-call deoplete#enable()
+let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#clang#libclang_path="/usr/lib/libclang.so"
 let g:deoplete#sources#clang#clang_header="/usr/lib/clang/"
 
