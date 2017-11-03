@@ -3,9 +3,9 @@ set number
 set relativenumber
 
 " do not wrap overflowing characters, it's annoying
-"set nowrap
+set nowrap
 
-" vim won't force to write changed buffer 
+" vim won't force to write changed buffer
 set hidden
 
 " show current normal command in status line
@@ -33,16 +33,16 @@ call minpac#add('dhruvasagar/vim-table-mode')
 call minpac#add('garbas/vim-snipmate')
 call minpac#add('godlygeek/tabular')
 call minpac#add('honza/vim-snippets')
+call minpac#add('junegunn/fzf', { 'do' : './install --all' })
+call minpac#add('junegunn/fzf.vim')
 call minpac#add('k-takata/minpac', { 'type' : 'opt' })
 call minpac#add('kien/ctrlp.vim')
 call minpac#add('kshenoy/vim-signature')
 call minpac#add('ludovicchabant/vim-gutentags')
 call minpac#add('MarcWeber/vim-addon-mw-utils')
 call minpac#add('majutsushi/tagbar')
-call minpac#add('mileszs/ack.vim')
 call minpac#add('morhetz/gruvbox')
 call minpac#add('neomake/neomake')
-call minpac#add('Raimondi/delimitMate')
 call minpac#add('samsonw/vim-task')
 call minpac#add('scrooloose/nerdcommenter')
 call minpac#add('scrooloose/nerdtree')
@@ -65,11 +65,25 @@ call minpac#add('vim-airline/vim-airline')
 call minpac#add('vim-airline/vim-airline-themes')
 call minpac#add('zchee/deoplete-clang')
 
+" deoplete config
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#clang#libclang_path="/usr/lib/libclang.so"
 let g:deoplete#sources#clang#clang_header="/usr/lib/clang/"
 
-colorscheme gruvbox
+" fzf config
+let g:fzf_command_prefix = "Fzf"
+nnoremap <leader>za :FzfAg<CR>
+nnoremap <leader>zb :FzfBuffers<CR>
+nnoremap <leader>zc :FzfCommits<CR>
+nnoremap <leader>zd :FzfBCommits<CR>
+nnoremap <leader>ze :FzfCommands<CR>
+nnoremap <leader>zf :FzfFiles<CR>
+nnoremap <leader>zg :FzfGFiles<CR>
+nnoremap <leader>zh :FzfGFiles?<CR>
+nnoremap <leader>zm :FzfMarks<CR>
+nnoremap <leader>zs :FzfSnippets<CR>
+nnoremap <leader>zt :FzfTags<CR>
+nnoremap <leader>zu :FzfBTags<CR>
 
 " current line highlight
 set cursorline
@@ -128,10 +142,10 @@ nnoremap <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
 nnoremap <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
 " find files #including this file
 nnoremap <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
-
-"nnoremap <leader>\cI :call NERDComInsertComment<CR>
-
 let g:cscope_silent=1
+
+let g:NERDCompactSexyComs = 1
+let g:NERDTrimTrailingWhitespace = 1
 
 """ NERDTree show line numbers "
 let g:NERDTreeShowLineNumbers=1
@@ -142,6 +156,7 @@ autocmd BufWritePost * Neomake!
 
 " ctrlp configuration
 let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'changes', 'mixed']
 
 " Latex configuration
 let g:tex_flavor = "latex"
@@ -168,6 +183,8 @@ highlight SignatureMarkText ctermfg=205
 highlight Whitespace ctermfg=167
 highlight NonText ctermfg=239
 set list
+
+colorscheme gruvbox
 
 " --- Neomake --- "
 let g:neomake_cpp_enabled_makers = ['clangtidy']
