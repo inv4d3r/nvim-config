@@ -1,3 +1,8 @@
+" colorscheme
+colorscheme gruvbox
+
+" ---- Defaults ---- "
+
 " line numbers
 set number
 set relativenumber
@@ -11,6 +16,7 @@ set hidden
 " show current normal command in status line
 set showcmd
 
+" adjust colors for dark background
 set background=dark
 
 " highlight search matches
@@ -19,7 +25,55 @@ set hlsearch
 " mksession options
 set sessionoptions=buffers
 
+" show whitespace
+set listchars=
+set list
+
+" horizontal line
+set cursorline
+
+" comply with Linux kernel coding style "
+set colorcolumn=101
+
+
+" ---- Highlighting ---- "
+
+" current line highlight
+highlight CursorLine ctermbg=black ctermfg=None
+
+" max column highlight
+highlight ColorColumn ctermbg=167
+
+" signature colorize "
+highlight SignatureMarkText ctermfg=205
+highlight Whitespace ctermfg=167
+highlight NonText ctermfg=239
+
+" trailing whitespace
+highlight ExtraWhitespace ctermbg=red
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+
+
+" ---- Mappings ---- "
+
+" go to current file's path
+nnoremap gc :cd %:p:h<CR>:pwd<CR>
+
+" terminal - go to normal mode
+tnoremap <Esc> <C-\><C-n>
+
+" tab navigation
+nnoremap <silent> [d :tabprevious<CR>
+nnoremap <silent> ]d :tabnext<CR>
+nnoremap <silent> [D :tabfirst<CR>
+nnoremap <silent> ]D :tablast<CR>
+
 " ---- Plugins ---- "
+
 packadd minpac
 call minpac#init()
 
@@ -36,7 +90,6 @@ call minpac#add('honza/vim-snippets')
 call minpac#add('junegunn/fzf', { 'do' : './install --all' })
 call minpac#add('junegunn/fzf.vim')
 call minpac#add('k-takata/minpac', { 'type' : 'opt' })
-call minpac#add('kien/ctrlp.vim')
 call minpac#add('kshenoy/vim-signature')
 call minpac#add('ludovicchabant/vim-gutentags')
 call minpac#add('MarcWeber/vim-addon-mw-utils')
@@ -65,66 +118,25 @@ call minpac#add('vim-airline/vim-airline')
 call minpac#add('vim-airline/vim-airline-themes')
 call minpac#add('zchee/deoplete-clang')
 
-" deoplete config
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path="/usr/lib/libclang.so"
-let g:deoplete#sources#clang#clang_header="/usr/lib/clang/"
-
-" fzf config
-let g:fzf_command_prefix = "Fzf"
-nnoremap <leader>za :FzfAg<CR>
-nnoremap <leader>zb :FzfBuffers<CR>
-nnoremap <leader>zc :FzfCommits<CR>
-nnoremap <leader>zd :FzfBCommits<CR>
-nnoremap <leader>ze :FzfCommands<CR>
-nnoremap <leader>zf :FzfFiles<CR>
-nnoremap <leader>zg :FzfGFiles<CR>
-nnoremap <leader>zh :FzfGFiles?<CR>
-nnoremap <leader>zm :FzfMarks<CR>
-nnoremap <leader>zs :FzfSnippets<CR>
-nnoremap <leader>zt :FzfTags<CR>
-nnoremap <leader>zu :FzfBTags<CR>
-
-" current line highlight
-set cursorline
-highlight CursorLine ctermbg=black ctermfg=None
-
-" ending column highlight
-set colorcolumn=101
-highlight ColorColumn ctermbg=167
-
-""" Mappings "
-
-" extra windows
+" ---- extra windows ---- "
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :GundoToggle<CR>
 nnoremap <F4> :Tagbar<CR>
 
-nnoremap gc :cd %:p:h<CR>:pwd<CR>
-map <leader>w :FSHere<CR>
-map <leader>t :call Toggle_task_status()<CR>
-map <leader>s :S/
-tnoremap <Esc> <C-\><C-n>
+" ---- airline configuration ---- "
+let g:airline_theme             = 'gruvbox'
+let g:airline#extensions#branch#enabled = 2
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline_left_sep          = ''
+let g:airline_left_alt_sep      = ''
+let g:airline_right_sep         = ''
+let g:airline_right_alt_sep     = ''
+let g:airline_section_c = '%t'
 
-" tab navigation
-nnoremap <silent> [d :tabprevious<CR>
-nnoremap <silent> ]d :tabnext<CR>
-nnoremap <silent> [D :tabfirst<CR>
-nnoremap <silent> ]D :tablast<CR>
+" ---- cscove configuration ---- "
+let g:cscope_silent=1
 
-" ack.vim use silver searcher
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-
-" lldb.vim navigation
-nnoremap <leader>db <Plug>LLBreakSwitch<CR>
-nnoremap <leader>dn :LL next<CR>
-nnoremap <leader>dc :LL continue<CR>
-nnoremap <leader>di :LL stepi<CR>
-nnoremap <leader>du :LL up<CR>
-
-" cscove shortcuts
+" find interactive
 nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
 " find symbol
 nnoremap <leader>fs :call CscopeFind('s', expand('<cword>'))<CR>
@@ -142,53 +154,67 @@ nnoremap <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
 nnoremap <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
 " find files #including this file
 nnoremap <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
-let g:cscope_silent=1
 
-let g:NERDCompactSexyComs = 1
-let g:NERDTrimTrailingWhitespace = 1
+" ---- deoplete config ---- "
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#clang#libclang_path="/usr/lib/libclang.so"
+let g:deoplete#sources#clang#clang_header="/usr/lib/clang/"
 
-""" NERDTree show line numbers "
-let g:NERDTreeShowLineNumbers=1
-autocmd BufEnter NERD_* setlocal rnu
-
+" close preview window when leaving insert mode
 autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
-autocmd BufWritePost * Neomake!
 
-" ctrlp configuration
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_extensions = ['tag', 'buffertag', 'quickfix', 'changes', 'mixed']
+" ---- switch to header/source ---- "
+map <leader>w :FSHere<CR>
 
-" Latex configuration
+" ---- fzf config ---- "
+let g:fzf_command_prefix = "Fzf"
+nnoremap <leader>za :FzfAg<CR>
+nnoremap <leader>zb :FzfBuffers<CR>
+nnoremap <leader>zc :FzfCommits<CR>
+nnoremap <leader>zd :FzfBCommits<CR>
+nnoremap <leader>ze :FzfCommands<CR>
+nnoremap <leader>zf :FzfFiles<CR>
+nnoremap <leader>zg :FzfGFiles<CR>
+nnoremap <leader>zh :FzfGFiles?<CR>
+nnoremap <leader>zm :FzfMarks<CR>
+nnoremap <leader>zs :FzfSnippets<CR>
+nnoremap <leader>zt :FzfTags<CR>
+nnoremap <leader>zu :FzfBTags<CR>
+
+" ---- latex configuration ---- "
 let g:tex_flavor = "latex"
 
-""" Airline configuration "
-let g:airline_theme             = 'gruvbox'
-let g:airline#extensions#branch#enabled = 2
-let g:airline#extensions#syntastic#enabled = 1
+" ---- lldb.vim navigation ---- "
+nnoremap <leader>db <Plug>LLBreakSwitch<CR>
+nnoremap <leader>dn :LL next<CR>
+nnoremap <leader>dc :LL continue<CR>
+nnoremap <leader>di :LL stepi<CR>
+nnoremap <leader>du :LL up<CR>
 
-" vim-powerline symbols
-let g:airline_left_sep          = ''
-let g:airline_left_alt_sep      = ''
-let g:airline_right_sep         = ''
-let g:airline_right_alt_sep     = ''
-let g:airline_section_c = '%t'
+" ---- Neomake configuration ---- "
 
-""" UltiSnips configuration """
-let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
-let g:UltiSnipsExpandTrigger="<C-j>"
-let g:UltiSnipsEnableSnipMate=0
+" run make command async on file save
+autocmd BufWritePost * Neomake!
 
-""" Signature colorize """
-highlight SignatureMarkText ctermfg=205
-highlight Whitespace ctermfg=167
-highlight NonText ctermfg=239
-set list
-
-colorscheme gruvbox
-
-" --- Neomake --- "
+" setup linter
 let g:neomake_cpp_enabled_makers = ['clangtidy']
 let g:neomake_cpp_clangtidy_maker = {
    \ 'exe': '/usr/bin/clang-tidy',
    \ 'args': ['-checks=*', '-p build' ],
    \}
+
+" ---- NERDCommenter configuration ---- "
+let g:NERDCompactSexyComs = 1
+let g:NERDTrimTrailingWhitespace = 1
+
+" ---- NERDTree configuration ---- "
+let g:NERDTreeShowLineNumbers=1
+autocmd BufEnter NERD_* setlocal rnu
+
+" ---- Substitute configuration ---- "
+map <leader>s :S/
+
+" ---- UltiSnips configuration ---- "
+let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
+let g:UltiSnipsExpandTrigger="<C-j>"
+let g:UltiSnipsEnableSnipMate=0
