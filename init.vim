@@ -72,6 +72,21 @@ nnoremap <silent> ]d :tabnext<CR>
 nnoremap <silent> [D :tabfirst<CR>
 nnoremap <silent> ]D :tablast<CR>
 
+" toggle location list
+function! s:buffer_count()
+    return len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))
+endfunction
+
+function! s:toggle_llist()
+    let buf_cnt = s:buffer_count()
+    silent! lclose
+    if s:buffer_count() == buf_cnt
+        silent! lopen
+    endif
+endfunction
+
+nnoremap <leader>l :call <SID>toggle_llist()<CR>
+
 " ---- Plugins ---- "
 
 packadd minpac
@@ -79,24 +94,17 @@ call minpac#init()
 
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('ap/vim-css-color')
-call minpac#add('bling/vim-bufferline')
 call minpac#add('brookhong/cscope.vim')
-call minpac#add('dbgx/lldb.nvim')
 call minpac#add('derekwyatt/vim-fswitch')
-call minpac#add('dhruvasagar/vim-table-mode')
-call minpac#add('garbas/vim-snipmate')
 call minpac#add('godlygeek/tabular')
-call minpac#add('honza/vim-snippets')
 call minpac#add('junegunn/fzf', { 'do' : './install --all' })
 call minpac#add('junegunn/fzf.vim')
 call minpac#add('k-takata/minpac', { 'type' : 'opt' })
 call minpac#add('kshenoy/vim-signature')
 call minpac#add('ludovicchabant/vim-gutentags')
-call minpac#add('MarcWeber/vim-addon-mw-utils')
 call minpac#add('majutsushi/tagbar')
 call minpac#add('morhetz/gruvbox')
 call minpac#add('neomake/neomake')
-call minpac#add('samsonw/vim-task')
 call minpac#add('scrooloose/nerdcommenter')
 call minpac#add('scrooloose/nerdtree')
 call minpac#add('Shougo/deoplete.nvim')
@@ -104,16 +112,12 @@ call minpac#add('Shougo/neoinclude.vim')
 call minpac#add('sirver/UltiSnips')
 call minpac#add('sjl/gundo.vim')
 call minpac#add('tommcdo/vim-exchange')
-call minpac#add('tomtom/tlib_vim')
 call minpac#add('tpope/tpope-vim-abolish')
 call minpac#add('tpope/vim-endwise')
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-repeat')
-call minpac#add('tpope/vim-sleuth')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-unimpaired')
-call minpac#add('tpope/vim-sensible')
-call minpac#add('Valloric/ListToggle')
 call minpac#add('vim-airline/vim-airline')
 call minpac#add('vim-airline/vim-airline-themes')
 call minpac#add('zchee/deoplete-clang')
@@ -182,13 +186,6 @@ nnoremap <leader>zu :FzfBTags<CR>
 
 " ---- latex configuration ---- "
 let g:tex_flavor = "latex"
-
-" ---- lldb.vim navigation ---- "
-nnoremap <leader>db <Plug>LLBreakSwitch<CR>
-nnoremap <leader>dn :LL next<CR>
-nnoremap <leader>dc :LL continue<CR>
-nnoremap <leader>di :LL stepi<CR>
-nnoremap <leader>du :LL up<CR>
 
 " ---- Neomake configuration ---- "
 
