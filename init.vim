@@ -26,7 +26,7 @@ set hlsearch
 set sessionoptions=buffers
 
 " show whitespace
-set listchars=
+set listchars=tab:  
 set list
 
 " horizontal line
@@ -136,24 +136,23 @@ let g:airline_section_c = '%t'
 " ---- cscove configuration ---- "
 let g:cscope_silent=1
 
-" find interactive
-nnoremap <leader>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
-" find symbol
+" legend: s - symbol, g - definition,
+"         d - functions called by this function,
+"         c - functions calling this function,
+"         t - text string, e - egrep pattern,
+"         f - file, i - files #including this file
 nnoremap <leader>fs :call CscopeFind('s', expand('<cword>'))<CR>
-" find definition
 nnoremap <leader>fg :call CscopeFind('g', expand('<cword>'))<CR>
-" find functions called by this function
 nnoremap <leader>fd :call CscopeFind('d', expand('<cword>'))<CR>
-" find functions calling this function
 nnoremap <leader>fc :call CscopeFind('c', expand('<cword>'))<CR>
-" find this text string
 nnoremap <leader>ft :call CscopeFind('t', expand('<cword>'))<CR>
-" find this egrep pattern
 nnoremap <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
-" find this file
 nnoremap <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
-" find files #including this file
 nnoremap <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
+
+" find any object manually typed
+command! -nargs=+ CscoveFind call CscopeFind(<f-args>)
+nnoremap <leader>fm :CscoveFind 
 
 " ---- deoplete config ---- "
 let g:deoplete#enable_at_startup = 1
