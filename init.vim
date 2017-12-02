@@ -1,6 +1,3 @@
-" colorscheme
-colorscheme gruvbox
-
 " ---- Defaults ---- "
 
 " line numbers
@@ -34,7 +31,6 @@ set cursorline
 
 " comply with Linux kernel coding style "
 set colorcolumn=101
-
 
 " ---- Highlighting ---- "
 
@@ -72,21 +68,6 @@ nnoremap <silent> ]d :tabnext<CR>
 nnoremap <silent> [D :tabfirst<CR>
 nnoremap <silent> ]D :tablast<CR>
 
-" toggle location list
-function! s:buffer_count()
-    return len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))
-endfunction
-
-function! s:toggle_llist()
-    let buf_cnt = s:buffer_count()
-    silent! lclose
-    if s:buffer_count() == buf_cnt
-        silent! lopen
-    endif
-endfunction
-
-nnoremap <leader>l :call <SID>toggle_llist()<CR>
-
 " ---- Plugins ---- "
 
 packadd minpac
@@ -96,6 +77,7 @@ call minpac#add('airblade/vim-gitgutter')
 call minpac#add('ap/vim-css-color')
 call minpac#add('brookhong/cscope.vim')
 call minpac#add('derekwyatt/vim-fswitch')
+call minpac#add('dracula/vim')
 call minpac#add('godlygeek/tabular')
 call minpac#add('junegunn/fzf', { 'do' : './install --all' })
 call minpac#add('junegunn/fzf.vim')
@@ -104,7 +86,7 @@ call minpac#add('kshenoy/vim-signature')
 call minpac#add('ludovicchabant/vim-gutentags')
 call minpac#add('majutsushi/tagbar')
 call minpac#add('morhetz/gruvbox')
-call minpac#add('neomake/neomake')
+call minpac#add('sjl/badwolf')
 call minpac#add('scrooloose/nerdcommenter')
 call minpac#add('scrooloose/nerdtree')
 call minpac#add('Shougo/deoplete.nvim')
@@ -118,9 +100,21 @@ call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-repeat')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-unimpaired')
+call minpac#add('tpope/vim-sleuth')
 call minpac#add('vim-airline/vim-airline')
 call minpac#add('vim-airline/vim-airline-themes')
+call minpac#add('w0rp/ale')
 call minpac#add('zchee/deoplete-clang')
+
+" colorscheme
+if $THEME == ""
+   let scheme_name = 'default'
+   let airline_scheme_name = 'base16_grayscale'
+else
+   let scheme_name = $THEME
+   let airline_scheme_name = $THEME
+endif
+execute 'colorscheme' scheme_name
 
 " ---- extra windows ---- "
 nnoremap <F2> :NERDTreeToggle<CR>
@@ -128,7 +122,7 @@ nnoremap <F3> :GundoToggle<CR>
 nnoremap <F4> :Tagbar<CR>
 
 " ---- airline configuration ---- "
-let g:airline_theme             = 'gruvbox'
+let g:airline_theme             = airline_scheme_name
 let g:airline#extensions#branch#enabled = 2
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline_left_sep          = ''
@@ -186,18 +180,6 @@ nnoremap <leader>zu :FzfBTags<CR>
 
 " ---- latex configuration ---- "
 let g:tex_flavor = "latex"
-
-" ---- Neomake configuration ---- "
-
-" run make command async on file save
-autocmd BufWritePost * Neomake!
-
-" setup linter
-let g:neomake_cpp_enabled_makers = ['clangtidy']
-let g:neomake_cpp_clangtidy_maker = {
-   \ 'exe': '/usr/bin/clang-tidy',
-   \ 'args': ['-checks=*', '-p build' ],
-   \}
 
 " ---- NERDCommenter configuration ---- "
 let g:NERDCompactSexyComs = 1
