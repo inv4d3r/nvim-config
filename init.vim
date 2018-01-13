@@ -75,6 +75,7 @@ call minpac#init()
 
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('ap/vim-css-color')
+call minpac#add('arcticicestudio/nord-vim')
 call minpac#add('brookhong/cscope.vim')
 call minpac#add('derekwyatt/vim-fswitch')
 call minpac#add('dracula/vim')
