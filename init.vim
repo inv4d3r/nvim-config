@@ -56,6 +56,8 @@ autocmd BufWinLeave * call clearmatches()
 
 " ---- Mappings ---- "
 
+noremap <Esc> :nohl<CR>
+
 " go to current file's path
 nnoremap gc :cd %:p:h<CR>:pwd<CR>
 
