@@ -76,7 +76,6 @@ call minpac#init()
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('ap/vim-css-color')
 call minpac#add('arcticicestudio/nord-vim')
-call minpac#add('brookhong/cscope.vim')
 call minpac#add('derekwyatt/vim-fswitch')
 call minpac#add('dracula/vim')
 call minpac#add('godlygeek/tabular')
@@ -88,6 +87,7 @@ call minpac#add('ludovicchabant/vim-gutentags')
 call minpac#add('majutsushi/tagbar')
 call minpac#add('milkypostman/vim-togglelist')
 call minpac#add('morhetz/gruvbox')
+call minpac#add('nanotech/jellybeans.vim')
 call minpac#add('sjl/badwolf')
 call minpac#add('scrooloose/nerdcommenter')
 call minpac#add('scrooloose/nerdtree')
@@ -131,28 +131,23 @@ let g:airline_left_sep          = ''
 let g:airline_left_alt_sep      = ''
 let g:airline_right_sep         = ''
 let g:airline_right_alt_sep     = ''
-let g:airline_section_c = '%t'
+let g:airline_section_c = '%f'
 
-" ---- cscove configuration ---- "
-let g:cscope_silent=1
+" ---- cscope mappings ---- "
 
 " legend: s - symbol, g - definition,
 "         d - functions called by this function,
 "         c - functions calling this function,
 "         t - text string, e - egrep pattern,
 "         f - file, i - files #including this file
-nnoremap <leader>fs :call CscopeFind('s', expand('<cword>'))<CR>
-nnoremap <leader>fg :call CscopeFind('g', expand('<cword>'))<CR>
-nnoremap <leader>fd :call CscopeFind('d', expand('<cword>'))<CR>
-nnoremap <leader>fc :call CscopeFind('c', expand('<cword>'))<CR>
-nnoremap <leader>ft :call CscopeFind('t', expand('<cword>'))<CR>
-nnoremap <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
-nnoremap <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
-nnoremap <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
-
-" find any object manually typed
-command! -nargs=+ CscoveFind call CscopeFind(<f-args>)
-nnoremap <leader>fm :CscoveFind 
+nnoremap <leader>fs :cs f s <cword><CR>
+nnoremap <leader>fg :cs f g <cword><CR>
+nnoremap <leader>fd :cs f d <cword><CR>
+nnoremap <leader>fc :cs f c <cword><CR>
+nnoremap <leader>ft :cs f t <cword><CR>
+nnoremap <leader>fe :cs f e <cword><CR>
+nnoremap <leader>ff :cs f f <cword><CR>
+nnoremap <leader>fi :cs f i <cword><CR>
 
 " ---- deoplete config ---- "
 let g:deoplete#enable_at_startup = 1
