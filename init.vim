@@ -26,6 +26,8 @@ set sessionoptions=buffers
 set listchars=tab:  
 set list
 
+set clipboard=unnamedplus
+
 " horizontal line
 set cursorline
 
@@ -57,6 +59,8 @@ autocmd BufWinLeave * call clearmatches()
 " ---- Mappings ---- "
 
 noremap <Esc> :nohl<CR>
+
+nnoremap <space> <C-^>
 
 " go to current file's path
 nnoremap gc :cd %:p:h<CR>:pwd<CR>
