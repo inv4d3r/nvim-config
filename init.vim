@@ -16,6 +16,9 @@ set showcmd
 " adjust colors for dark background
 set background=dark
 
+" true color
+set termguicolors
+
 " highlight search matches
 set hlsearch
 
@@ -37,19 +40,19 @@ set colorcolumn=101
 " ---- Highlighting ---- "
 
 " current line highlight
-highlight CursorLine ctermbg=black ctermfg=None
+highlight CursorLine ctermbg=black ctermfg=None guibg=black guifg=None
 
 " max column highlight
-highlight ColorColumn ctermbg=167
+highlight ColorColumn ctermbg=167 guibg=167
 
 " signature colorize "
-highlight SignatureMarkText ctermfg=205
-highlight Whitespace ctermfg=167
-highlight NonText ctermfg=239
+highlight SignatureMarkText ctermfg=205 guifg=205
+highlight Whitespace ctermfg=167 guifg=167
+highlight NonText ctermfg=239 guifg=239
 
 " trailing whitespace
-highlight ExtraWhitespace ctermbg=red
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red
+highlight ExtraWhitespace ctermbg=red guibg=red
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
