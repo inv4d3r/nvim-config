@@ -16,9 +16,6 @@ set showcmd
 " adjust colors for dark background
 set background=dark
 
-" true color
-set termguicolors
-
 " highlight search matches
 set hlsearch
 
@@ -29,10 +26,11 @@ set sessionoptions=buffers
 set listchars=tab:  
 set list
 
+" always copy to plus register
 set clipboard=unnamedplus
 
 " horizontal line
-"set cursorline
+set cursorline
 
 " comply with Linux kernel coding style "
 set colorcolumn=81
@@ -57,6 +55,9 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
+
+" cppman for cpp files
+autocmd FileType cpp set keywordprg=:term\ cppman
 
 
 " ---- Mappings ---- "
@@ -84,6 +85,17 @@ nnoremap <leader>bs :sb <C-D>
 nnoremap <leader>bt :ls<CR>:sb 
 nnoremap <leader>bv :vert sb <C-D>
 nnoremap <leader>bx :ls<CR>:vert sb 
+
+" trailing whitespace mappings
+" current buffer
+nnoremap \trb :%s/\s\+$//g<CR>
+nnoremap \tsb /\s\+$<CR>
+" arglist
+nnoremap \tra :argdo s/\s\+$//g<CR>
+nnoremap \tsa :vim /\s\+$/ ##<CR>
+" quickfix list
+nnoremap \trq :cdo s/\s\+$//g<CR>
+
 
 " ---- Plugins ---- "
 
@@ -138,6 +150,10 @@ else
 endif
 execute 'colorscheme' scheme_name
 
+" true color
+set termguicolors
+
+
 " ---- extra windows ---- "
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :GundoToggle<CR>
@@ -169,16 +185,26 @@ nnoremap <leader>fe :cs f e <cword><CR>
 nnoremap <leader>ff :cs f f <cword><CR>
 nnoremap <leader>fi :cs f i <cword><CR>
 
+
 " ---- deoplete config ---- "
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#clang#libclang_path="/usr/lib/libclang.so"
-let g:deoplete#sources#clang#clang_header="/usr/lib/clang/"
+let g:deoplete#sources#clang#clang_header="/usr/lib/clang"
 
 " close preview window when leaving insert mode
 autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 
 " ---- switch to header/source ---- "
-map <leader>w :FSHere<CR>
+nnoremap <leader>e. :FSHere<CR>
+nnoremap <leader>et :FSTab<CR>
+nnoremap <leader>ek :FSAbove<CR>
+nnoremap <leader>ej :FSBelow<CR>
+nnoremap <leader>eh :FSLeft<CR>
+nnoremap <leader>el :FSRight<CR>
+nnoremap <leader>ewk :FSAbove<CR>
+nnoremap <leader>ewj :FSBelow<CR>
+nnoremap <leader>ewh :FSLeft<CR>
+nnoremap <leader>ewl :FSRight<CR>
 
 " ---- fzf config ---- "
 let g:fzf_command_prefix = "Fzf"
@@ -195,9 +221,23 @@ nnoremap <leader>zs :FzfSnippets<CR>
 nnoremap <leader>zt :FzfTags<CR>
 nnoremap <leader>zu :FzfBTags<CR>
 
+" fzf rg integration
+command! -bang -nargs=* FzfRg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
 " fzf ag shortcuts
 nnoremap <leader>ag :FzfAg <C-R><C-W><CR>
-nnoremap <leader>af :FzfAg struct <C-R><C-W> {<CR>
+nnoremap <leader>af :FzfAg <C-R><C-W>\(<CR>
+nnoremap <leader>as :FzfAg struct <C-R><C-W> {<CR>
+
+" fzf rg shortcuts
+nnoremap <leader>rg :FzfRg <C-R><C-W><CR>
+nnoremap <leader>rf :FzfRg <C-R><C-W>\(<CR>
+nnoremap <leader>rs :FzfRg struct <C-R><C-W> {<CR>
 
 " ---- latex configuration ---- "
 let g:tex_flavor = "latex"
