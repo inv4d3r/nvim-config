@@ -141,6 +141,7 @@ call minpac#add('tpope/vim-sleuth')
 call minpac#add('tyrannicaltoucan/vim-deep-space')
 call minpac#add('vim-airline/vim-airline')
 call minpac#add('vim-airline/vim-airline-themes')
+call minpac#add('vivien/vim-linux-coding-style')
 call minpac#add('w0rp/ale')
 call minpac#add('zchee/deoplete-clang')
 
@@ -244,6 +245,8 @@ nnoremap <leader>as :FzfAg struct <C-R><C-W> {<CR>
 nnoremap <leader>rg :FzfRg <C-R><C-W><CR>
 nnoremap <leader>rf :FzfRg <C-R><C-W>\(<CR>
 nnoremap <leader>rs :FzfRg struct <C-R><C-W> {<CR>
+
+let g:linuxsty_patterns = [ "/usr/src/", "/linux" ]
 
 " ---- latex configuration ---- "
 let g:tex_flavor = "latex"
