@@ -1,5 +1,8 @@
 " ---- Defaults ---- "
 
+set foldmethod=syntax
+set foldlevelstart=1
+
 " line numbers
 set number
 set relativenumber
