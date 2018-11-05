@@ -26,7 +26,9 @@ set hlsearch
 set sessionoptions=buffers
 
 " show whitespace
-set listchars=tab:  
+"set listchars=nbsp:¬,tab:>-
+"set listchars=nbsp:
+set listchars=tab:→ ,nbsp:¬
 set list
 
 " always copy to plus register
@@ -54,9 +56,24 @@ highlight NonText ctermfg=239 guifg=239
 " trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
 autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * syntax match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * syntax match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * syntax match ExtraWhitespace /\s\+$/
+
+" tabs
+highlight AnyTab ctermfg=gray guifg=gray
+autocmd ColorScheme * highlight AnyTab ctermfg=gray guifg=gray
+autocmd BufWinEnter * syntax match AnyTab /\t\+/
+autocmd InsertEnter * syntax match AnyTab /\t\+/
+autocmd InsertLeave * syntax match AnyTab /\t\+/
+
+" nbsp
+highlight NonBreakingSpace ctermbg=red guibg=red
+autocmd ColorScheme * highlight NonBreakingSpace ctermbg=yellow guibg=yellow
+autocmd BufWinEnter * syntax match NonBreakingSpace /\%xa0/
+autocmd InsertEnter * syntax match NonBreakingSpace /\%xa0/
+autocmd InsertLeave * syntax match NonBreakingSpace /\%xa0/
+
 autocmd BufWinLeave * call clearmatches()
 
 " cppman for cpp files
