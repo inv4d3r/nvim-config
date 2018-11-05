@@ -111,7 +111,7 @@ nnoremap <leader>bx :ls<CR>:vert sb
 nnoremap \trb :%s/\s\+$//g<CR>
 nnoremap \tsb /\s\+$<CR>
 " arglist
-nnoremap \tra :argdo s/\s\+$//g<CR>
+nnoremap \tra :argdo %s/\s\+$//g<CR>
 nnoremap \tsa :vim /\s\+$/ ##<CR>
 " quickfix list
 nnoremap \trq :cdo s/\s\+$//g<CR>
@@ -161,6 +161,7 @@ call minpac#add('vim-airline/vim-airline-themes')
 call minpac#add('vivien/vim-linux-coding-style')
 call minpac#add('w0rp/ale')
 call minpac#add('zchee/deoplete-clang')
+call minpac#add('zchee/deoplete-jedi')
 
 " colorscheme
 let g:nord_comment_brightness = 10
@@ -212,8 +213,8 @@ nnoremap <leader>fi :cs f i <cword><CR>
 
 " ---- deoplete config ---- "
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path="/usr/lib/libclang.so"
-let g:deoplete#sources#clang#clang_header="/usr/lib/clang"
+let g:deoplete#sources#clang#libclang_path="/usr/lib64/libclang.so"
+let g:deoplete#sources#clang#clang_header="/usr/lib64/clang"
 
 " close preview window when leaving insert mode
 autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
@@ -225,10 +226,10 @@ nnoremap <leader>ek :FSAbove<CR>
 nnoremap <leader>ej :FSBelow<CR>
 nnoremap <leader>eh :FSLeft<CR>
 nnoremap <leader>el :FSRight<CR>
-nnoremap <leader>ewk :FSAbove<CR>
-nnoremap <leader>ewj :FSBelow<CR>
-nnoremap <leader>ewh :FSLeft<CR>
-nnoremap <leader>ewl :FSRight<CR>
+nnoremap <leader>ewk :FSSplitAbove<CR>
+nnoremap <leader>ewj :FSSplitBelow<CR>
+nnoremap <leader>ewh :FSSplitLeft<CR>
+nnoremap <leader>ewl :FSSplitRight<CR>
 
 " ---- fzf config ---- "
 let g:fzf_command_prefix = "Fzf"
