@@ -1,7 +1,13 @@
 " ---- Defaults ---- "
 
+" folding
 set foldmethod=syntax
-set foldlevelstart=1
+set foldlevelstart=4
+set foldopen=all
+set foldclose=all
+
+"file search path
+set path=./**,/usr/include/**
 
 " line numbers
 set number
@@ -26,8 +32,6 @@ set hlsearch
 set sessionoptions=buffers
 
 " show whitespace
-"set listchars=nbsp:¬,tab:>-
-"set listchars=nbsp:
 set listchars=tab:→ ,nbsp:¬
 set list
 
@@ -108,13 +112,13 @@ nnoremap <leader>bx :ls<CR>:vert sb
 
 " trailing whitespace mappings
 " current buffer
-nnoremap \trb :%s/\s\+$//g<CR>
-nnoremap \tsb /\s\+$<CR>
+nnoremap <leader>wrb :%s/\s\+$//g<CR>
+nnoremap <leader>wsb /\s\+$<CR>
 " arglist
-nnoremap \tra :argdo %s/\s\+$//g<CR>
-nnoremap \tsa :vim /\s\+$/ ##<CR>
+nnoremap <leader>wra :argdo %s/\s\+$//g<CR>
+nnoremap <leader>wsa :vim /\s\+$/ ##<CR>
 " quickfix list
-nnoremap \trq :cdo s/\s\+$//g<CR>
+nnoremap <leader>wrq :cdo s/\s\+$//g<CR>
 
 
 " ---- Plugins ---- "
@@ -125,10 +129,12 @@ call minpac#init()
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('ap/vim-css-color')
 call minpac#add('arcticicestudio/nord-vim')
+call minpac#add('christoomey/vim-tmux-navigator')
 call minpac#add('carlitux/deoplete-ternjs')
 call minpac#add('derekwyatt/vim-fswitch')
 call minpac#add('dracula/vim')
 call minpac#add('godlygeek/tabular')
+call minpac#add('gregsexton/gitv')
 call minpac#add('junegunn/fzf', { 'do' : './install --all' })
 call minpac#add('junegunn/fzf.vim')
 call minpac#add('k-takata/minpac', { 'type' : 'opt' })
@@ -139,12 +145,13 @@ call minpac#add('milkypostman/vim-togglelist')
 call minpac#add('morhetz/gruvbox')
 call minpac#add('nanotech/jellybeans.vim')
 call minpac#add('othree/jspc.vim')
-call minpac#add('sjl/badwolf')
+call minpac#add('sakhnik/nvim-gdb')
 call minpac#add('scrooloose/nerdcommenter')
 call minpac#add('scrooloose/nerdtree')
 call minpac#add('Shougo/deoplete.nvim')
 call minpac#add('Shougo/neoinclude.vim')
 call minpac#add('sirver/UltiSnips')
+call minpac#add('sjl/badwolf')
 call minpac#add('sjl/gundo.vim')
 call minpac#add('ternjs/tern_for_vim')
 call minpac#add('tommcdo/vim-exchange')
@@ -164,7 +171,7 @@ call minpac#add('zchee/deoplete-clang')
 call minpac#add('zchee/deoplete-jedi')
 
 " colorscheme
-let g:nord_comment_brightness = 10
+let g:nord_comment_brightness = 20
 
 if $THEME == "" || $THEME == "default"
    let scheme_name = 'deep-space'
@@ -175,19 +182,38 @@ else
 endif
 execute 'colorscheme' scheme_name
 
+" ---- tags configuration ---- "
+" ---- generation
+set tags="tags"
+let g:gutentags_modules = [ "ctags" ]
+let g:gutentags_ctags_extra_args = ["--extra=+q", "/usr/include/c++"]
+"let g:gutentags_trace = 1
+
+" ---- navigation
+" open tag in vertical split
+map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+" already defined bindings:
+" CTRL-W CTRL-] - open tag in horizontal split
+" CTRL-W } - open tag in preview window
+" CTRL-W z - close preview window
+" from vim-unimpaired:
+" ]CTRL-T - preview window next tag
+" [CTRL-T - preview window previous tag
+
 " true color
 set termguicolors
-
 
 " ---- extra windows ---- "
 nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :GundoToggle<CR>
-nnoremap <F4> :Tagbar<CR>
+nnoremap <leader>t :Tagbar<CR>
 
 " ---- airline configuration ---- "
 let g:airline_theme             = airline_scheme_name
 let g:airline#extensions#branch#enabled = 2
 let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline_left_sep          = ''
 let g:airline_left_alt_sep      = ''
 let g:airline_right_sep         = ''
@@ -218,6 +244,14 @@ let g:deoplete#sources#clang#clang_header="/usr/lib64/clang"
 
 " close preview window when leaving insert mode
 autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
+
+" ---- nvim-gdb configuration ---- "
+let g:nvimgdb_disable_start_keymaps = 1
+nnoremap <leader>dd :GdbStart gdb -q 
+nnoremap <leader>dl :GdbStartLLDB lldb 
+nnoremap <leader>dp :GdbStartPDB python -m pdb 
+nnoremap <F6> :GdbRun<CR>
+nnoremap <F7> :GdbStop<CR>
 
 " ---- switch to header/source ---- "
 nnoremap <leader>e. :FSHere<CR>
@@ -279,6 +313,14 @@ autocmd BufEnter NERD_* setlocal rnu
 
 " ---- Substitute configuration ---- "
 map <leader>s :S/
+
+" ---- tmux seamless navigation ---- "
+let g:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> <M-m>h :TmuxNavigateLeft<cr>
+nnoremap <silent> <M-m>j :TmuxNavigateDown<cr>
+nnoremap <silent> <M-m>k :TmuxNavigateUp<cr>
+nnoremap <silent> <M-m>l :TmuxNavigateRight<cr>
 
 " ---- UltiSnips configuration ---- "
 let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
