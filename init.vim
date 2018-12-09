@@ -317,11 +317,6 @@ map <leader>s :S/
 " ---- tmux seamless navigation ---- "
 let g:tmux_navigator_no_mappings = 1
 
-nnoremap <silent> <M-m>h :TmuxNavigateLeft<cr>
-nnoremap <silent> <M-m>j :TmuxNavigateDown<cr>
-nnoremap <silent> <M-m>k :TmuxNavigateUp<cr>
-nnoremap <silent> <M-m>l :TmuxNavigateRight<cr>
-
 " ---- UltiSnips configuration ---- "
 let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
 let g:UltiSnipsExpandTrigger="<C-j>"
