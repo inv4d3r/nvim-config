@@ -122,7 +122,7 @@ nnoremap <leader>wsb /\s\+$<CR>
 nnoremap <leader>wra :argdo %s/\s\+$//g<CR>
 nnoremap <leader>wsa :vim /\s\+$/ ##<CR>
 " quickfix list
-nnoremap <leader>wrq :cdo s/\s\+$//g<CR>
+nnoremap <leader>wrq :cdo s/\s\+$//<CR>
 
 
 " ---- Plugins ---- "
@@ -200,6 +200,7 @@ map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 " CTRL-W CTRL-] - open tag in horizontal split
 " CTRL-W } - open tag in preview window
 " CTRL-W z - close preview window
+" CTRL-t - tag stack jump
 " from vim-unimpaired:
 " ]CTRL-T - preview window next tag
 " [CTRL-T - preview window previous tag
@@ -227,10 +228,12 @@ let g:airline_section_c = '%f'
 " ---- cscope mappings ---- "
 
 " legend: s - symbol, g - definition,
-"         d - functions called by this function,
+"         a - find places where this symbol is assigned a value
 "         c - functions calling this function,
+"         d - functions called by this function,
 "         t - text string, e - egrep pattern,
 "         f - file, i - files #including this file
+nnoremap <leader>fa :cs f a <cword><CR>
 nnoremap <leader>fs :cs f s <cword><CR>
 nnoremap <leader>fg :cs f g <cword><CR>
 nnoremap <leader>fd :cs f d <cword><CR>
@@ -239,7 +242,25 @@ nnoremap <leader>ft :cs f t <cword><CR>
 nnoremap <leader>fe :cs f e <cword><CR>
 nnoremap <leader>ff :cs f f <cword><CR>
 nnoremap <leader>fi :cs f i <cword><CR>
-
+nnoremap <leader>fsa :scs f a <cword><CR>
+nnoremap <leader>fss :scs f s <cword><CR>
+nnoremap <leader>fsg :scs f g <cword><CR>
+nnoremap <leader>fsd :scs f d <cword><CR>
+nnoremap <leader>fsc :scs f c <cword><CR>
+nnoremap <leader>fst :scs f t <cword><CR>
+nnoremap <leader>fse :scs f e <cword><CR>
+nnoremap <leader>fsf :scs f f <cword><CR>
+nnoremap <leader>fsi :scs f i <cword><CR>
+nnoremap <leader>fla :lcs f a <cword><CR>
+nnoremap <leader>fls :lcs f s <cword><CR>
+nnoremap <leader>flg :lcs f g <cword><CR>
+nnoremap <leader>fld :lcs f d <cword><CR>
+nnoremap <leader>flc :lcs f c <cword><CR>
+nnoremap <leader>flt :lcs f t <cword><CR>
+nnoremap <leader>fle :lcs f e <cword><CR>
+nnoremap <leader>flf :lcs f f <cword><CR>
+nnoremap <leader>fli :lcs f i <cword><CR>
+set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
 
 " ---- deoplete config ---- "
 let g:deoplete#enable_at_startup = 1
