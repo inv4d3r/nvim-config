@@ -142,6 +142,7 @@ call minpac#add('gregsexton/gitv')
 call minpac#add('junegunn/fzf', { 'do' : './install --all' })
 call minpac#add('junegunn/fzf.vim')
 call minpac#add('k-takata/minpac', { 'type' : 'opt' })
+call minpac#add('kristijanhusak/vim-hybrid-material')
 call minpac#add('kshenoy/vim-signature')
 call minpac#add('ludovicchabant/vim-gutentags')
 call minpac#add('majutsushi/tagbar')
@@ -170,6 +171,7 @@ call minpac#add('tyrannicaltoucan/vim-deep-space')
 call minpac#add('vim-airline/vim-airline')
 call minpac#add('vim-airline/vim-airline-themes')
 call minpac#add('vivien/vim-linux-coding-style')
+call minpac#add('w0ng/vim-hybrid')
 call minpac#add('w0rp/ale')
 call minpac#add('zchee/deoplete-clang')
 call minpac#add('zchee/deoplete-jedi')
@@ -180,6 +182,15 @@ let g:nord_comment_brightness = 20
 if $THEME == "" || $THEME == "default"
    let scheme_name = 'deep-space'
    let airline_scheme_name = 'deep_space'
+elseif $THEME == "grayscale"
+   let g:enable_bold_font = 1
+   let g:enable_italic_font = 1
+   "let scheme_name = 'hybrid'
+   "let scheme_name = 'hybrid_material'
+   let scheme_name = 'hybrid_reverse'
+   "let airline_scheme_name = 'badcat'
+   "let airline_scheme_name = 'base16_grayscale'
+   let airline_scheme_name = 'minimalist'
 else
    let scheme_name = $THEME
    let airline_scheme_name = $THEME
