@@ -77,7 +77,7 @@ if executable("cppman")
 endif
 
 " ---- Mappings ---- "
-noremap <Esc> :nohl<CR>
+nnoremap <C-l> :nohl<CR>
 
 " execute command from current line
 nnoremap <leader><CR> :execute getline(".")<CR>
@@ -146,17 +146,16 @@ call minpac#add('w0ng/vim-hybrid')
 call minpac#add('kristijanhusak/vim-hybrid-material')
 
 " autocompletion & tags plugins
-call minpac#add('Shougo/deoplete.nvim', { 'rev': '04ea041', 'do': ':UpdateRemotePlugins'})
 call minpac#add('neoclide/coc.nvim')
-call minpac#add('carlitux/deoplete-ternjs')
+"call minpac#add('Shougo/deoplete.nvim', { 'rev': '04ea041', 'do': ':UpdateRemotePlugins'})
+"call minpac#add('Shougo/neoinclude.vim')
+"call minpac#add('carlitux/deoplete-ternjs')
+"call minpac#add('tweekmonster/deoplete-clang2')
+"call minpac#add('zchee/deoplete-jedi')
 call minpac#add('majutsushi/tagbar')
 "call minpac#add('ludovicchabant/vim-gutentags')
 call minpac#add('othree/jspc.vim')
-call minpac#add('Shougo/neoinclude.vim')
-
-call minpac#add('tweekmonster/deoplete-clang2')
 call minpac#add('ternjs/tern_for_vim')
-call minpac#add('zchee/deoplete-jedi')
 
 " file & fuzzy navigation
 call minpac#add('derekwyatt/vim-fswitch')
@@ -316,7 +315,7 @@ nnoremap <leader>fli :lcs f i <cword><CR>
 set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
 
 " ---- deoplete config ---- "
-let g:deoplete#enable_at_startup = 1
+"let g:deoplete#enable_at_startup = 1
 "let g:deoplete#sources#clang#libclang_path="/usr/lib64/libclang.so"
 "let g:deoplete#sources#clang#clang_header="/usr/lib64/clang"
 
@@ -482,4 +481,31 @@ command! -nargs=0 Format :call CocAction('format')
 
 " Use `:Fold` for fold current buffer
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+" Cross references
+" bases
+nnoremap <silent> <leader>xb :call CocLocations('ccls','$ccls/inheritance')<cr>
+" bases of up to 3 levels
+nnoremap <silent> <leader>xb :call CocLocations('ccls','$ccls/inheritance',{'levels':3})<cr>
+" derived
+nnoremap <silent> <leader>xd :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true})<cr>
+" derived of up to 3 levels
+nnoremap <silent> <leader>xD :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true,'levels':3})<cr>
+
+" caller
+nnoremap <silent> <leader>xc :call CocLocations('ccls','$ccls/call')<cr>
+" callee
+nnoremap <silent> <leader>xC :call CocLocations('ccls','$ccls/call',{'callee':v:true})<cr>
+
+" $ccls/member
+" member variables / variables in a namespace
+nnoremap <silent> <leader>xm :call CocLocations('ccls','$ccls/member')<cr>
+" member functions / functions in a namespace
+nnoremap <silent> <leader>xf :call CocLocations('ccls','$ccls/member',{'kind':3})<cr>
+" nested classes / types in a namespace
+nnoremap <silent> <leader>xs :call CocLocations('ccls','$ccls/member',{'kind':2})<cr>
+
+nmap <silent> <leader>xt <Plug>(coc-type-definition)<cr>
+nnoremap <silent> <leader>xv :call CocLocations('ccls','$ccls/vars')<cr>
+nnoremap <silent> <leader>xV :call CocLocations('ccls','$ccls/vars',{'kind':1})<cr>
 
