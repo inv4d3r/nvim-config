@@ -1,5 +1,10 @@
 " ---- Defaults ---- "
 
+" buffer auto update
+set autoread
+au FocusGained,BufEnter * :silent! !
+au FocusLost,WinLeave * :silent! noautocmd w
+
 " folds configuration
 set foldmethod=syntax
 set foldlevelstart=4
@@ -42,60 +47,49 @@ set list
 " always copy to plus register
 set clipboard=unnamedplus
 
-" horizontal line
-set cursorline
-
 " comply with Linux kernel coding style "
-set colorcolumn=81
+set colorcolumn=81,101,121
 
 " ---- Highlighting ---- "
-
-" current line highlight
-highlight CursorLine ctermbg=black ctermfg=None guibg=black guifg=None
 
 " max column highlight
 highlight ColorColumn ctermbg=167 guibg=167
 
-" signature colorize "
-highlight SignatureMarkText ctermfg=205 guifg=205
-highlight Whitespace ctermfg=167 guifg=167
-highlight NonText ctermfg=239 guifg=239
-
 " trailing whitespace
-highlight ExtraWhitespace ctermbg=red guibg=red
+highlight ExtraWhitespace ctermfg=red guifg=red ctermbg=red guibg=red
 autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-autocmd BufWinEnter * syntax match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * syntax match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * syntax match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
 
 " tabs
 highlight AnyTab ctermfg=gray guifg=gray
 autocmd ColorScheme * highlight AnyTab ctermfg=gray guifg=gray
 autocmd BufWinEnter * syntax match AnyTab /\t\+/
-autocmd InsertEnter * syntax match AnyTab /\t\+/
-autocmd InsertLeave * syntax match AnyTab /\t\+/
 
 " nbsp
 highlight NonBreakingSpace ctermbg=red guibg=red
 autocmd ColorScheme * highlight NonBreakingSpace ctermbg=yellow guibg=yellow
 autocmd BufWinEnter * syntax match NonBreakingSpace /\%xa0/
-autocmd InsertEnter * syntax match NonBreakingSpace /\%xa0/
-autocmd InsertLeave * syntax match NonBreakingSpace /\%xa0/
-
-autocmd BufWinLeave * call clearmatches()
 
 " cppman for cpp files
-autocmd FileType cpp set keywordprg=:term\ cppman
-
+if executable("cppman")
+  autocmd FileType cpp set keywordprg=:term\ cppman
+endif
 
 " ---- Mappings ---- "
-
 noremap <Esc> :nohl<CR>
 
+" execute command from current line
+nnoremap <leader><CR> :execute getline(".")<CR>
+
+" view alternative buffer
 nnoremap <space> <C-^>
 
 " go to current file's path
-nnoremap gc :cd %:p:h<CR>:pwd<CR>
+nnoremap <leader>pc :cd %:p:h<CR>:pwd<CR>
+
+" edit (with netrw) current file's path
+nnoremap <leader>pe :e %:p:h<CR>:pwd<CR>
 
 " terminal - go to normal mode
 tnoremap <Esc> <C-\><C-n>
@@ -110,9 +104,9 @@ nnoremap <silent> ]D :tablast<CR>
 nnoremap <leader>bd :b <C-D>
 nnoremap <leader>bl :ls<CR>:b 
 nnoremap <leader>bs :sb <C-D>
-nnoremap <leader>bt :ls<CR>:sb 
+nnoremap <leader>bsl :ls<CR>:sb 
 nnoremap <leader>bv :vert sb <C-D>
-nnoremap <leader>bx :ls<CR>:vert sb 
+nnoremap <leader>bvl :ls<CR>:vert sb 
 
 " trailing whitespace mappings
 " current buffer
@@ -124,42 +118,60 @@ nnoremap <leader>wsa :vim /\s\+$/ ##<CR>
 " quickfix list
 nnoremap <leader>wrq :cdo s/\s\+$//<CR>
 
+" search current word in arglist
+nnoremap <leader>v :vim <cword> ##<CR>
+
 
 " ---- Plugins ---- "
 
 packadd minpac
 call minpac#init()
 
-call minpac#add('airblade/vim-gitgutter')
-call minpac#add('ap/vim-css-color')
-call minpac#add('arcticicestudio/nord-vim')
-call minpac#add('christoomey/vim-tmux-navigator')
-call minpac#add('carlitux/deoplete-ternjs')
-call minpac#add('derekwyatt/vim-fswitch')
-call minpac#add('dracula/vim')
-call minpac#add('godlygeek/tabular')
-call minpac#add('gregsexton/gitv')
-call minpac#add('junegunn/fzf', { 'do' : './install --all' })
-call minpac#add('junegunn/fzf.vim')
+" one to rule them all
 call minpac#add('k-takata/minpac', { 'type' : 'opt' })
-call minpac#add('kristijanhusak/vim-hybrid-material')
+
+" highlight plugings
+call minpac#add('RRethy/vim-hexokinase')
+call minpac#add('airblade/vim-gitgutter')
 call minpac#add('kshenoy/vim-signature')
-call minpac#add('ludovicchabant/vim-gutentags')
-call minpac#add('majutsushi/tagbar')
-call minpac#add('milkypostman/vim-togglelist')
+
+" colorscheme plugins
+call minpac#add('dracula/vim')
+call minpac#add('arcticicestudio/nord-vim')
 call minpac#add('morhetz/gruvbox')
 call minpac#add('nanotech/jellybeans.vim')
-call minpac#add('othree/jspc.vim')
-call minpac#add('sakhnik/nvim-gdb')
-call minpac#add('scrooloose/nerdcommenter')
-call minpac#add('scrooloose/nerdtree')
-call minpac#add('Shougo/deoplete.nvim')
-call minpac#add('Shougo/neoinclude.vim')
-call minpac#add('sirver/UltiSnips')
 call minpac#add('sjl/badwolf')
-call minpac#add('sjl/gundo.vim')
+call minpac#add('tyrannicaltoucan/vim-deep-space')
+call minpac#add('w0ng/vim-hybrid')
+call minpac#add('kristijanhusak/vim-hybrid-material')
+
+" autocompletion & tags plugins
+call minpac#add('Shougo/deoplete.nvim', { 'rev': '04ea041', 'do': ':UpdateRemotePlugins'})
+call minpac#add('neoclide/coc.nvim')
+call minpac#add('carlitux/deoplete-ternjs')
+call minpac#add('majutsushi/tagbar')
+"call minpac#add('ludovicchabant/vim-gutentags')
+call minpac#add('othree/jspc.vim')
+call minpac#add('Shougo/neoinclude.vim')
+
+call minpac#add('tweekmonster/deoplete-clang2')
 call minpac#add('ternjs/tern_for_vim')
+call minpac#add('zchee/deoplete-jedi')
+
+" file & fuzzy navigation
+call minpac#add('derekwyatt/vim-fswitch')
+call minpac#add('junegunn/fzf', { 'do' : './install --all' })
+call minpac#add('junegunn/fzf.vim')
+
+" utility plugins
+call minpac#add('milkypostman/vim-togglelist')
+call minpac#add('dhruvasagar/vim-table-mode')
+call minpac#add('godlygeek/tabular')
+call minpac#add('gregsexton/gitv')
 call minpac#add('tommcdo/vim-exchange')
+call minpac#add('roxma/vim-tmux-clipboard')
+call minpac#add('christoomey/vim-tmux-navigator')
+call minpac#add('sjl/gundo.vim')
 call minpac#add('tpope/tpope-vim-abolish')
 call minpac#add('tpope/vim-endwise')
 call minpac#add('tpope/vim-fugitive')
@@ -167,14 +179,20 @@ call minpac#add('tpope/vim-repeat')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-unimpaired')
 call minpac#add('tpope/vim-sleuth')
-call minpac#add('tyrannicaltoucan/vim-deep-space')
-call minpac#add('vim-airline/vim-airline')
-call minpac#add('vim-airline/vim-airline-themes')
+call minpac#add('tpope/vim-vinegar')
+
+" programming helpers
+call minpac#add('sirver/UltiSnips')
 call minpac#add('vivien/vim-linux-coding-style')
-call minpac#add('w0ng/vim-hybrid')
-call minpac#add('w0rp/ale')
-call minpac#add('zchee/deoplete-clang')
-call minpac#add('zchee/deoplete-jedi')
+"call minpac#add('vim-syntastic/syntastic')
+"call minpac#add('w0rp/ale')
+call minpac#add('scrooloose/nerdcommenter')
+
+" lightline
+call minpac#add('itchyny/lightline.vim')
+call minpac#add('cocopon/lightline-hybrid.vim')
+call minpac#add('shinchu/lightline-gruvbox.vim')
+call minpac#add('844196/lightline-badwolf.vim')
 
 " colorscheme
 let g:nord_comment_brightness = 20
@@ -197,16 +215,53 @@ else
 endif
 execute 'colorscheme' scheme_name
 
+" ---- lightline configution ---- "
+" hybrid - (cocopon) hybrid, deus, one, solarized
+" dracula - darcula
+" grayscale - hybrid (plain style), seoul256, OldHope
+" jellybeans
+" nord
+" gruvbox - (shinchu) gruvbox
+" badwolf - (844196) badwolf, molokai
+
+      "\   'ale': '%{ale#statusline#Status()}',
+let g:lightline = {
+      \ 'colorscheme': 'hybrid',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'tagbar', 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component': {
+      \   'tagbar': '%{tagbar#currenttag("%s", "", "f")}'
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \ }
+
+" ---- syntastic configuration ---- "
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"let g:syntastic_c_checkers = [ "checkpatch", "clang_tidy" ]
+"let g:syntastic_cpp_check_header = 1
+
 " ---- tags configuration ---- "
 " ---- generation
-set tags="tags"
-let g:gutentags_modules = [ "ctags" ]
-let g:gutentags_ctags_extra_args = ["--extra=+q", "/usr/include/c++"]
+set tags=tags
+"let g:gutentags_modules = [ "ctags" ]
+"let g:gutentags_ctags_extra_args = ["--extra=+q", "/usr/include/c++"]
 "let g:gutentags_trace = 1
 
 " ---- navigation
 " open tag in vertical split
 map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+map g<A-]> :vsp <CR>:exec("tjump ".expand("<cword>"))<CR>
 " already defined bindings:
 " CTRL-W CTRL-] - open tag in horizontal split
 " CTRL-W } - open tag in preview window
@@ -220,21 +275,8 @@ map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 set termguicolors
 
 " ---- extra windows ---- "
-nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :GundoToggle<CR>
 nnoremap <leader>t :Tagbar<CR>
-
-" ---- airline configuration ---- "
-let g:airline_theme             = airline_scheme_name
-let g:airline#extensions#branch#enabled = 2
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:airline_left_sep          = ''
-let g:airline_left_alt_sep      = ''
-let g:airline_right_sep         = ''
-let g:airline_right_alt_sep     = ''
-let g:airline_section_c = '%f'
 
 " ---- cscope mappings ---- "
 
@@ -275,19 +317,11 @@ set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
 
 " ---- deoplete config ---- "
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path="/usr/lib64/libclang.so"
-let g:deoplete#sources#clang#clang_header="/usr/lib64/clang"
+"let g:deoplete#sources#clang#libclang_path="/usr/lib64/libclang.so"
+"let g:deoplete#sources#clang#clang_header="/usr/lib64/clang"
 
 " close preview window when leaving insert mode
-autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
-
-" ---- nvim-gdb configuration ---- "
-let g:nvimgdb_disable_start_keymaps = 1
-nnoremap <leader>dd :GdbStart gdb -q 
-nnoremap <leader>dl :GdbStartLLDB lldb 
-nnoremap <leader>dp :GdbStartPDB python -m pdb 
-nnoremap <F6> :GdbRun<CR>
-nnoremap <F7> :GdbStop<CR>
+"autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 
 " ---- switch to header/source ---- "
 nnoremap <leader>e. :FSHere<CR>
@@ -343,10 +377,6 @@ let g:tex_flavor = "latex"
 let g:NERDCompactSexyComs = 1
 let g:NERDTrimTrailingWhitespace = 1
 
-" ---- NERDTree configuration ---- "
-let g:NERDTreeShowLineNumbers=1
-autocmd BufEnter NERD_* setlocal rnu
-
 " ---- Substitute configuration ---- "
 map <leader>s :S/
 
@@ -357,3 +387,99 @@ let g:tmux_navigator_no_mappings = 1
 let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
 let g:UltiSnipsExpandTrigger="<C-j>"
 let g:UltiSnipsEnableSnipMate=0
+
+" ---- Debugging ---- "
+packadd termdebug
+let g:termdebug_wide = 163
+
+" ---- coc.nvim configuration ---- "
+
+" use tab for trigger completion with characters ahead and navigate.
+" use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+"inoremap <silent><expr> <TAB>
+      "\ pumvisible() ? "\<C-n>" :
+      "\ <SID>check_back_space() ? "\<TAB>" :
+      "\ coc#refresh()
+"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+"function! s:check_back_space() abort
+  "let col = col('.') - 1
+  "return !col || getline('.')[col - 1]  =~# '\s'
+"endfunction
+
+" use <c-space> for trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" use `[g` and `]g` for navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+vmap <leader>ga  <Plug>(coc-codeaction-selected)
+nmap <leader>ga  <Plug>(coc-codeaction-selected)
+
+" remap for do codeAction of current line
+nmap <leader>gc  <Plug>(coc-codeaction)
+
+" remap keys for gotos
+nmap <silent> <leader>gd <Plug>(coc-definition)
+nmap <silent> <leader>gy <Plug>(coc-type-definition)
+nmap <silent> <leader>gi <Plug>(coc-implementation)
+nmap <silent> <leader>gr <Plug>(coc-references)
+
+" remap for format selected region
+vmap <leader>gf  <Plug>(coc-format-selected)
+nmap <leader>gf  <Plug>(coc-format-selected)
+
+" show documentation in preview window
+nnoremap <silent> <leader>gk :call <SID>show_documentation()<CR>
+
+" remap for rename current word
+nmap <leader>gn <Plug>(coc-rename)
+
+" fix autofix problem of current line
+nmap <leader>gp  <Plug>(coc-fix-current)
+
+" using CocList
+" show all diagnostics
+nnoremap <silent> <leader>da :<C-u>CocList diagnostics<cr>
+" manage extensions
+nnoremap <silent> <leader>e  :<C-u>CocList extensions<cr>
+" show commands
+nnoremap <silent> <leader>dc :<C-u>CocList commands<cr>
+" find symbol of current document
+nnoremap <silent> <leader>do :<C-u>CocList outline<cr>
+" search workspace symbols
+nnoremap <silent> <leader>ds :<C-u>CocList -I symbols<cr>
+" do default action for next item.
+nnoremap <silent> <leader>dj :<C-u>CocNext<CR>
+" do default action for previous item.
+nnoremap <silent> <leader>dk :<C-u>CocPrev<CR>
+" resume latest coc list
+nnoremap <silent> <leader>dp :<C-u>CocListResume<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+"autocmd CursorHold * silent call CocActionAsync('highlight')
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Use `:Format` for format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` for fold current buffer
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
