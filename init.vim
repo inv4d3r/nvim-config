@@ -147,7 +147,7 @@ call minpac#add('kristijanhusak/vim-hybrid-material')
 
 " autocompletion & tags plugins
 call minpac#add('neoclide/coc.nvim')
-"call minpac#add('Shougo/deoplete.nvim', { 'rev': '04ea041', 'do': ':UpdateRemotePlugins'})
+"call minpac#add('Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'})
 "call minpac#add('Shougo/neoinclude.vim')
 "call minpac#add('carlitux/deoplete-ternjs')
 "call minpac#add('tweekmonster/deoplete-clang2')
@@ -194,8 +194,6 @@ call minpac#add('shinchu/lightline-gruvbox.vim')
 call minpac#add('844196/lightline-badwolf.vim')
 
 " colorscheme
-let g:nord_comment_brightness = 20
-
 if $THEME == "" || $THEME == "default"
    let scheme_name = 'deep-space'
    let airline_scheme_name = 'deep_space'
@@ -421,10 +419,26 @@ nmap <leader>ga  <Plug>(coc-codeaction-selected)
 nmap <leader>gc  <Plug>(coc-codeaction)
 
 " remap keys for gotos
-nmap <silent> <leader>gd <Plug>(coc-definition)
-nmap <silent> <leader>gy <Plug>(coc-type-definition)
-nmap <silent> <leader>gi <Plug>(coc-implementation)
-nmap <silent> <leader>gr <Plug>(coc-references)
+nmap <silent> <leader>gd. <Plug>(coc-definition)
+nnoremap <silent> <leader>gdd :call CocLocations('ccls','textDocument/definition', {}, 'drop')<cr>
+nnoremap <silent> <leader>gds :call CocLocations('ccls','textDocument/definition', {}, 'split')<cr>
+nnoremap <silent> <leader>gdv :call CocLocations('ccls','textDocument/definition', {}, 'vsplit')<cr>
+nmap <silent> <leader>gl. <Plug>(coc-declaration)
+nnoremap <silent> <leader>gld :call CocLocations('ccls','textDocument/declaration', {}, 'drop')<cr>
+nnoremap <silent> <leader>gls :call CocLocations('ccls','textDocument/declaration', {}, 'split')<cr>
+nnoremap <silent> <leader>glv :call CocLocations('ccls','textDocument/declaration', {}, 'vsplit')<cr>
+nmap <silent> <leader>gt. <Plug>(coc-type-definition)
+nnoremap <silent> <leader>gtd :call CocLocations('ccls','textDocument/typeDefinition', {}, 'drop')<cr>
+nnoremap <silent> <leader>gts :call CocLocations('ccls','textDocument/typeDefinition', {}, 'split')<cr>
+nnoremap <silent> <leader>gtv :call CocLocations('ccls','textDocument/typeDefinition', {}, 'vsplit')<cr>
+nmap <silent> <leader>gi. <Plug>(coc-implementation)
+nnoremap <silent> <leader>gid :call CocLocations('ccls','textDocument/implementation', {}, 'drop')<cr>
+nnoremap <silent> <leader>gis :call CocLocations('ccls','textDocument/implementation', {}, 'split')<cr>
+nnoremap <silent> <leader>giv :call CocLocations('ccls','textDocument/implementation', {}, 'vsplit')<cr>
+nmap <silent> <leader>gr. <Plug>(coc-references)
+nnoremap <silent> <leader>grd :call CocLocations('ccls','textDocument/references', {}, 'drop')<cr>
+nnoremap <silent> <leader>grs :call CocLocations('ccls','textDocument/references', {}, 'split')<cr>
+nnoremap <silent> <leader>grv :call CocLocations('ccls','textDocument/references', {}, 'vsplit')<cr>
 
 " remap for format selected region
 vmap <leader>gf  <Plug>(coc-format-selected)
