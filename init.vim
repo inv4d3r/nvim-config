@@ -178,6 +178,7 @@ call minpac#add('christoomey/vim-tmux-navigator')
 call minpac#add('sjl/gundo.vim')
 call minpac#add('tpope/tpope-vim-abolish')
 call minpac#add('tpope/vim-endwise')
+call minpac#add('tpope/vim-dispatch')
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-repeat')
 call minpac#add('tpope/vim-surround')
@@ -231,7 +232,7 @@ let g:lightline = {
       \ 'colorscheme': 'hybrid',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'tagbar', 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \             [ 'tagbar', 'gitbranch', 'readonly', 'relativepath', 'modified' ] ]
       \ },
       \ 'component': {
       \   'tagbar': '%{tagbar#currenttag("%s", "", "f")}'
@@ -297,15 +298,15 @@ nnoremap <leader>ft :cs f t <cword><CR>
 nnoremap <leader>fe :cs f e <cword><CR>
 nnoremap <leader>ff :cs f f <cword><CR>
 nnoremap <leader>fi :cs f i <cword><CR>
-nnoremap <leader>fsa :scs f a <cword><CR>
-nnoremap <leader>fss :scs f s <cword><CR>
-nnoremap <leader>fsg :scs f g <cword><CR>
-nnoremap <leader>fsd :scs f d <cword><CR>
-nnoremap <leader>fsc :scs f c <cword><CR>
-nnoremap <leader>fst :scs f t <cword><CR>
-nnoremap <leader>fse :scs f e <cword><CR>
-nnoremap <leader>fsf :scs f f <cword><CR>
-nnoremap <leader>fsi :scs f i <cword><CR>
+nnoremap <leader>fxa :scs f a <cword><CR>
+nnoremap <leader>fxs :scs f s <cword><CR>
+nnoremap <leader>fxg :scs f g <cword><CR>
+nnoremap <leader>fxd :scs f d <cword><CR>
+nnoremap <leader>fxc :scs f c <cword><CR>
+nnoremap <leader>fxt :scs f t <cword><CR>
+nnoremap <leader>fxe :scs f e <cword><CR>
+nnoremap <leader>fxf :scs f f <cword><CR>
+nnoremap <leader>fxi :scs f i <cword><CR>
 nnoremap <leader>fla :lcs f a <cword><CR>
 nnoremap <leader>fls :lcs f s <cword><CR>
 nnoremap <leader>flg :lcs f g <cword><CR>
@@ -345,8 +346,10 @@ nnoremap <leader>zc :FzfCommits<CR>
 nnoremap <leader>zd :FzfBCommits<CR>
 nnoremap <leader>ze :FzfCommands<CR>
 nnoremap <leader>zf :FzfFiles<CR>
+nnoremap <leader>zh: :FzfHistory:<CR>
+nnoremap <leader>zh/ :FzfHistory/<CR>
 nnoremap <leader>zg :FzfGFiles<CR>
-nnoremap <leader>zh :FzfGFiles?<CR>
+nnoremap <leader>zg? :FzfGFiles?<CR>
 nnoremap <leader>zm :FzfMarks<CR>
 nnoremap <leader>zs :FzfSnippets<CR>
 nnoremap <leader>zt :FzfTags<CR>
@@ -497,7 +500,7 @@ function! s:show_documentation()
 endfunction
 
 " Highlight symbol under cursor on CursorHold
-"autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 augroup mygroup
   autocmd!
@@ -517,7 +520,7 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 " bases
 nnoremap <silent> <leader>xb :call CocLocations('ccls','$ccls/inheritance')<cr>
 " bases of up to 3 levels
-nnoremap <silent> <leader>xb :call CocLocations('ccls','$ccls/inheritance',{'levels':3})<cr>
+nnoremap <silent> <leader>xB :call CocLocations('ccls','$ccls/inheritance',{'levels':3})<cr>
 " derived
 nnoremap <silent> <leader>xd :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true})<cr>
 " derived of up to 3 levels
@@ -536,7 +539,6 @@ nnoremap <silent> <leader>xf :call CocLocations('ccls','$ccls/member',{'kind':3}
 " nested classes / types in a namespace
 nnoremap <silent> <leader>xs :call CocLocations('ccls','$ccls/member',{'kind':2})<cr>
 
-nmap <silent> <leader>xt <Plug>(coc-type-definition)<cr>
 nnoremap <silent> <leader>xv :call CocLocations('ccls','$ccls/vars')<cr>
 nnoremap <silent> <leader>xV :call CocLocations('ccls','$ccls/vars',{'kind':1})<cr>
 
