@@ -52,6 +52,11 @@ set colorcolumn=81,101,121
 
 " ---- Highlighting ---- "
 
+highlight debugPC ctermbg=gray guibg=gray
+highlight debugBreakpoint ctermbg=gray guibg=gray
+autocmd ColorScheme * highlight debugPC ctermbg=gray guibg=gray
+autocmd ColorScheme * highlight debugBreakpoint ctermbg=gray guibg=gray
+
 " max column highlight
 highlight ColorColumn ctermbg=167 guibg=167
 
@@ -273,7 +278,7 @@ set termguicolors
 
 " ---- extra windows ---- "
 nnoremap <F3> :GundoToggle<CR>
-nnoremap <leader>t :Tagbar<CR>
+nnoremap <F4> :Tagbar<CR>
 
 " ---- cscope mappings ---- "
 
@@ -386,8 +391,20 @@ let g:UltiSnipsExpandTrigger="<C-j>"
 let g:UltiSnipsEnableSnipMate=0
 
 " ---- Debugging ---- "
-packadd termdebug
 let g:termdebug_wide = 163
+packadd termdebug
+
+nnoremap <silent> <leader>tg :Gdb<CR>
+nnoremap <silent> <leader>tp :Program<CR>
+nnoremap <silent> <leader>ts :Source<CR>
+
+nnoremap <silent> <F5> :Continue<CR>
+nnoremap <silent> <F6> :Finish<CR>
+nnoremap <silent> <F7> :Stop<CR>
+nnoremap <silent> <F8> :Clear<CR>
+nnoremap <silent> <F9> :Break<CR>
+nnoremap <silent> <F10> :Over<CR>
+nnoremap <silent> <F11> :Step<CR>
 
 " ---- coc.nvim configuration ---- "
 
