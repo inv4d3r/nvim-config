@@ -152,6 +152,13 @@ call minpac#add('kristijanhusak/vim-hybrid-material')
 
 " autocompletion & tags plugins
 call minpac#add('neoclide/coc.nvim')
+call minpac#add('neoclide/coc-git')
+call minpac#add('neoclide/coc-json')
+call minpac#add('neoclide/coc-python')
+call minpac#add('neoclide/coc-snippets')
+call minpac#add('weirongxu/coc-explorer')
+call minpac#add('fannheyward/coc-xml')
+
 "call minpac#add('Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'})
 "call minpac#add('Shougo/neoinclude.vim')
 "call minpac#add('carlitux/deoplete-ternjs')
@@ -423,6 +430,8 @@ nnoremap <silent> <F11> :Step<CR>
   "let col = col('.') - 1
   "return !col || getline('.')[col - 1]  =~# '\s'
 "endfunction
+
+nnoremap ge :CocCommand explorer<CR>
 
 " use <c-space> for trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
