@@ -38,7 +38,7 @@ set background=dark
 set hlsearch
 
 " mksession options
-set sessionoptions=buffers
+set sessionoptions=buffers,curdir,tabpages,winpos,winsize
 
 " show whitespace
 set listchars=tab:→ ,nbsp:¬
