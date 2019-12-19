@@ -16,7 +16,7 @@ set undofile
 set undodir=~/.vim/undodir
 
 "file search path
-set path=./**,/usr/include/**
+set path=.,,/usr/include,**
 
 " line numbers
 set number
@@ -141,7 +141,8 @@ call minpac#add('airblade/vim-gitgutter')
 call minpac#add('kshenoy/vim-signature')
 
 " colorscheme plugins
-call minpac#add('dracula/vim')
+call minpac#add('dracula/vim', {'name': 'dracula'})
+packadd! dracula
 call minpac#add('arcticicestudio/nord-vim')
 call minpac#add('morhetz/gruvbox')
 call minpac#add('nanotech/jellybeans.vim')
