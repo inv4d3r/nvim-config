@@ -552,3 +552,7 @@ nnoremap <silent> <leader>xs :call CocLocations('ccls','$ccls/member',{'kind':2}
 nnoremap <silent> <leader>xv :call CocLocations('ccls','$ccls/vars')<cr>
 nnoremap <silent> <leader>xV :call CocLocations('ccls','$ccls/vars',{'kind':1})<cr>
 
+nnoremap <silent> <leader>xh :call CocLocations('ccls','$ccls/navigate',{'direction':'L'})<CR>
+nnoremap <silent> <leader>xl :call CocLocations('ccls','$ccls/navigate',{'direction':'R'})<CR>
+nnoremap <silent> <leader>xj :call CocLocations('ccls','$ccls/navigate',{'direction':'D'})<CR>
+nnoremap <silent> <leader>xk :call CocLocations('ccls','$ccls/navigate',{'direction':'U'})<CR>
