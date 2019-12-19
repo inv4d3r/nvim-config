@@ -180,8 +180,11 @@ call minpac#add('dhruvasagar/vim-table-mode')
 call minpac#add('godlygeek/tabular')
 call minpac#add('gregsexton/gitv')
 call minpac#add('tommcdo/vim-exchange')
-call minpac#add('roxma/vim-tmux-clipboard')
+
+" tmux seamless navigation "
 call minpac#add('christoomey/vim-tmux-navigator')
+call minpac#add('roxma/vim-tmux-clipboard')
+
 call minpac#add('sjl/gundo.vim')
 call minpac#add('tpope/tpope-vim-abolish')
 call minpac#add('tpope/vim-endwise')
@@ -391,9 +394,6 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " ---- Substitute configuration ---- "
 map <leader>s :S/
-
-" ---- tmux seamless navigation ---- "
-let g:tmux_navigator_no_mappings = 1
 
 " ---- UltiSnips configuration ---- "
 let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
