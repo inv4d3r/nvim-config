@@ -162,13 +162,7 @@ call minpac#add('neoclide/coc-snippets')
 call minpac#add('weirongxu/coc-explorer')
 call minpac#add('fannheyward/coc-xml')
 
-"call minpac#add('Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'})
-"call minpac#add('Shougo/neoinclude.vim')
-"call minpac#add('carlitux/deoplete-ternjs')
-"call minpac#add('tweekmonster/deoplete-clang2')
-"call minpac#add('zchee/deoplete-jedi')
 call minpac#add('majutsushi/tagbar')
-"call minpac#add('ludovicchabant/vim-gutentags')
 call minpac#add('othree/jspc.vim')
 call minpac#add('ternjs/tern_for_vim')
 
@@ -186,6 +180,7 @@ call minpac#add('tommcdo/vim-exchange')
 
 " tmux seamless navigation "
 call minpac#add('christoomey/vim-tmux-navigator')
+let g:tmux_navigator_no_mappings = 1
 call minpac#add('roxma/vim-tmux-clipboard')
 
 call minpac#add('sjl/gundo.vim')
@@ -418,8 +413,8 @@ let g:UltiSnipsExpandTrigger="<C-j>"
 let g:UltiSnipsEnableSnipMate=0
 
 " ---- Debugging ---- "
-let g:termdebug_wide = 163
 packadd termdebug
+let g:termdebug_wide = 163
 
 nnoremap <silent> <leader>tg :Gdb<CR>
 nnoremap <silent> <leader>tp :Program<CR>
@@ -503,7 +498,7 @@ nmap <leader>gp  <Plug>(coc-fix-current)
 " show all diagnostics
 nnoremap <silent> <leader>da :<C-u>CocList diagnostics<cr>
 " manage extensions
-nnoremap <silent> <leader>e  :<C-u>CocList extensions<cr>
+nnoremap <silent> <leader>de :<C-u>CocList extensions<cr>
 " show commands
 nnoremap <silent> <leader>dc :<C-u>CocList commands<cr>
 " find symbol of current document
