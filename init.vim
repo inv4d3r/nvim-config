@@ -159,7 +159,7 @@ call minpac#add('neoclide/coc-git')
 call minpac#add('neoclide/coc-json')
 call minpac#add('neoclide/coc-python')
 call minpac#add('neoclide/coc-snippets')
-call minpac#add('weirongxu/coc-explorer')
+"call minpac#add('weirongxu/coc-explorer')
 call minpac#add('fannheyward/coc-xml')
 
 call minpac#add('majutsushi/tagbar')
@@ -177,6 +177,9 @@ call minpac#add('dhruvasagar/vim-table-mode')
 call minpac#add('godlygeek/tabular')
 call minpac#add('gregsexton/gitv')
 call minpac#add('tommcdo/vim-exchange')
+
+call minpac#add('chaoren/vim-wordmotion')
+let g:wordmotion_prefix = '<Space>'
 
 " tmux seamless navigation "
 call minpac#add('christoomey/vim-tmux-navigator')
@@ -340,15 +343,11 @@ nnoremap <leader>flf :lcs f f <cword><CR>
 nnoremap <leader>fli :lcs f i <cword><CR>
 set cscopequickfix=s-,c-,d-,i-,t-,e-,a-
 
-" ---- deoplete config ---- "
-"let g:deoplete#enable_at_startup = 1
-"let g:deoplete#sources#clang#libclang_path="/usr/lib64/libclang.so"
-"let g:deoplete#sources#clang#clang_header="/usr/lib64/clang"
-
 " close preview window when leaving insert mode
 "autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 
 " ---- switch to header/source ---- "
+let g:fsnonewfiles = "on"
 nnoremap <leader>e. :FSHere<CR>
 nnoremap <leader>et :FSTab<CR>
 nnoremap <leader>ek :FSAbove<CR>
@@ -376,14 +375,6 @@ nnoremap <leader>zm :FzfMarks<CR>
 nnoremap <leader>zs :FzfSnippets<CR>
 nnoremap <leader>zt :FzfTags<CR>
 nnoremap <leader>zu :FzfBTags<CR>
-
-" fzf rg integration
-command! -bang -nargs=* FzfRg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
 
 " fzf ag shortcuts
 nnoremap <leader>ag :FzfAg <C-R><C-W><CR>
@@ -443,7 +434,7 @@ nnoremap <silent> <F11> :Step<CR>
   "return !col || getline('.')[col - 1]  =~# '\s'
 "endfunction
 
-nnoremap ge :CocCommand explorer<CR>
+nnoremap <leader>ge :CocCommand explorer<CR>
 
 " use <c-space> for trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
