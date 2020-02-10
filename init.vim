@@ -146,6 +146,7 @@ call minpac#add('dracula/vim', {'name': 'dracula'})
 packadd! dracula
 call minpac#add('arcticicestudio/nord-vim')
 call minpac#add('morhetz/gruvbox')
+call minpac#add('sainnhe/gruvbox-material')
 call minpac#add('nanotech/jellybeans.vim')
 call minpac#add('sjl/badwolf')
 call minpac#add('tyrannicaltoucan/vim-deep-space')
@@ -213,22 +214,33 @@ call minpac#add('844196/lightline-badwolf.vim')
 
 " colorscheme
 if $THEME == "" || $THEME == "default"
-   let scheme_name = 'deep-space'
-   let airline_scheme_name = 'deep_space'
+  let scheme_name = 'deep-space'
+  let scheme_name = 'hybrid'
+elseif $THEME == "badwolf"
+  let scheme_name = 'badwolf'
+  let lightline_name = 'badwolf'
+elseif $THEME == "dracula"
+  let lightline_name = 'darcula'
 elseif $THEME == "grayscale"
-   let g:enable_bold_font = 1
-   let g:enable_italic_font = 1
-   "let scheme_name = 'hybrid'
-   "let scheme_name = 'hybrid_material'
-   let scheme_name = 'hybrid_reverse'
-   "let airline_scheme_name = 'badcat'
-   "let airline_scheme_name = 'base16_grayscale'
-   let airline_scheme_name = 'minimalist'
+  let g:enable_bold_font = 1
+  let g:enable_italic_font = 1
+  "let scheme_name = 'hybrid'
+  "let scheme_name = 'hybrid_material'
+  let scheme_name = 'hybrid_reverse'
+  let lightline_name = 'hybrid'
+elseif $THEME == "gruvbox"
+  " hard, medium (default, soft
+  let g:gruvbox_material_background = 'hard'
+  let scheme_name = 'gruvbox-material'
+  let lightline_name = 'gruvbox_material'
+elseif $THEME == "nord"
+  let scheme_name = 'nord'
+  let lightline_name = 'nord'
 else
-   let scheme_name = $THEME
-   let airline_scheme_name = $THEME
+  let scheme_name = $THEME
+  "let lightline_name = 'jellybeans'
+  let lightline_name = 'one'
 endif
-execute 'colorscheme' scheme_name
 
 " ---- lightline configution ---- "
 " hybrid - (cocopon) hybrid, deus, one, solarized
@@ -241,18 +253,21 @@ execute 'colorscheme' scheme_name
 
       "\   'ale': '%{ale#statusline#Status()}',
 let g:lightline = {
-      \ 'colorscheme': 'hybrid',
+      \ 'colorscheme': lightline_name,
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'tagbar', 'gitbranch', 'readonly', 'relativepath', 'modified' ] ]
+      \             [ 'cocstatus', 'tagbar', 'gitbranch', 'readonly', 'relativepath', 'modified' ] ]
       \ },
       \ 'component': {
       \   'tagbar': '%{tagbar#currenttag("%s", "", "f")}'
       \ },
       \ 'component_function': {
-      \   'gitbranch': 'fugitive#head'
+      \   'gitbranch': 'fugitive#head',
+      \   'cocstatus': 'coc#status'
       \ },
       \ }
+
+execute 'colorscheme' scheme_name
 
 " ---- syntastic configuration ---- "
 "set statusline+=%#warningmsg#
