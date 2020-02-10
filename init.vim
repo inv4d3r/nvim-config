@@ -131,6 +131,7 @@ nnoremap <leader>v :vim <cword> ##<CR>
 
 packadd minpac
 call minpac#init()
+packloadall
 
 " one to rule them all
 call minpac#add('k-takata/minpac', { 'type' : 'opt' })
