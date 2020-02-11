@@ -131,7 +131,6 @@ nnoremap <leader>v :vim <cword> ##<CR>
 
 packadd minpac
 call minpac#init()
-packloadall
 
 " one to rule them all
 call minpac#add('k-takata/minpac', { 'type' : 'opt' })
@@ -213,11 +212,12 @@ call minpac#add('844196/lightline-badwolf.vim')
 " colorscheme
 if $THEME == "" || $THEME == "default"
   let scheme_name = 'deep-space'
-  let scheme_name = 'hybrid'
+  let lightline_name = 'deepspace'
 elseif $THEME == "badwolf"
   let scheme_name = 'badwolf'
   let lightline_name = 'badwolf'
 elseif $THEME == "dracula"
+  let scheme_name = 'dracula'
   let lightline_name = 'darcula'
 elseif $THEME == "grayscale"
   let g:enable_bold_font = 1
