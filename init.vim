@@ -81,6 +81,9 @@ if executable("cppman")
   autocmd FileType cpp set keywordprg=:term\ cppman
 endif
 
+" disable syntax for large files
+autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
+
 " ---- Mappings ---- "
 nnoremap <C-l> :nohl<CR>
 nnoremap <leader>V ^v$
