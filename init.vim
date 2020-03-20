@@ -83,12 +83,10 @@ endif
 
 " ---- Mappings ---- "
 nnoremap <C-l> :nohl<CR>
+nnoremap <leader>V ^v$
 
 " execute command from current line
 nnoremap <leader><CR> :execute getline(".")<CR>
-
-" view alternative buffer
-nnoremap <space> <C-^>
 
 " go to current file's path
 nnoremap <leader>pc :cd %:p:h<CR>:pwd<CR>
@@ -153,13 +151,21 @@ call minpac#add('w0ng/vim-hybrid')
 call minpac#add('kristijanhusak/vim-hybrid-material')
 
 " autocompletion & tags plugins
-call minpac#add('neoclide/coc.nvim')
-call minpac#add('neoclide/coc-git')
-call minpac#add('neoclide/coc-json')
-call minpac#add('neoclide/coc-python')
-call minpac#add('neoclide/coc-snippets')
-"call minpac#add('weirongxu/coc-explorer')
-call minpac#add('fannheyward/coc-xml')
+call minpac#add('neoclide/coc.nvim', { 'do': '!yarn --frozen-lockfile install' })
+call minpac#add('neoclide/coc-git', { 'do': '!yarn --frozen-lockfile install' })
+call minpac#add('neoclide/coc-json', { 'do': '!yarn --frozen-lockfile install' })
+call minpac#add('neoclide/coc-python', { 'do': '!yarn --frozen-lockfile install' })
+call minpac#add('neoclide/coc-snippets', { 'do': '!yarn --frozen-lockfile install' })
+call minpac#add('clangd/coc-clangd', { 'do': '!yarn --frozen-lockfile install' })
+call minpac#add('fannheyward/coc-markdownlint', { 'do': '!yarn --frozen-lockfile install' })
+call minpac#add('fannheyward/coc-xml', { 'do': '!yarn --frozen-lockfile install' })
+"call minpac#add('iamcco/coc-vimlsp', { 'do': '!yarn --frozen-lockfile install' })
+call minpac#add('voldikss/coc-cmake', { 'do': '!yarn --frozen-lockfile install' })
+call minpac#add('weirongxu/coc-explorer', { 'do': '!yarn --frozen-lockfile install' })
+
+call minpac#add('liuchengxu/vista.vim')
+let g:vista_default_executive = 'coc'
+nnoremap <F2> :Vista!!<CR>
 
 call minpac#add('majutsushi/tagbar')
 call minpac#add('othree/jspc.vim')
@@ -176,19 +182,33 @@ call minpac#add('dhruvasagar/vim-table-mode')
 call minpac#add('godlygeek/tabular')
 call minpac#add('gregsexton/gitv')
 call minpac#add('tommcdo/vim-exchange')
+call minpac#add('raimondi/delimitmate')
+call minpac#add('yggdroot/indentline')
 
-call minpac#add('chaoren/vim-wordmotion')
+" markdown
+call minpac#add('iamcco/markdown-preview.nvim')
+let g:mkdp_browser = 'firefox'
+nnoremap <leader>mp :silent! MarkdownPreview<CR>
+
+" uml
+call minpac#add('aklt/plantuml-syntax')
+"call minpac#add('scrooloose/vim-slumlord')
+
 let g:wordmotion_prefix = '<Space>'
+call minpac#add('chaoren/vim-wordmotion')
 
 " tmux seamless navigation "
-call minpac#add('christoomey/vim-tmux-navigator')
 let g:tmux_navigator_no_mappings = 1
+call minpac#add('christoomey/vim-tmux-navigator')
 call minpac#add('roxma/vim-tmux-clipboard')
 
 call minpac#add('sjl/gundo.vim')
 call minpac#add('tpope/tpope-vim-abolish')
 call minpac#add('tpope/vim-endwise')
+
 call minpac#add('tpope/vim-dispatch')
+nnoremap <leader>m :Make<CR>
+
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-repeat')
 call minpac#add('tpope/vim-surround')
@@ -249,19 +269,24 @@ endif
 " gruvbox - (shinchu) gruvbox
 " badwolf - (844196) badwolf, molokai
 
+function! NearestMethod() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+
       "\   'ale': '%{ale#statusline#Status()}',
 let g:lightline = {
       \ 'colorscheme': lightline_name,
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'tagbar', 'gitbranch', 'readonly', 'relativepath', 'modified' ] ]
+      \             [ 'cocstatus', 'vistameth', 'gitbranch', 'readonly', 'relativepath', 'modified' ] ]
       \ },
       \ 'component': {
       \   'tagbar': '%{tagbar#currenttag("%s", "", "f")}'
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
-      \   'cocstatus': 'coc#status'
+      \   'cocstatus': 'coc#status',
+      \   'vistameth': 'NearestMethod'
       \ },
       \ }
 
@@ -418,6 +443,7 @@ nnoremap <silent> <F8> :Clear<CR>
 nnoremap <silent> <F9> :Break<CR>
 nnoremap <silent> <F10> :Over<CR>
 nnoremap <silent> <F11> :Step<CR>
+nnoremap <silent> <F12> :Run<CR>
 
 " ---- coc.nvim configuration ---- "
 
