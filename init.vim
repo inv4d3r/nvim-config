@@ -478,25 +478,65 @@ nmap <leader>gc  <Plug>(coc-codeaction)
 
 " remap keys for gotos
 nmap <silent> <leader>gd. <Plug>(coc-definition)
-nnoremap <silent> <leader>gdd :call CocLocations('ccls','textDocument/definition', {}, 'drop')<cr>
-nnoremap <silent> <leader>gds :call CocLocations('ccls','textDocument/definition', {}, 'split')<cr>
-nnoremap <silent> <leader>gdv :call CocLocations('ccls','textDocument/definition', {}, 'vsplit')<cr>
 nmap <silent> <leader>gl. <Plug>(coc-declaration)
-nnoremap <silent> <leader>gld :call CocLocations('ccls','textDocument/declaration', {}, 'drop')<cr>
-nnoremap <silent> <leader>gls :call CocLocations('ccls','textDocument/declaration', {}, 'split')<cr>
-nnoremap <silent> <leader>glv :call CocLocations('ccls','textDocument/declaration', {}, 'vsplit')<cr>
 nmap <silent> <leader>gt. <Plug>(coc-type-definition)
-nnoremap <silent> <leader>gtd :call CocLocations('ccls','textDocument/typeDefinition', {}, 'drop')<cr>
-nnoremap <silent> <leader>gts :call CocLocations('ccls','textDocument/typeDefinition', {}, 'split')<cr>
-nnoremap <silent> <leader>gtv :call CocLocations('ccls','textDocument/typeDefinition', {}, 'vsplit')<cr>
 nmap <silent> <leader>gi. <Plug>(coc-implementation)
-nnoremap <silent> <leader>gid :call CocLocations('ccls','textDocument/implementation', {}, 'drop')<cr>
-nnoremap <silent> <leader>gis :call CocLocations('ccls','textDocument/implementation', {}, 'split')<cr>
-nnoremap <silent> <leader>giv :call CocLocations('ccls','textDocument/implementation', {}, 'vsplit')<cr>
 nmap <silent> <leader>gr. <Plug>(coc-references)
-nnoremap <silent> <leader>grd :call CocLocations('ccls','textDocument/references', {}, 'drop')<cr>
-nnoremap <silent> <leader>grs :call CocLocations('ccls','textDocument/references', {}, 'split')<cr>
-nnoremap <silent> <leader>grv :call CocLocations('ccls','textDocument/references', {}, 'vsplit')<cr>
+
+" language server for c/c++ (options: ccls, clangd)
+let cpp_lsp = 'clangd'
+
+" clangd additional mappings
+nnoremap <silent> <leader>gdd :call CocLocations(cpp_lsp,'textDocument/definition', {}, 'drop')<cr>
+nnoremap <silent> <leader>gds :call CocLocations(cpp_lsp,'textDocument/definition', {}, 'split')<cr>
+nnoremap <silent> <leader>gdv :call CocLocations(cpp_lsp,'textDocument/definition', {}, 'vsplit')<cr>
+nnoremap <silent> <leader>gld :call CocLocations(cpp_lsp,'textDocument/declaration', {}, 'drop')<cr>
+nnoremap <silent> <leader>gls :call CocLocations(cpp_lsp,'textDocument/declaration', {}, 'split')<cr>
+nnoremap <silent> <leader>glv :call CocLocations(cpp_lsp,'textDocument/declaration', {}, 'vsplit')<cr>
+nnoremap <silent> <leader>gtd :call CocLocations(cpp_lsp,'textDocument/typeDefinition', {}, 'drop')<cr>
+nnoremap <silent> <leader>gts :call CocLocations(cpp_lsp,'textDocument/typeDefinition', {}, 'split')<cr>
+nnoremap <silent> <leader>gtv :call CocLocations(cpp_lsp,'textDocument/typeDefinition', {}, 'vsplit')<cr>
+nnoremap <silent> <leader>gid :call CocLocations(cpp_lsp,'textDocument/implementation', {}, 'drop')<cr>
+nnoremap <silent> <leader>gis :call CocLocations(cpp_lsp,'textDocument/implementation', {}, 'split')<cr>
+nnoremap <silent> <leader>giv :call CocLocations(cpp_lsp,'textDocument/implementation', {}, 'vsplit')<cr>
+nnoremap <silent> <leader>grd :call CocLocations(cpp_lsp,'textDocument/references', {}, 'drop')<cr>
+nnoremap <silent> <leader>grs :call CocLocations(cpp_lsp,'textDocument/references', {}, 'split')<cr>
+nnoremap <silent> <leader>grv :call CocLocations(cpp_lsp,'textDocument/references', {}, 'vsplit')<cr>
+
+" clangd exentions mappings
+nnoremap <silent> <leader>gs :CocCommand clangd.switchSourceHeader<CR>
+nnoremap <silent> <leader>gy :CocCommand clangd.symbolInfo<CR>
+
+" ccls cross references
+" bases
+nnoremap <silent> <leader>xb :call CocLocations('ccls','$ccls/inheritance')<cr>
+" bases of up to 3 levels
+nnoremap <silent> <leader>xB :call CocLocations('ccls','$ccls/inheritance',{'levels':3})<cr>
+" derived
+nnoremap <silent> <leader>xd :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true})<cr>
+" derived of up to 3 levels
+nnoremap <silent> <leader>xD :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true,'levels':3})<cr>
+
+" caller
+nnoremap <silent> <leader>xc :call CocLocations('ccls','$ccls/call')<cr>
+" callee
+nnoremap <silent> <leader>xC :call CocLocations('ccls','$ccls/call',{'callee':v:true})<cr>
+
+" $ccls/member
+" member variables / variables in a namespace
+nnoremap <silent> <leader>xm :call CocLocations('ccls','$ccls/member')<cr>
+" member functions / functions in a namespace
+nnoremap <silent> <leader>xf :call CocLocations('ccls','$ccls/member',{'kind':3})<cr>
+" nested classes / types in a namespace
+nnoremap <silent> <leader>xs :call CocLocations('ccls','$ccls/member',{'kind':2})<cr>
+
+nnoremap <silent> <leader>xv :call CocLocations('ccls','$ccls/vars')<cr>
+nnoremap <silent> <leader>xV :call CocLocations('ccls','$ccls/vars',{'kind':1})<cr>
+
+nnoremap <silent> <leader>xh :call CocLocations('ccls','$ccls/navigate',{'direction':'L'})<CR>
+nnoremap <silent> <leader>xl :call CocLocations('ccls','$ccls/navigate',{'direction':'R'})<CR>
+nnoremap <silent> <leader>xj :call CocLocations('ccls','$ccls/navigate',{'direction':'D'})<CR>
+nnoremap <silent> <leader>xk :call CocLocations('ccls','$ccls/navigate',{'direction':'U'})<CR>
 
 " remap for format selected region
 vmap <leader>gf  <Plug>(coc-format-selected)
@@ -554,33 +594,3 @@ command! -nargs=0 Format :call CocAction('format')
 " Use `:Fold` for fold current buffer
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
-" Cross references
-" bases
-nnoremap <silent> <leader>xb :call CocLocations('ccls','$ccls/inheritance')<cr>
-" bases of up to 3 levels
-nnoremap <silent> <leader>xB :call CocLocations('ccls','$ccls/inheritance',{'levels':3})<cr>
-" derived
-nnoremap <silent> <leader>xd :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true})<cr>
-" derived of up to 3 levels
-nnoremap <silent> <leader>xD :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true,'levels':3})<cr>
-
-" caller
-nnoremap <silent> <leader>xc :call CocLocations('ccls','$ccls/call')<cr>
-" callee
-nnoremap <silent> <leader>xC :call CocLocations('ccls','$ccls/call',{'callee':v:true})<cr>
-
-" $ccls/member
-" member variables / variables in a namespace
-nnoremap <silent> <leader>xm :call CocLocations('ccls','$ccls/member')<cr>
-" member functions / functions in a namespace
-nnoremap <silent> <leader>xf :call CocLocations('ccls','$ccls/member',{'kind':3})<cr>
-" nested classes / types in a namespace
-nnoremap <silent> <leader>xs :call CocLocations('ccls','$ccls/member',{'kind':2})<cr>
-
-nnoremap <silent> <leader>xv :call CocLocations('ccls','$ccls/vars')<cr>
-nnoremap <silent> <leader>xV :call CocLocations('ccls','$ccls/vars',{'kind':1})<cr>
-
-nnoremap <silent> <leader>xh :call CocLocations('ccls','$ccls/navigate',{'direction':'L'})<CR>
-nnoremap <silent> <leader>xl :call CocLocations('ccls','$ccls/navigate',{'direction':'R'})<CR>
-nnoremap <silent> <leader>xj :call CocLocations('ccls','$ccls/navigate',{'direction':'D'})<CR>
-nnoremap <silent> <leader>xk :call CocLocations('ccls','$ccls/navigate',{'direction':'U'})<CR>
