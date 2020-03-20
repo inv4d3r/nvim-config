@@ -124,6 +124,19 @@ nnoremap <leader>wrq :cdo s/\s\+$//<CR>
 " search current word in arglist
 nnoremap <leader>v :vim <cword> ##<CR>
 
+" remove windows line endings in current buffer
+nnoremap <leader>wlr :%s/\r//g<CR>
+
+" clang-format
+nnoremap <leader>kl :pyf /usr/share/clang/clang-format.py<cr>
+
+function! ClangFormatFile()
+  let l:lines="all"
+  pyf /usr/share/clang/clang-format.py
+endfunction
+nnoremap <leader>kf :call ClangFormatFile()<CR>
+
+autocmd BufWritePre *.h,*.hpp,*.c,*.cpp call ClangFormatFile()
 
 " ---- Plugins ---- "
 
