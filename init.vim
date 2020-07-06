@@ -153,6 +153,7 @@ call minpac#add('k-takata/minpac', { 'type' : 'opt' })
 call minpac#add('RRethy/vim-hexokinase')
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('kshenoy/vim-signature')
+call minpac#add('jackguo380/vim-lsp-cxx-highlight')
 
 " colorscheme plugins
 call minpac#add('dracula/vim', {'name': 'dracula'})
@@ -175,7 +176,7 @@ call minpac#add('neoclide/coc-snippets', { 'do': '!yarn --frozen-lockfile instal
 call minpac#add('clangd/coc-clangd', { 'do': '!yarn --frozen-lockfile install' })
 call minpac#add('fannheyward/coc-markdownlint', { 'do': '!yarn --frozen-lockfile install' })
 call minpac#add('fannheyward/coc-xml', { 'do': '!yarn --frozen-lockfile install' })
-"call minpac#add('iamcco/coc-vimlsp', { 'do': '!yarn --frozen-lockfile install' })
+call minpac#add('iamcco/coc-vimlsp', { 'do': '!yarn --frozen-lockfile install' })
 call minpac#add('voldikss/coc-cmake', { 'do': '!yarn --frozen-lockfile install' })
 call minpac#add('weirongxu/coc-explorer', { 'do': '!yarn --frozen-lockfile install' })
 
@@ -193,6 +194,7 @@ call minpac#add('junegunn/fzf', { 'do' : './install --all' })
 call minpac#add('junegunn/fzf.vim')
 
 " utility plugins
+call minpac#add('dhruvasagar/vim-zoom')
 call minpac#add('milkypostman/vim-togglelist')
 call minpac#add('dhruvasagar/vim-table-mode')
 call minpac#add('godlygeek/tabular')
@@ -202,7 +204,7 @@ call minpac#add('raimondi/delimitmate')
 call minpac#add('yggdroot/indentline')
 
 " markdown
-call minpac#add('iamcco/markdown-preview.nvim')
+call minpac#add('iamcco/markdown-preview.nvim', { 'do': '!"cd app && yarn install"' })
 let g:mkdp_browser = 'firefox'
 nnoremap <leader>mp :silent! MarkdownPreview<CR>
 
@@ -222,8 +224,13 @@ call minpac#add('sjl/gundo.vim')
 call minpac#add('tpope/tpope-vim-abolish')
 call minpac#add('tpope/vim-endwise')
 
+function SaveAndMake()
+  execute 'wa'
+  execute 'silent Make'
+endfunction
 call minpac#add('tpope/vim-dispatch')
-nnoremap <leader>m :Make<CR>
+"nnoremap <leader>m :silent Make<CR>
+nnoremap <leader>m :call SaveAndMake()<CR>
 
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-repeat')

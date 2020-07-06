@@ -1,15 +1,35 @@
 {
+  "clangd.enabled": false,
+  "clangd.checkUpdates": true,
+  "clangd.semanticHighlighting": true,
+  "clangd.arguments": ["--background-index", "--header-insertion=iwyu", "--suggest-missing-includes", "-j=4", "--log=verbose"],
   "coc.preferences.useQuickfixForLocations": true,
+  "git.addGBlameToVirtualText": true,
   "languageserver": {
+    "bash": {
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
+    },
     "ccls": {
       "command": "ccls",
-      "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
-      "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+      "rootPatterns": [ ".ccls", "compile_flags.txt", "compile_commands.json", ".vim", ".git", ".hg"],
+      "filetypes": ["c", "cc", "cpp", "c++", "cuda", "objc", "objcpp"],
+      "enable": false,
       "initializationOptions": {
-         "cache": {
-           "directory": ".ccls-cache"
-         }
-       }
+        "highlight": {"lsRanges": true}
+      }
+    },
+    "cmake": {
+      "command": "cmake-language-server",
+      "filetypes": ["cmake"],
+      "rootPatterns": [
+        "build/"
+      ],
+      "initializationOptions": {
+        "buildDirectory": "build"
+      }
     }
   }
 }
