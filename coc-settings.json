@@ -1,4 +1,6 @@
 {
+  "cSpellExt.enableDictionaries": ["polish", "italian", "german"],
+  "cSpell.language": "en,de,it,pl",
   "clangd.enabled": false,
   "clangd.checkUpdates": true,
   "clangd.semanticHighlighting": true,
@@ -31,5 +33,9 @@
         "buildDirectory": "build"
       }
     }
-  }
+  },
+  "cSpell.userWords": [
+    "cacl",
+    "clangd"
+  ]
 }

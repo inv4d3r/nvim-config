@@ -179,6 +179,11 @@ call minpac#add('fannheyward/coc-xml', { 'do': '!yarn --frozen-lockfile install'
 call minpac#add('iamcco/coc-vimlsp', { 'do': '!yarn --frozen-lockfile install' })
 call minpac#add('voldikss/coc-cmake', { 'do': '!yarn --frozen-lockfile install' })
 call minpac#add('weirongxu/coc-explorer', { 'do': '!yarn --frozen-lockfile install' })
+call minpac#add('neoclide/coc-tsserver', { 'do': '!yarn --frozen-lockfile install' })
+
+" spell checking
+call minpac#add('iamcco/coc-spell-checker', { 'do': '!yarn --frozen-lockfile install' })
+call minpac#add('iamcco/coc-cspell-dicts', { 'do': '!yarn --frozen-lockfile install' })
 
 call minpac#add('liuchengxu/vista.vim')
 let g:vista_default_executive = 'coc'
