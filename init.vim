@@ -82,7 +82,7 @@ if executable("cppman")
 endif
 
 " disable syntax for large files
-autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
+autocmd BufWinEnter * if line2byte(line("$") + 1) > 2000000 | syntax clear | endif
 
 " ---- Mappings ---- "
 nnoremap <C-l> :nohl<CR>
@@ -125,7 +125,7 @@ nnoremap <leader>wsa :vim /\s\+$/ ##<CR>
 nnoremap <leader>wrq :cdo s/\s\+$//<CR>
 
 " search current word in arglist
-nnoremap <leader>v :vim <cword> ##<CR>
+nnoremap <leader>wsv :vim <cword> ##<CR>
 
 " remove windows line endings in current buffer
 nnoremap <leader>wlr :%s/\r//g<CR>
@@ -150,7 +150,7 @@ call minpac#init()
 call minpac#add('k-takata/minpac', { 'type' : 'opt' })
 
 " highlight plugings
-call minpac#add('RRethy/vim-hexokinase')
+call minpac#add('RRethy/vim-hexokinase', { 'do': 'make hexokinase' })
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('kshenoy/vim-signature')
 call minpac#add('jackguo380/vim-lsp-cxx-highlight')
@@ -167,7 +167,7 @@ call minpac#add('tyrannicaltoucan/vim-deep-space')
 call minpac#add('w0ng/vim-hybrid')
 call minpac#add('kristijanhusak/vim-hybrid-material')
 
-" autocompletion & tags plugins
+" coc.nvim & friends
 call minpac#add('neoclide/coc.nvim', { 'do': '!yarn --frozen-lockfile install' })
 call minpac#add('neoclide/coc-git', { 'do': '!yarn --frozen-lockfile install' })
 call minpac#add('neoclide/coc-json', { 'do': '!yarn --frozen-lockfile install' })
@@ -187,7 +187,10 @@ call minpac#add('iamcco/coc-cspell-dicts', { 'do': '!yarn --frozen-lockfile inst
 
 call minpac#add('liuchengxu/vista.vim')
 let g:vista_default_executive = 'coc'
-nnoremap <F2> :Vista!!<CR>
+nnoremap <leader>vo :Vista<CR>
+nnoremap <leader>vc :Vista!<CR>
+nnoremap <leader>vt :Vista!!<CR>
+nnoremap <leader>vf :Vista finder<CR>
 
 call minpac#add('majutsushi/tagbar')
 call minpac#add('othree/jspc.vim')
@@ -234,7 +237,6 @@ function SaveAndMake()
   execute 'silent Make'
 endfunction
 call minpac#add('tpope/vim-dispatch')
-"nnoremap <leader>m :silent Make<CR>
 nnoremap <leader>m :call SaveAndMake()<CR>
 
 call minpac#add('tpope/vim-fugitive')
