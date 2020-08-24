@@ -32,6 +32,15 @@
       "initializationOptions": {
         "buildDirectory": "build"
       }
+    },
+    "dockerfile": {
+      "command": "docker-langserver",
+      "filetypes": ["dockerfile"],
+      "args": ["--stdio"]
+    },
+    "lua": {
+      "command": "lua-lsp",
+      "filetypes": ["lua"]
     }
   },
   "cSpell.userWords": [
