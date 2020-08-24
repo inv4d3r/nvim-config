@@ -231,9 +231,9 @@ call minpac#add('raimondi/delimitmate')
 call minpac#add('yggdroot/indentline')
 
 " markdown
-call minpac#add('iamcco/markdown-preview.nvim', { 'do': '!"cd app && yarn install"' })
-let g:mkdp_browser = 'firefox'
-nnoremap <leader>mp :silent! MarkdownPreview<CR>
+"call minpac#add('iamcco/markdown-preview.nvim', { 'do': 'packloadall! | call mkdp#util#install()'})
+"let g:mkdp_browser = 'firefox'
+"nnoremap <leader>mp :silent! MarkdownPreview<CR>
 
 " uml
 call minpac#add('aklt/plantuml-syntax')
