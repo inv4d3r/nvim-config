@@ -131,15 +131,34 @@ nnoremap <leader>wsv :vim <cword> ##<CR>
 nnoremap <leader>wlr :%s/\r//g<CR>
 
 " clang-format
-nnoremap <leader>kl :pyf /usr/share/clang/clang-format.py<cr>
+let g:clang_format_py_path = system("find /usr/share/clang -name clang-format.py | head -n1 | tr -d '\n'")
+nnoremap <silent> <leader>kl :execute ":py3f " . g:clang_format_py_path<CR>
 
 function! ClangFormatFile()
   let l:lines="all"
-  pyf /usr/share/clang/clang-format.py
+  execute ":py3f " . g:clang_format_py_path
 endfunction
-nnoremap <leader>kf :call ClangFormatFile()<CR>
+nnoremap <silent> <leader>kf :call ClangFormatFile()<CR>
 
-autocmd BufWritePre *.h,*.hpp,*.c,*.cpp call ClangFormatFile()
+let g:clang_auto_format = 1
+function! ClangFormatToggle()
+  let g:clang_auto_format = !g:clang_auto_format
+  if g:clang_auto_format == 1
+    echo "clang auto format enabled"
+  else
+    echo "clang auto format disabled"
+  endif
+endfunction
+nnoremap <silent> <leader>kt :call ClangFormatToggle()<CR>
+
+augroup ClangFormat
+    autocmd!
+    autocmd BufWritePre *
+        \ if &ft =~# '^\%(c\|cpp\|objc\|proto\|arduino\)$' &&
+        \     g:clang_auto_format |
+        \     call ClangFormatFile() |
+        \ endif
+augroup END
 
 " ---- Plugins ---- "
 
