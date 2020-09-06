@@ -1,5 +1,8 @@
 " ---- Defaults ---- "
 
+" true color
+set termguicolors
+
 " buffer auto update
 set autoread
 au FocusGained,BufEnter * :silent! !
@@ -178,8 +181,8 @@ call minpac#add('jackguo380/vim-lsp-cxx-highlight')
 call minpac#add('dracula/vim', {'name': 'dracula'})
 packadd! dracula
 call minpac#add('arcticicestudio/nord-vim')
-call minpac#add('morhetz/gruvbox')
 call minpac#add('sainnhe/gruvbox-material')
+packadd! gruvbox-material
 call minpac#add('nanotech/jellybeans.vim')
 call minpac#add('sjl/badwolf')
 call minpac#add('tyrannicaltoucan/vim-deep-space')
@@ -296,8 +299,12 @@ elseif $THEME == "grayscale"
   let scheme_name = 'hybrid_reverse'
   let lightline_name = 'hybrid'
 elseif $THEME == "gruvbox"
-  " hard, medium (default, soft
-  let g:gruvbox_material_background = 'hard'
+  " material (default), mix, original
+  let g:gruvbox_material_palette = 'material'
+  " hard, medium (default), soft
+  let g:gruvbox_material_background = 'soft'
+  let g:gruvbox_material_enable_bold = 1
+  let g:gruvbox_material_enable_italic = 1
   let scheme_name = 'gruvbox-material'
   let lightline_name = 'gruvbox_material'
 elseif $THEME == "nord"
@@ -340,7 +347,6 @@ let g:lightline = {
       \ }
 
 execute 'colorscheme' scheme_name
-
 " ---- syntastic configuration ---- "
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
@@ -372,9 +378,6 @@ map g<A-]> :vsp <CR>:exec("tjump ".expand("<cword>"))<CR>
 " from vim-unimpaired:
 " ]CTRL-T - preview window next tag
 " [CTRL-T - preview window previous tag
-
-" true color
-set termguicolors
 
 " ---- extra windows ---- "
 nnoremap <F3> :GundoToggle<CR>
