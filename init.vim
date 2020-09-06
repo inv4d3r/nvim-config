@@ -234,9 +234,12 @@ call minpac#add('raimondi/delimitmate')
 call minpac#add('yggdroot/indentline')
 
 " markdown
-"call minpac#add('iamcco/markdown-preview.nvim', { 'do': 'packloadall! | call mkdp#util#install()'})
-"let g:mkdp_browser = 'firefox'
-"nnoremap <leader>mp :silent! MarkdownPreview<CR>
+call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
+let g:mkdp_browser = 'firefox'
+nnoremap <leader>mb :silent! MarkdownPreview<CR>
+call minpac#add('skanehira/preview-markdown.vim')
+let g:preview_markdown_parser = 'glow'
+nnoremap <leader>mp :silent! PreviewMarkdown<CR>
 
 " uml
 call minpac#add('aklt/plantuml-syntax')
@@ -259,7 +262,7 @@ function SaveAndMake()
   execute 'silent Make'
 endfunction
 call minpac#add('tpope/vim-dispatch')
-nnoremap <leader>m :call SaveAndMake()<CR>
+nnoremap <leader>mk :call SaveAndMake()<CR>
 
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-repeat')
@@ -271,8 +274,6 @@ call minpac#add('tpope/vim-vinegar')
 " programming helpers
 call minpac#add('sirver/UltiSnips')
 call minpac#add('vivien/vim-linux-coding-style')
-"call minpac#add('vim-syntastic/syntastic')
-"call minpac#add('w0rp/ale')
 call minpac#add('scrooloose/nerdcommenter')
 
 " lightline
