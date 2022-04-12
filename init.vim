@@ -354,7 +354,7 @@ let g:lightline = {
       \ 'colorscheme': lightline_name,
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'vistameth', 'gitbranch', 'readonly', 'relativepath', 'modified' ] ]
+      \             [ 'sleuth', 'cocstatus', 'vistameth', 'gitbranch', 'readonly', 'relativepath', 'modified' ] ]
       \ },
       \ 'component': {
       \   'tagbar': '%{tagbar#currenttag("%s", "", "f")}'
@@ -362,11 +362,13 @@ let g:lightline = {
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
       \   'cocstatus': 'coc#status',
-      \   'vistameth': 'NearestMethod'
+      \   'vistameth': 'NearestMethod',
+      \   'sleuth': 'SleuthIndicator'
       \ },
       \ }
 
 execute 'colorscheme' scheme_name
+
 " ---- syntastic configuration ---- "
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
