@@ -201,22 +201,8 @@ call minpac#add('w0ng/vim-hybrid')
 call minpac#add('kristijanhusak/vim-hybrid-material')
 
 " coc.nvim & friends
+let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-sh', 'coc-json', 'coc-pyright', 'coc-snippets', 'coc-clangd', 'coc-markdownlint', 'coc-xml', 'coc-vimlsp', 'coc-cmake', 'coc-explorer', 'coc-rls', 'coc-tsserver', 'coc-spell-checker', 'coc-cspell-dicts', 'coc-sumneko-lua']
 call minpac#add('neoclide/coc.nvim', { 'do': '!yarn --frozen-lockfile install' })
-call minpac#add('neoclide/coc-git', { 'do': '!yarn --frozen-lockfile install' })
-call minpac#add('neoclide/coc-json', { 'do': '!yarn --frozen-lockfile install' })
-call minpac#add('neoclide/coc-python', { 'do': '!yarn --frozen-lockfile install' })
-call minpac#add('neoclide/coc-snippets', { 'do': '!yarn --frozen-lockfile install' })
-call minpac#add('clangd/coc-clangd', { 'do': '!yarn --frozen-lockfile install' })
-call minpac#add('fannheyward/coc-markdownlint', { 'do': '!yarn --frozen-lockfile install' })
-call minpac#add('fannheyward/coc-xml', { 'do': '!yarn --frozen-lockfile install' })
-call minpac#add('iamcco/coc-vimlsp', { 'do': '!yarn --frozen-lockfile install' })
-call minpac#add('voldikss/coc-cmake', { 'do': '!yarn --frozen-lockfile install' })
-call minpac#add('weirongxu/coc-explorer', { 'do': '!yarn --frozen-lockfile install' })
-call minpac#add('neoclide/coc-tsserver', { 'do': '!yarn --frozen-lockfile install' })
-
-" spell checking
-call minpac#add('iamcco/coc-spell-checker', { 'do': '!yarn --frozen-lockfile install' })
-call minpac#add('iamcco/coc-cspell-dicts', { 'do': '!yarn --frozen-lockfile install' })
 
 call minpac#add('liuchengxu/vista.vim')
 let g:vista_default_executive = 'coc'
@@ -452,14 +438,15 @@ nnoremap <leader>ewl :FSSplitRight<CR>
 let g:fzf_command_prefix = "Fzf"
 nnoremap <leader>za :FzfAg<CR>
 nnoremap <leader>zb :FzfBuffers<CR>
+nnoremap <leader>zB :FzfHistory<CR>
 nnoremap <leader>zc :FzfCommits<CR>
 nnoremap <leader>zd :FzfBCommits<CR>
 nnoremap <leader>ze :FzfCommands<CR>
 nnoremap <leader>zf :FzfFiles<CR>
-nnoremap <leader>zh: :FzfHistory:<CR>
-nnoremap <leader>zh/ :FzfHistory/<CR>
+nnoremap <leader>zh :FzfHistory:<CR>
+nnoremap <leader>zH :FzfHistory/<CR>
 nnoremap <leader>zg :FzfGFiles<CR>
-nnoremap <leader>zg? :FzfGFiles?<CR>
+nnoremap <leader>zG :FzfGFiles?<CR>
 nnoremap <leader>zm :FzfMarks<CR>
 nnoremap <leader>zs :FzfSnippets<CR>
 nnoremap <leader>zt :FzfTags<CR>
@@ -510,7 +497,7 @@ nnoremap <silent> <F11> :Step<CR>
 nnoremap <silent> <F12> :Run<CR>
 
 " ---- coc.nvim configuration ---- "
-
+let g:coc_disable_transparent_cursor = 1
 " use tab for trigger completion with characters ahead and navigate.
 " use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 "inoremap <silent><expr> <TAB>
@@ -525,6 +512,12 @@ nnoremap <silent> <F12> :Run<CR>
 "endfunction
 
 nnoremap <leader>ge :CocCommand explorer<CR>
+
+" have vim start coc-explorer if vim started with folder
+augroup CocExplorerAuGroup
+  autocmd StdinReadPre * let s:std_in=1
+  autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'CocCommand explorer' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+augroup end
 
 " use <c-space> for trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -547,25 +540,32 @@ nmap <silent> <leader>gt. <Plug>(coc-type-definition)
 nmap <silent> <leader>gi. <Plug>(coc-implementation)
 nmap <silent> <leader>gr. <Plug>(coc-references)
 
-" language server for c/c++ (options: ccls, clangd)
-let cpp_lsp = 'clangd'
-
-" clangd additional mappings
-nnoremap <silent> <leader>gdd :call CocLocations(cpp_lsp,'textDocument/definition', {}, 'drop')<cr>
-nnoremap <silent> <leader>gds :call CocLocations(cpp_lsp,'textDocument/definition', {}, 'split')<cr>
-nnoremap <silent> <leader>gdv :call CocLocations(cpp_lsp,'textDocument/definition', {}, 'vsplit')<cr>
-nnoremap <silent> <leader>gld :call CocLocations(cpp_lsp,'textDocument/declaration', {}, 'drop')<cr>
-nnoremap <silent> <leader>gls :call CocLocations(cpp_lsp,'textDocument/declaration', {}, 'split')<cr>
-nnoremap <silent> <leader>glv :call CocLocations(cpp_lsp,'textDocument/declaration', {}, 'vsplit')<cr>
-nnoremap <silent> <leader>gtd :call CocLocations(cpp_lsp,'textDocument/typeDefinition', {}, 'drop')<cr>
-nnoremap <silent> <leader>gts :call CocLocations(cpp_lsp,'textDocument/typeDefinition', {}, 'split')<cr>
-nnoremap <silent> <leader>gtv :call CocLocations(cpp_lsp,'textDocument/typeDefinition', {}, 'vsplit')<cr>
-nnoremap <silent> <leader>gid :call CocLocations(cpp_lsp,'textDocument/implementation', {}, 'drop')<cr>
-nnoremap <silent> <leader>gis :call CocLocations(cpp_lsp,'textDocument/implementation', {}, 'split')<cr>
-nnoremap <silent> <leader>giv :call CocLocations(cpp_lsp,'textDocument/implementation', {}, 'vsplit')<cr>
-nnoremap <silent> <leader>grd :call CocLocations(cpp_lsp,'textDocument/references', {}, 'drop')<cr>
-nnoremap <silent> <leader>grs :call CocLocations(cpp_lsp,'textDocument/references', {}, 'split')<cr>
-nnoremap <silent> <leader>grv :call CocLocations(cpp_lsp,'textDocument/references', {}, 'vsplit')<cr>
+" standard mappings
+nnoremap <silent> <leader>gdd :call CocAction('jumpDefinition', 'drop')<cr>
+nnoremap <silent> <leader>gde :call CocAction('jumpDefinition', 'edit')<cr>
+nnoremap <silent> <leader>gdt :call CocAction('jumpDefinition', 'tabe')<cr>
+nnoremap <silent> <leader>gds :call CocAction('jumpDefinition', 'split')<cr>
+nnoremap <silent> <leader>gdv :call CocAction('jumpDefinition', 'vsplit')<cr>
+nnoremap <silent> <leader>gld :call CocAction('jumpDeclaration', 'drop')<cr>
+nnoremap <silent> <leader>gle :call CocAction('jumpDeclaration', 'edit')<cr>
+nnoremap <silent> <leader>glt :call CocAction('jumpDeclaration', 'tabe')<cr>
+nnoremap <silent> <leader>gls :call CocAction('jumpDeclaration', 'split')<cr>
+nnoremap <silent> <leader>glv :call CocAction('jumpDeclaration', 'vsplit')<cr>
+nnoremap <silent> <leader>gtd :call CocAction('jumpTypeDefinition', 'drop')<cr>
+nnoremap <silent> <leader>gte :call CocAction('jumpTypeDefinition', 'edit')<cr>
+nnoremap <silent> <leader>gtt :call CocAction('jumpTypeDefinition', 'tabe')<cr>
+nnoremap <silent> <leader>gts :call CocAction('jumpTypeDefinition', 'split')<cr>
+nnoremap <silent> <leader>gtv :call CocAction('jumpTypeDefinition', 'vsplit')<cr>
+nnoremap <silent> <leader>gid :call CocAction('jumpImplementation', 'drop')<cr>
+nnoremap <silent> <leader>gie :call CocAction('jumpImplementation', 'edit')<cr>
+nnoremap <silent> <leader>git :call CocAction('jumpImplementation', 'tabe')<cr>
+nnoremap <silent> <leader>gis :call CocAction('jumpImplementation', 'split')<cr>
+nnoremap <silent> <leader>giv :call CocAction('jumpImplementation', 'vsplit')<cr>
+nnoremap <silent> <leader>grd :call CocAction('jumpReferences', 'drop')<cr>
+nnoremap <silent> <leader>gre :call CocAction('jumpReferences', 'edit')<cr>
+nnoremap <silent> <leader>grt :call CocAction('jumpReferences', 'tabe')<cr>
+nnoremap <silent> <leader>grs :call CocAction('jumpReferences', 'split')<cr>
+nnoremap <silent> <leader>grv :call CocAction('jumpReferences', 'vsplit')<cr>
 
 " clangd exentions mappings
 nnoremap <silent> <leader>gs :CocCommand clangd.switchSourceHeader<CR>
@@ -644,7 +644,7 @@ endfunction
 " Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-augroup mygroup
+augroup CocAuGroup
   autocmd!
   " Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
@@ -658,3 +658,8 @@ command! -nargs=0 Format :call CocAction('format')
 " Use `:Fold` for fold current buffer
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
+" Scroll floating window
+nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
