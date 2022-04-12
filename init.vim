@@ -135,8 +135,14 @@ nnoremap <leader>wrq :cdo s/\s\+$//<CR>
 " search current word in arglist
 nnoremap <leader>wsv :vim <cword> ##<CR>
 
+" search for copy register contents
+nnoremap <leader>wsc /<C-r>"<CR>
+
 " remove windows line endings in current buffer
 nnoremap <leader>wlr :%s/\r//g<CR>
+
+" search for visually selected text
+vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " clang-format
 let g:clang_format_py_path = system("find /usr/share/clang -name clang-format.py | head -n1 | tr -d '\n'")
