@@ -166,12 +166,34 @@ endfunction
 nnoremap <silent> <leader>kt :call ClangFormatToggle()<CR>
 
 augroup ClangFormat
-    autocmd!
-    autocmd BufWritePre *
+  autocmd!
+  autocmd BufWritePre *
         \ if &ft =~# '^\%(c\|cpp\|objc\|proto\|arduino\)$' &&
         \     g:clang_auto_format |
         \     call ClangFormatFile() |
         \ endif
+augroup END
+
+" rust
+augroup Rust
+    autocmd filetype rust setlocal makeprg=cargo\ build
+    autocmd filetype rust setlocal errorformat=
+            \%-G,
+            \%-Gerror:\ aborting\ %.%#,
+            \%-Gerror:\ Could\ not\ compile\ %.%#,
+            \%Eerror:\ %m,
+            \%Eerror[E%n]:\ %m,
+            \%Wwarning:\ %m,
+            \%Inote:\ %m,
+            \%C\ %#-->\ %f:%l:%c,
+            \%E\ \ left:%m,%C\ right:%m\ %f:%l:%c,%Z,
+            \%-G%\\s%#Downloading%.%#,
+            \%-G%\\s%#Compiling%.%#,
+            \%-G%\\s%#Finished%.%#,
+            \%-G%\\s%#error:\ Could\ not\ compile\ %.%#,
+            \%-G%\\s%#To\ learn\ more\\,%.%#,
+            \%-Gnote:\ Run\ with\ \`RUST_BACKTRACE=%.%#,
+            \%.%#panicked\ at\ \\'%m\\'\\,\ %f:%l:%c
 augroup END
 
 " ---- Plugins ---- "
