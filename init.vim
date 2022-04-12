@@ -100,6 +100,11 @@ nnoremap <leader>pc :cd %:p:h<CR>:pwd<CR>
 " edit (with netrw) current file's path
 nnoremap <leader>pe :e %:p:h<CR>:pwd<CR>
 
+" copy current file path to clipboard register
+nnoremap <silent> <leader>py :let @+ = expand("%")<CR>
+" absolute path
+nnoremap <silent> <leader>pY :let @+ = expand("%:p")<CR>
+
 " terminal - go to normal mode
 tnoremap <Esc> <C-\><C-n>
 
