@@ -239,7 +239,7 @@ call minpac#add('ternjs/tern_for_vim')
 
 " file & fuzzy navigation
 call minpac#add('derekwyatt/vim-fswitch')
-call minpac#add('junegunn/fzf', { 'do' : './install --all' })
+call minpac#add('junegunn/fzf', { 'do' : 'call fzf#install()' })
 call minpac#add('junegunn/fzf.vim')
 
 " utility plugins
@@ -254,8 +254,10 @@ call minpac#add('yggdroot/indentline')
 
 " markdown
 call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
+" open in browser
 let g:mkdp_browser = 'firefox'
 nnoremap <leader>mb :silent! MarkdownPreview<CR>
+" open side by side
 call minpac#add('skanehira/preview-markdown.vim')
 let g:preview_markdown_parser = 'glow'
 nnoremap <leader>mp :silent! PreviewMarkdown<CR>
@@ -360,7 +362,7 @@ let g:lightline = {
       \   'tagbar': '%{tagbar#currenttag("%s", "", "f")}'
       \ },
       \ 'component_function': {
-      \   'gitbranch': 'fugitive#head',
+      \   'gitbranch': 'FugitiveHead',
       \   'cocstatus': 'coc#status',
       \   'vistameth': 'NearestMethod',
       \   'sleuth': 'SleuthIndicator'
@@ -496,7 +498,7 @@ let g:NERDCompactSexyComs = 1
 let g:NERDTrimTrailingWhitespace = 1
 
 " ---- Substitute configuration ---- "
-map <leader>s :S/
+map <leader>/ :S/
 
 " ---- UltiSnips configuration ---- "
 let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
