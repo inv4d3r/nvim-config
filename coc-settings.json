@@ -46,5 +46,6 @@
   "cSpell.userWords": [
     "cacl",
     "clangd"
-  ]
+  ],
+  "Lua.telemetry.enable": false
 }
