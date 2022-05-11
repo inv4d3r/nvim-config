@@ -201,6 +201,10 @@ augroup END
 packadd minpac
 call minpac#init()
 
+call minpac#add('puremourning/vimspector')
+"let g:vimspector_enable_mappings = 'HUMAN'
+nnoremap <leader>tq :VimspectorReset<CR>
+
 " one to rule them all
 call minpac#add('k-takata/minpac', { 'type' : 'opt' })
 
