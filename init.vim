@@ -61,7 +61,7 @@ autocmd ColorScheme * highlight debugPC ctermbg=gray guibg=gray
 autocmd ColorScheme * highlight debugBreakpoint ctermbg=gray guibg=gray
 
 " max column highlight
-highlight ColorColumn ctermbg=167 guibg=167
+autocmd ColorScheme * highlight ColorColumn ctermbg=167 guibg=darkred
 
 " trailing whitespace
 highlight ExtraWhitespace ctermfg=red guifg=red ctermbg=red guibg=red
@@ -271,6 +271,12 @@ call minpac#add('chaoren/vim-wordmotion')
 
 " tmux seamless navigation "
 let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <M-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <M-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <M-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <M-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <M-p> :TmuxNavigatePrevious<cr>
+
 call minpac#add('christoomey/vim-tmux-navigator')
 call minpac#add('roxma/vim-tmux-clipboard')
 
