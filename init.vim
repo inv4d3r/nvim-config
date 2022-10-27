@@ -206,12 +206,31 @@ augroup END
 packadd minpac
 call minpac#init()
 
-call minpac#add('puremourning/vimspector')
-"let g:vimspector_enable_mappings = 'HUMAN'
-nnoremap <leader>tq :VimspectorReset<CR>
-
 " one to rule them all
 call minpac#add('k-takata/minpac', { 'type' : 'opt' })
+
+" vimspector
+call minpac#add('puremourning/vimspector')
+let g:vimspector_enable_mappings = 'HUMAN'
+"F3         | <Plug>VimspectorStop                        | Stop debugging.
+"F4         | <Plug>VimspectorRestart                     | Restart debugging with the same configuration.
+"F5         | <Plug>VimspectorContinue                    | When debugging, continue. Otherwise start debugging.
+"F6         | <Plug>VimspectorPause                       | Pause debuggee.
+"F8         | <Plug>VimspectorAddFunctionBreakpoint       | Add a function breakpoint for the expression under cursor
+"<leader>F8 | <Plug>VimspectorRunToCursor                 | Run to Cursor
+"F9         | <Plug>VimspectorToggleBreakpoint            | Toggle line breakpoint on the current line.
+"<leader>F9 | <Plug>VimspectorToggleConditionalBreakpoint | Toggle conditional line breakpoint or logpoint on the current line.
+"F10        | <Plug>VimspectorStepOver                    | Step Over
+"F11        | <Plug>VimspectorStepInto                    | Step Into
+"F12        | <Plug>VimspectorStepOut                     | Step out of current function scope
+let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'CodeLLDB' ]
+nmap <leader>di <Plug>VimspectorBalloonEval
+xmap <leader>di <Plug>VimspectorBalloonEval
+nnoremap <leader>de :VimspectorEval 
+nnoremap <leader>dw :VimspectorWatch 
+nnoremap <leader>dr :VimspectorReset<CR>
+nnoremap <leader>dc :call vimspector#ClearBreakpoints()<CR>
+nnoremap <leader>dg :call vimspector#GoToCurrentLine()<CR>
 
 " highlight plugings
 call minpac#add('RRethy/vim-hexokinase', { 'do': 'make hexokinase' })
@@ -520,22 +539,19 @@ let g:UltiSnipsSnippetsDir="~/.config/nvim/UltiSnips"
 let g:UltiSnipsExpandTrigger="<C-j>"
 let g:UltiSnipsEnableSnipMate=0
 
-" ---- Debugging ---- "
+" ---- Termdebug ---- "
 packadd termdebug
 let g:termdebug_wide = 163
 
-nnoremap <silent> <leader>tg :Gdb<CR>
-nnoremap <silent> <leader>tp :Program<CR>
-nnoremap <silent> <leader>ts :Source<CR>
-
-nnoremap <silent> <F5> :Continue<CR>
-nnoremap <silent> <F6> :Finish<CR>
-nnoremap <silent> <F7> :Stop<CR>
-nnoremap <silent> <F8> :Clear<CR>
-nnoremap <silent> <F9> :Break<CR>
-nnoremap <silent> <F10> :Over<CR>
-nnoremap <silent> <F11> :Step<CR>
-nnoremap <silent> <F12> :Run<CR>
+" Shift + <F5-F12>
+nnoremap <silent> <F17> :Continue<CR>
+nnoremap <silent> <F18> :Finish<CR>
+nnoremap <silent> <F19> :Stop<CR>
+nnoremap <silent> <F20> :Clear<CR>
+nnoremap <silent> <F21> :Break<CR>
+nnoremap <silent> <F22> :Over<CR>
+nnoremap <silent> <F23> :Step<CR>
+nnoremap <silent> <F24> :Run<CR>
 
 " ---- coc.nvim configuration ---- "
 let g:coc_disable_transparent_cursor = 1
