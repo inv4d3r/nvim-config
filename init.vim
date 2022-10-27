@@ -129,13 +129,13 @@ nnoremap <leader>bvl :ls<CR>:vert sb
 
 " trailing whitespace mappings
 " current buffer
-nnoremap <leader>wrb :%s/\s\+$//g<CR>
+nnoremap <leader>wrb :%s/\s\+$//ge<CR>
 nnoremap <leader>wsb /\s\+$<CR>
 " arglist
-nnoremap <leader>wra :argdo %s/\s\+$//g<CR>
+nnoremap <leader>wra :argdo %s/\s\+$//ge<CR>
 nnoremap <leader>wsa :vim /\s\+$/ ##<CR>
 " quickfix list
-nnoremap <leader>wrq :cdo s/\s\+$//<CR>
+nnoremap <leader>wrq :cdo s/\s\+$//e<CR>
 
 " search current word in arglist
 nnoremap <leader>wsv :vim <cword> ##<CR>
@@ -328,7 +328,7 @@ call minpac#add('roxma/vim-tmux-clipboard')
 
 " utilities
 call minpac#add('sjl/gundo.vim')
-call minpac#add('tpope/tpope-vim-abolish')
+call minpac#add('tpope/vim-abolish')
 call minpac#add('tpope/vim-endwise')
 
 function SaveAndMake()
