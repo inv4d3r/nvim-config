@@ -236,7 +236,6 @@ nnoremap <leader>dg :call vimspector#GoToCurrentLine()<CR>
 call minpac#add('RRethy/vim-hexokinase', { 'do': 'make hexokinase' })
 call minpac#add('airblade/vim-gitgutter')
 call minpac#add('kshenoy/vim-signature')
-call minpac#add('jackguo380/vim-lsp-cxx-highlight')
 
 " colorscheme plugins
 call minpac#add('dracula/vim', {'name': 'dracula'})
@@ -576,6 +575,7 @@ nnoremap <silent> <F24> :Run<CR>
 
 " ---- coc.nvim configuration ---- "
 let g:coc_disable_transparent_cursor = 1
+let g:coc_default_semantic_highlight_groups = 1
 " use tab for trigger completion with characters ahead and navigate.
 " use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 "inoremap <silent><expr> <TAB>
