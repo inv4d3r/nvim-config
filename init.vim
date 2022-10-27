@@ -240,10 +240,8 @@ call minpac#add('jackguo380/vim-lsp-cxx-highlight')
 
 " colorscheme plugins
 call minpac#add('dracula/vim', {'name': 'dracula'})
-packadd! dracula
 call minpac#add('arcticicestudio/nord-vim')
 call minpac#add('sainnhe/gruvbox-material')
-packadd! gruvbox-material
 call minpac#add('nanotech/jellybeans.vim')
 call minpac#add('sjl/badwolf')
 call minpac#add('tyrannicaltoucan/vim-deep-space')
@@ -262,6 +260,8 @@ nnoremap <leader>vt :Vista!!<CR>
 nnoremap <leader>vf :Vista finder<CR>
 
 call minpac#add('majutsushi/tagbar')
+
+" javascript and typescript
 call minpac#add('othree/jspc.vim')
 call minpac#add('ternjs/tern_for_vim')
 
@@ -270,15 +270,33 @@ call minpac#add('derekwyatt/vim-fswitch')
 call minpac#add('junegunn/fzf', { 'do' : 'call fzf#install()' })
 call minpac#add('junegunn/fzf.vim')
 
+" vim-gtest
+call minpac#add('alepez/vim-gtest')
+let g:gtest#hightlight_failing_tests = 1
+nnoremap ]G :GTestNext<CR>
+nnoremap [G :GTestPrev<CR>
+nnoremap <leader>Gt :GTestRun<CR>
+nnoremap <leader>Gu :GTestRunUnderCursor<CR>
+nnoremap <leader>zT :FZFGTest<CR>
+
 " utility plugins
 call minpac#add('dhruvasagar/vim-zoom')
 call minpac#add('milkypostman/vim-togglelist')
 call minpac#add('dhruvasagar/vim-table-mode')
 call minpac#add('godlygeek/tabular')
-call minpac#add('gregsexton/gitv')
 call minpac#add('tommcdo/vim-exchange')
 call minpac#add('raimondi/delimitmate')
 call minpac#add('yggdroot/indentline')
+
+" git
+call minpac#add('gregsexton/gitv')
+call minpac#add('rhysd/git-messenger.vim')
+nnoremap <leader>gm :GitMessenger<CR>
+
+" documentation
+call minpac#add('kkoomen/vim-doge', {'do': 'packloadall! | call doge#install()'})
+"let g:doge_enable_mappings = 0
+"nnoremap <leader>doc <Plug>(doge-generate)
 
 " markdown
 call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
@@ -292,6 +310,7 @@ nnoremap <leader>mp :silent! PreviewMarkdown<CR>
 
 " uml
 call minpac#add('aklt/plantuml-syntax')
+let g:plantuml_executable_script ="plantuml -tsvg"
 "call minpac#add('scrooloose/vim-slumlord')
 
 let g:wordmotion_prefix = '<Space>'
@@ -304,10 +323,10 @@ nnoremap <silent> <M-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <M-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <M-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <M-p> :TmuxNavigatePrevious<cr>
-
 call minpac#add('christoomey/vim-tmux-navigator')
 call minpac#add('roxma/vim-tmux-clipboard')
 
+" utilities
 call minpac#add('sjl/gundo.vim')
 call minpac#add('tpope/tpope-vim-abolish')
 call minpac#add('tpope/vim-endwise')
@@ -438,8 +457,8 @@ map g<A-]> :vsp <CR>:exec("tjump ".expand("<cword>"))<CR>
 " [CTRL-T - preview window previous tag
 
 " ---- extra windows ---- "
-nnoremap <F3> :GundoToggle<CR>
-nnoremap <F4> :Tagbar<CR>
+nnoremap <leader>t :Tagbar<CR>
+nnoremap <leader>u :GundoToggle<CR>
 
 " ---- cscope mappings ---- "
 
@@ -521,6 +540,8 @@ nnoremap <leader>as :FzfAg struct <C-R><C-W> {<CR>
 nnoremap <leader>rg :FzfRg <C-R><C-W><CR>
 nnoremap <leader>rf :FzfRg <C-R><C-W>\(<CR>
 nnoremap <leader>rs :FzfRg struct <C-R><C-W> {<CR>
+nnoremap <leader>r<space> :FzfRg 
+vnoremap <leader>rg y:FzfRg <C-R>=escape(@",'/\')<CR><CR>
 
 let g:linuxsty_patterns = [ "/usr/src/", "/linux" ]
 
