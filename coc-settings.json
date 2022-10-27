@@ -8,8 +8,9 @@
   "clangd.enabled": true,
   "clangd.compilationDatabasePath": ".",
   "clangd.checkUpdates": true,
-  "clangd.arguments": ["--query-driver=/usr/bin/clang++", "--all-scopes-completion", "--background-index", "--clang-tidy", "--clang-tidy-checks='clang-analyzer-*,cppcoreguidelines-*,modernize-*,performance-*,portability-*,readability-*'", "--cross-file-rename", "--header-insertion=iwyu", "--recovery-ast", "--suggest-missing-includes", "-j=4", "--log=verbose"],
+  "clangd.arguments": ["--query-driver=/usr/bin/clang++", "--all-scopes-completion", "--background-index", "--clang-tidy", "--function-arg-placeholders", "--header-insertion=iwyu", "--header-insertion-decorators", "--enable-config", "-j=4", "--log=verbose"],
   "git.addGBlameToVirtualText": true,
+  "cSpell.enabled": false,
   "languageserver": {
     "ccls": {
       "command": "ccls",
