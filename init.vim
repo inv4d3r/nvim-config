@@ -48,7 +48,7 @@ set listchars=tab:→ ,nbsp:¬
 set list
 
 " always copy to plus register
-set clipboard=unnamedplus
+set clipboard+=unnamed,unnamedplus
 
 " comply with Linux kernel coding style "
 set colorcolumn=81,101,121
@@ -101,9 +101,14 @@ nnoremap <leader>pc :cd %:p:h<CR>:pwd<CR>
 nnoremap <leader>pe :e %:p:h<CR>:pwd<CR>
 
 " copy current file path to clipboard register
-nnoremap <silent> <leader>py :let @+ = expand("%")<CR>
+nmap <silent> <leader>py :let @+ = expand("%")<CR>
+nmap <silent> <leader>py :let @* = expand("%")<CR>
 " absolute path
-nnoremap <silent> <leader>pY :let @+ = expand("%:p")<CR>
+nmap <silent> <leader>pY :let @+ = expand("%:p")<CR>
+nmap <silent> <leader>pY :let @* = expand("%:p")<CR>
+
+" go to file - vertical
+nnoremap <silent> <leader>gv :vertical wincmd f<CR>
 
 " terminal - go to normal mode
 tnoremap <Esc> <C-\><C-n>
