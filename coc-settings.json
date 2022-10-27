@@ -9,8 +9,9 @@
   "clangd.compilationDatabasePath": ".",
   "clangd.checkUpdates": true,
   "clangd.arguments": ["--query-driver=/usr/bin/clang++", "--all-scopes-completion", "--background-index", "--clang-tidy", "--function-arg-placeholders", "--header-insertion=iwyu", "--header-insertion-decorators", "--enable-config", "-j=4", "--log=verbose"],
-  "git.addGBlameToVirtualText": true,
+  "clangd.showDBChangedNotification": true,
   "cSpell.enabled": false,
+  "git.addGBlameToVirtualText": true,
   "languageserver": {
     "ccls": {
       "command": "ccls",
