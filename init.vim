@@ -591,6 +591,8 @@ let g:coc_disable_transparent_cursor = 1
 
 nnoremap <leader>ge :CocCommand explorer<CR>
 
+nnoremap <leader>wi :CocCommand workspace.inspectEdit<CR>
+
 " have vim start coc-explorer if vim started with folder
 augroup CocExplorerAuGroup
   autocmd StdinReadPre * let s:std_in=1
@@ -605,8 +607,11 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-vmap <leader>ga  <Plug>(coc-codeaction-selected)
-nmap <leader>ga  <Plug>(coc-codeaction-selected)
+vmap <leader>gav <Plug>(coc-codeaction-selected)
+nmap <leader>gav <Plug>(coc-codeaction-selected)
+
+nnoremap <leader>gal <Plug>(coc-codeaction-line)
+nnoremap <leader>gac <Plug>(coc-codeaction-cursor)
 
 " remap for do codeAction of current line
 nmap <leader>gc  <Plug>(coc-codeaction)
@@ -617,37 +622,76 @@ nmap <silent> <leader>gl. <Plug>(coc-declaration)
 nmap <silent> <leader>gt. <Plug>(coc-type-definition)
 nmap <silent> <leader>gi. <Plug>(coc-implementation)
 nmap <silent> <leader>gr. <Plug>(coc-references)
+nmap <silent> <leader>gru <Plug>(coc-references-used)
+nmap <silent> <leader>grf <Plug>(coc-refactor)
 
 " standard mappings
-nnoremap <silent> <leader>gdd :call CocAction('jumpDefinition', 'drop')<cr>
-nnoremap <silent> <leader>gde :call CocAction('jumpDefinition', 'edit')<cr>
-nnoremap <silent> <leader>gdt :call CocAction('jumpDefinition', 'tabe')<cr>
-nnoremap <silent> <leader>gds :call CocAction('jumpDefinition', 'split')<cr>
-nnoremap <silent> <leader>gdv :call CocAction('jumpDefinition', 'vsplit')<cr>
-nnoremap <silent> <leader>gld :call CocAction('jumpDeclaration', 'drop')<cr>
-nnoremap <silent> <leader>gle :call CocAction('jumpDeclaration', 'edit')<cr>
-nnoremap <silent> <leader>glt :call CocAction('jumpDeclaration', 'tabe')<cr>
-nnoremap <silent> <leader>gls :call CocAction('jumpDeclaration', 'split')<cr>
-nnoremap <silent> <leader>glv :call CocAction('jumpDeclaration', 'vsplit')<cr>
-nnoremap <silent> <leader>gtd :call CocAction('jumpTypeDefinition', 'drop')<cr>
-nnoremap <silent> <leader>gte :call CocAction('jumpTypeDefinition', 'edit')<cr>
-nnoremap <silent> <leader>gtt :call CocAction('jumpTypeDefinition', 'tabe')<cr>
-nnoremap <silent> <leader>gts :call CocAction('jumpTypeDefinition', 'split')<cr>
-nnoremap <silent> <leader>gtv :call CocAction('jumpTypeDefinition', 'vsplit')<cr>
-nnoremap <silent> <leader>gid :call CocAction('jumpImplementation', 'drop')<cr>
-nnoremap <silent> <leader>gie :call CocAction('jumpImplementation', 'edit')<cr>
-nnoremap <silent> <leader>git :call CocAction('jumpImplementation', 'tabe')<cr>
-nnoremap <silent> <leader>gis :call CocAction('jumpImplementation', 'split')<cr>
-nnoremap <silent> <leader>giv :call CocAction('jumpImplementation', 'vsplit')<cr>
-nnoremap <silent> <leader>grd :call CocAction('jumpReferences', 'drop')<cr>
-nnoremap <silent> <leader>gre :call CocAction('jumpReferences', 'edit')<cr>
-nnoremap <silent> <leader>grt :call CocAction('jumpReferences', 'tabe')<cr>
-nnoremap <silent> <leader>grs :call CocAction('jumpReferences', 'split')<cr>
-nnoremap <silent> <leader>grv :call CocAction('jumpReferences', 'vsplit')<cr>
+nnoremap <silent> <leader>gdd :call CocAction('jumpDefinition', 'drop')<CR>
+nnoremap <silent> <leader>gde :call CocAction('jumpDefinition', 'edit')<CR>
+nnoremap <silent> <leader>gdt :call CocAction('jumpDefinition', 'tabe')<CR>
+nnoremap <silent> <leader>gds :call CocAction('jumpDefinition', 'split')<CR>
+nnoremap <silent> <leader>gdv :call CocAction('jumpDefinition', 'vsplit')<CR>
+nnoremap <silent> <leader>gld :call CocAction('jumpDeclaration', 'drop')<CR>
+nnoremap <silent> <leader>gle :call CocAction('jumpDeclaration', 'edit')<CR>
+nnoremap <silent> <leader>glt :call CocAction('jumpDeclaration', 'tabe')<CR>
+nnoremap <silent> <leader>gls :call CocAction('jumpDeclaration', 'split')<CR>
+nnoremap <silent> <leader>glv :call CocAction('jumpDeclaration', 'vsplit')<CR>
+nnoremap <silent> <leader>gtd :call CocAction('jumpTypeDefinition', 'drop')<CR>
+nnoremap <silent> <leader>gte :call CocAction('jumpTypeDefinition', 'edit')<CR>
+nnoremap <silent> <leader>gtt :call CocAction('jumpTypeDefinition', 'tabe')<CR>
+nnoremap <silent> <leader>gts :call CocAction('jumpTypeDefinition', 'split')<CR>
+nnoremap <silent> <leader>gtv :call CocAction('jumpTypeDefinition', 'vsplit')<CR>
+nnoremap <silent> <leader>gid :call CocAction('jumpImplementation', 'drop')<CR>
+nnoremap <silent> <leader>gie :call CocAction('jumpImplementation', 'edit')<CR>
+nnoremap <silent> <leader>git :call CocAction('jumpImplementation', 'tabe')<CR>
+nnoremap <silent> <leader>gis :call CocAction('jumpImplementation', 'split')<CR>
+nnoremap <silent> <leader>giv :call CocAction('jumpImplementation', 'vsplit')<CR>
+nnoremap <silent> <leader>grd :call CocAction('jumpReferences', 'drop')<CR>
+nnoremap <silent> <leader>gre :call CocAction('jumpReferences', 'edit')<CR>
+nnoremap <silent> <leader>grt :call CocAction('jumpReferences', 'tabe')<CR>
+nnoremap <silent> <leader>grs :call CocAction('jumpReferences', 'split')<CR>
+nnoremap <silent> <leader>grv :call CocAction('jumpReferences', 'vsplit')<CR>
+
+" call hierarchy
+nnoremap <silent> <leader>ghi :call CocAction('showIncomingCalls')<CR>
+nnoremap <silent> <leader>gho :call CocAction('showOutgoingCalls')<CR>
+
+" type hierarchy
+nnoremap <silent> <leader>ghs :call CocAction('showSuperTypes')<CR>
+nnoremap <silent> <leader>ghd :call CocAction('showSubTypes')<CR>
+
+" selection range
+nnoremap <silent> <leader>ghr <Plug>(coc-range-select)
+nnoremap <silent> <leader>ghb <Plug>(coc-range-select-backward)
 
 " clangd exentions mappings
-nnoremap <silent> <leader>gs :CocCommand clangd.switchSourceHeader<CR>
+nnoremap <silent> <leader>gs. :CocCommand clangd.switchSourceHeader<CR>
+nnoremap <silent> <leader>gsd :CocCommand clangd.switchSourceHeader drop<CR>
+nnoremap <silent> <leader>gse :CocCommand clangd.switchSourceHeader edit<CR>
+nnoremap <silent> <leader>gst :CocCommand clangd.switchSourceHeader tabe<CR>
+nnoremap <silent> <leader>gss :CocCommand clangd.switchSourceHeader split<CR>
+nnoremap <silent> <leader>gsv :CocCommand clangd.switchSourceHeader vsplit<CR>
 nnoremap <silent> <leader>gy :CocCommand clangd.symbolInfo<CR>
+
+augroup clangd
+  au!
+  autocmd BufNewFile,BufRead .clangd set syntax=yaml
+augroup END
+
+" remap for format selected region
+vmap <leader>gf <Plug>(coc-format-selected)
+nmap <leader>gf <Plug>(coc-format-selected)
+
+" show documentation in preview window
+nnoremap <silent> <leader>gk :call <SID>show_documentation()<CR>
+
+" remap for rename current word
+nmap <leader>gn <Plug>(coc-rename)
+
+" fix autofix problem of current line
+nmap <leader>gp <Plug>(coc-fix-current)
+
+nmap <leader>go <Plug>(coc-codelens-action)
 
 " ccls cross references
 " bases
@@ -663,6 +707,8 @@ nnoremap <silent> <leader>xD :call CocLocations('ccls','$ccls/inheritance',{'der
 nnoremap <silent> <leader>xc :call CocLocations('ccls','$ccls/call')<cr>
 " callee
 nnoremap <silent> <leader>xC :call CocLocations('ccls','$ccls/call',{'callee':v:true})<cr>
+" call hierarchy
+"nnoremap <silent> <leader>xH :call CocLocations('ccls','$ccls/calls')<cr>
 
 " $ccls/member
 " member variables / variables in a namespace
@@ -680,36 +726,23 @@ nnoremap <silent> <leader>xl :call CocLocations('ccls','$ccls/navigate',{'direct
 nnoremap <silent> <leader>xj :call CocLocations('ccls','$ccls/navigate',{'direction':'D'})<CR>
 nnoremap <silent> <leader>xk :call CocLocations('ccls','$ccls/navigate',{'direction':'U'})<CR>
 
-" remap for format selected region
-vmap <leader>gf  <Plug>(coc-format-selected)
-nmap <leader>gf  <Plug>(coc-format-selected)
-
-" show documentation in preview window
-nnoremap <silent> <leader>gk :call <SID>show_documentation()<CR>
-
-" remap for rename current word
-nmap <leader>gn <Plug>(coc-rename)
-
-" fix autofix problem of current line
-nmap <leader>gp  <Plug>(coc-fix-current)
-
 " using CocList
 " show all diagnostics
-nnoremap <silent> <leader>da :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <leader>ha :<C-u>CocList diagnostics<cr>
 " manage extensions
-nnoremap <silent> <leader>de :<C-u>CocList extensions<cr>
+nnoremap <silent> <leader>he :<C-u>CocList extensions<cr>
 " show commands
-nnoremap <silent> <leader>dc :<C-u>CocList commands<cr>
+nnoremap <silent> <leader>hc :<C-u>CocList commands<cr>
 " find symbol of current document
-nnoremap <silent> <leader>do :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>ho :<C-u>CocList outline<cr>
 " search workspace symbols
-nnoremap <silent> <leader>ds :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <leader>hs :<C-u>CocList -I symbols<cr>
 " do default action for next item.
-nnoremap <silent> <leader>dj :<C-u>CocNext<CR>
+nnoremap <silent> <leader>hj :<C-u>CocNext<CR>
 " do default action for previous item.
-nnoremap <silent> <leader>dk :<C-u>CocPrev<CR>
+nnoremap <silent> <leader>hk :<C-u>CocPrev<CR>
 " resume latest coc list
-nnoremap <silent> <leader>dp :<C-u>CocListResume<CR>
+nnoremap <silent> <leader>hp :<C-u>CocListResume<CR>
 
 function! s:show_documentation()
   if &filetype == 'vim'
