@@ -298,6 +298,7 @@ call minpac#add('kkoomen/vim-doge', {'do': 'packloadall! | call doge#install()'}
 "nnoremap <leader>doc <Plug>(doge-generate)
 
 " markdown
+let g:markdown_folding = 1
 call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
 " open in browser
 let g:mkdp_browser = 'firefox'
@@ -774,3 +775,4 @@ nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<
 nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
 inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+nnoremap <C-w>f :call coc#float#jump()<CR>
