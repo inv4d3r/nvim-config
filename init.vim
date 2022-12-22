@@ -217,6 +217,9 @@ augroup Rust
             \%.%#panicked\ at\ \\'%m\\'\\,\ %f:%l:%c
 augroup END
 
+" Robot framework
+autocmd BufNewFile,BufRead *.robot setlocal filetype=robot
+
 " ---- Plugins ---- "
 
 packadd minpac
@@ -266,7 +269,7 @@ call minpac#add('w0ng/vim-hybrid')
 call minpac#add('kristijanhusak/vim-hybrid-material')
 
 " coc.nvim & friends
-let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-sh', 'coc-json', 'coc-pyright', 'coc-snippets', 'coc-clangd', 'coc-markdownlint', 'coc-xml', 'coc-vimlsp', 'coc-cmake', 'coc-explorer', 'coc-rls', 'coc-tsserver', 'coc-spell-checker', 'coc-cspell-dicts', 'coc-sumneko-lua']
+let g:coc_global_extensions = ['coc-git', 'coc-sh', 'coc-json', 'coc-pyright', 'coc-snippets', 'coc-clangd', 'coc-markdownlint', 'coc-xml', 'coc-vimlsp', 'coc-cmake', 'coc-explorer', 'coc-rust-analyzer', 'coc-tsserver', 'coc-spell-checker', 'coc-cspell-dicts', 'coc-sumneko-lua']
 call minpac#add('neoclide/coc.nvim', { 'do': '!yarn --frozen-lockfile install' })
 
 " vista - modern Tagbar replacement

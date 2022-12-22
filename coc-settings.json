@@ -43,6 +43,13 @@
     "lua": {
       "command": "lua-lsp",
       "filetypes": ["lua"]
+    },
+    "robotframework_ls": {
+        "command": "robotframework_ls",
+        "filetypes": ["robot"],
+        "settings": {
+         // here the ls configuration
+         }
     }
   },
   "cSpell.userWords": [
