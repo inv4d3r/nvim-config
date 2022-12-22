@@ -356,7 +356,7 @@ call minpac#add('christoomey/vim-tmux-navigator')
 call minpac#add('roxma/vim-tmux-clipboard')
 
 " utilities
-call minpac#add('sjl/gundo.vim')
+call minpac#add('mbbill/undotree')
 call minpac#add('tpope/vim-abolish')
 call minpac#add('tpope/vim-endwise')
 
@@ -466,7 +466,7 @@ map g<A-]> :vsp <CR>:exec("tjump ".expand("<cword>"))<CR>
 " [CTRL-T - preview window previous tag
 
 " ---- extra windows ---- "
-nnoremap <leader>u :GundoToggle<CR>
+nnoremap <leader>U :UndotreeToggle<CR>
 
 " ---- cscope mappings ---- "
 
