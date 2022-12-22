@@ -300,6 +300,8 @@ call minpac#add('godlygeek/tabular')
 call minpac#add('tommcdo/vim-exchange')
 call minpac#add('raimondi/delimitmate')
 call minpac#add('yggdroot/indentline')
+let g:vim_json_conceal=0
+let g:markdown_syntax_conceal=0
 
 " git
 call minpac#add('gregsexton/gitv')
