@@ -259,6 +259,7 @@ call minpac#add('kristijanhusak/vim-hybrid-material')
 let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-sh', 'coc-json', 'coc-pyright', 'coc-snippets', 'coc-clangd', 'coc-markdownlint', 'coc-xml', 'coc-vimlsp', 'coc-cmake', 'coc-explorer', 'coc-rls', 'coc-tsserver', 'coc-spell-checker', 'coc-cspell-dicts', 'coc-sumneko-lua']
 call minpac#add('neoclide/coc.nvim', { 'do': '!yarn --frozen-lockfile install' })
 
+" vista - modern Tagbar replacement
 call minpac#add('liuchengxu/vista.vim')
 let g:vista_default_executive = 'coc'
 nnoremap <leader>vo :Vista<CR>
@@ -266,11 +267,16 @@ nnoremap <leader>vc :Vista!<CR>
 nnoremap <leader>vt :Vista!!<CR>
 nnoremap <leader>vf :Vista finder<CR>
 
-call minpac#add('majutsushi/tagbar')
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
 
-" javascript and typescript
-call minpac#add('othree/jspc.vim')
-call minpac#add('ternjs/tern_for_vim')
+" By default vista.vim never run if you don't call it explicitly.
+augroup Vista
+  autocmd!
+  autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+  autocmd User CocStatusChange call vista#RunForNearestMethodOrFunction()
+augroup end
 
 " file & fuzzy navigation
 call minpac#add('derekwyatt/vim-fswitch')
@@ -408,41 +414,21 @@ endif
 " gruvbox - (shinchu) gruvbox
 " badwolf - (844196) badwolf, molokai
 
-function! NearestMethod() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
-endfunction
-
-      "\   'ale': '%{ale#statusline#Status()}',
 let g:lightline = {
       \ 'colorscheme': lightline_name,
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'sleuth', 'cocstatus', 'vistameth', 'gitbranch', 'readonly', 'relativepath', 'modified' ] ]
-      \ },
-      \ 'component': {
-      \   'tagbar': '%{tagbar#currenttag("%s", "", "f")}'
+      \             [ 'cocstatus', 'vistamethod', 'gitbranch', 'readonly', 'filename', 'modified' ] ]
       \ },
       \ 'component_function': {
       \   'gitbranch': 'FugitiveHead',
       \   'cocstatus': 'coc#status',
-      \   'vistameth': 'NearestMethod',
+      \   'vistamethod': 'NearestMethodOrFunction',
       \   'sleuth': 'SleuthIndicator'
       \ },
       \ }
 
 execute 'colorscheme' scheme_name
-
-" ---- syntastic configuration ---- "
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-"let g:syntastic_c_checkers = [ "checkpatch", "clang_tidy" ]
-"let g:syntastic_cpp_check_header = 1
 
 " ---- tags configuration ---- "
 " ---- generation
@@ -465,7 +451,6 @@ map g<A-]> :vsp <CR>:exec("tjump ".expand("<cword>"))<CR>
 " [CTRL-T - preview window previous tag
 
 " ---- extra windows ---- "
-nnoremap <leader>t :Tagbar<CR>
 nnoremap <leader>u :GundoToggle<CR>
 
 " ---- cscope mappings ---- "
