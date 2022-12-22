@@ -55,7 +55,11 @@ set list
 set clipboard+=unnamed,unnamedplus
 
 " comply with Linux kernel coding style "
-set colorcolumn=81,101,121
+"set colorcolumn=81,101,121
+" more relaxed (and sane) option
+set colorcolumn=121
+" multiple columns
+"set colorcolumn=81,101,121
 
 " ---- Highlighting ---- "
 
