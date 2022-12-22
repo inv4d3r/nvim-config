@@ -247,6 +247,8 @@ call minpac#add('kshenoy/vim-signature')
 
 " colorscheme plugins
 call minpac#add('dracula/vim', {'name': 'dracula'})
+let g:nord_italic = 1
+let g:nord_italic_comments = 1
 call minpac#add('arcticicestudio/nord-vim')
 call minpac#add('sainnhe/gruvbox-material')
 call minpac#add('nanotech/jellybeans.vim')
