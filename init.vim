@@ -118,8 +118,16 @@ nmap <silent> <leader>pY :let @* = expand("%:p")<CR>
 " go to file - vertical
 nnoremap <silent> <leader>gv :vertical wincmd f<CR>
 
-" terminal - go to normal mode
+" terminal
+" go to normal mode
 tnoremap <Esc> <C-\><C-n>
+" send Esc to terminal process
+tnoremap <C-v><Esc> <Esc>
+
+nnoremap <leader>t. :terminal<CR>
+nnoremap <leader>ts :spl term://bash<CR>
+nnoremap <leader>tv :vsp term://bash<CR>
+nnoremap <leader>te :tabe term://bash<CR>
 
 " tab navigation
 nnoremap <silent> [d :tabprevious<CR>
