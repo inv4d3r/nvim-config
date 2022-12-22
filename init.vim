@@ -14,6 +14,10 @@ set foldlevelstart=4
 set foldopen=all
 set foldclose=all
 
+" case-insensitive search for small case only search pattern
+set ignorecase
+set smartcase
+
 " persistent undo
 set undofile
 set undodir=~/.vim/undodir
