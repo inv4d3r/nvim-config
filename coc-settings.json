@@ -56,5 +56,7 @@
     "cacl",
     "clangd"
   ],
-  "Lua.telemetry.enable": false
+  "Lua.telemetry.enable": false,
+  "python.formatting.provider": "autopep8",
+  "python.linting.flake8Enabled": true,
 }
