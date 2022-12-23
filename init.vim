@@ -77,6 +77,14 @@ autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
+"augroup RemoveTrailingWhitespace
+    "autocmd BufWritePre *
+        "\ if &ft !~# '^\%(markdown\|txt\|rst\)$' |
+        "\     :echo "removing whitespace" |
+        "\     :%s/\s\+$//e |
+        "\ endif
+"augroup END
+
 " tabs
 highlight AnyTab ctermfg=gray guifg=gray
 autocmd ColorScheme * highlight AnyTab ctermfg=gray guifg=gray
@@ -267,6 +275,7 @@ call minpac#add('sjl/badwolf')
 call minpac#add('tyrannicaltoucan/vim-deep-space')
 call minpac#add('w0ng/vim-hybrid')
 call minpac#add('kristijanhusak/vim-hybrid-material')
+call minpac#add('whatyouhide/vim-gotham')
 
 " coc.nvim & friends
 let g:coc_global_extensions = ['coc-git', 'coc-sh', 'coc-json', 'coc-pyright', 'coc-snippets', 'coc-clangd',
@@ -335,10 +344,12 @@ call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp
 " open in browser
 let g:mkdp_browser = 'firefox'
 nnoremap <leader>mb :silent! MarkdownPreview<CR>
-" open side by side
-call minpac#add('skanehira/preview-markdown.vim')
-let g:preview_markdown_parser = 'glow'
+"call minpac#add('skanehira/preview-markdown.vim')
+"let g:preview_markdown_parser = 'glow'
+"let g:preview_markdown_auto_update = 1
 nnoremap <leader>mp :silent! PreviewMarkdown<CR>
+call minpac#add('ellisonleao/glow.nvim')
+nnoremap <leader>mp :silent! Glow<CR>
 
 " uml
 call minpac#add('aklt/plantuml-syntax')
@@ -390,8 +401,10 @@ call minpac#add('844196/lightline-badwolf.vim')
 
 " colorscheme
 if $THEME == "" || $THEME == "default"
-  let scheme_name = 'deep-space'
-  let lightline_name = 'deepspace'
+  "let scheme_name = 'deep-space'
+  "let lightline_name = 'deepspace'
+  let scheme_name = 'gotham'
+  let lightline_name = 'gotham'
 elseif $THEME == "badwolf"
   let scheme_name = 'badwolf'
   let lightline_name = 'badwolf'
