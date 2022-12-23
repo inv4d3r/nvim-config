@@ -1,6 +1,13 @@
 {
   "coc.preferences.formatOnType": true,
-  "coc.preferences.formatOnSaveFiletypes": ["rust", "python"],
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "javascript",
+    "json",
+    "less",
+    "python",
+    "rust"
+  ],
   "coc.preferences.useQuickfixForLocations": true,
   "coc.preferences.extensionUpdateCheck": "weekly",
   "cSpellExt.enableDictionaries": ["polish", "italian", "german"],
@@ -8,18 +15,36 @@
   "clangd.enabled": true,
   "clangd.compilationDatabasePath": ".",
   "clangd.checkUpdates": true,
-  "clangd.arguments": ["--query-driver=/usr/bin/clang++", "--all-scopes-completion", "--background-index", "--clang-tidy", "--function-arg-placeholders", "--header-insertion=iwyu", "--header-insertion-decorators", "--enable-config", "-j=4", "--log=verbose"],
+  "clangd.arguments": [
+    "--query-driver=/usr/bin/clang++",
+    "--all-scopes-completion",
+    "--background-index",
+    "--clang-tidy",
+    "--function-arg-placeholders",
+    "--header-insertion=iwyu",
+    "--header-insertion-decorators",
+    "--enable-config",
+    "-j=4",
+    "--log=verbose"
+  ],
   "clangd.showDBChangedNotification": true,
   "cSpell.enabled": false,
   "git.addGBlameToVirtualText": true,
   "languageserver": {
     "ccls": {
       "command": "ccls",
-      "rootPatterns": [ ".ccls", "compile_flags.txt", "compile_commands.json", ".vim", ".git", ".hg"],
+      "rootPatterns": [
+        ".ccls",
+        "compile_flags.txt",
+        "compile_commands.json",
+        ".vim",
+        ".git",
+        ".hg"
+      ],
       "filetypes": ["c", "cc", "cpp", "c++", "cuda", "objc", "objcpp"],
       "enable": false,
       "initializationOptions": {
-        "highlight": {"lsRanges": true},
+        "highlight": { "lsRanges": true },
         "client": {
           "snippetSupport": true
         }
@@ -28,9 +53,7 @@
     "cmake": {
       "command": "cmake-language-server",
       "filetypes": ["cmake"],
-      "rootPatterns": [
-        "build/"
-      ],
+      "rootPatterns": ["build/"],
       "initializationOptions": {
         "buildDirectory": "build"
       }
@@ -45,17 +68,14 @@
       "filetypes": ["lua"]
     },
     "robotframework_ls": {
-        "command": "robotframework_ls",
-        "filetypes": ["robot"],
-        "settings": {
-         // here the ls configuration
-         }
+      "command": "robotframework_ls",
+      "filetypes": ["robot"],
+      "settings": {
+        // here the ls configuration
+      }
     }
   },
-  "cSpell.userWords": [
-    "cacl",
-    "clangd"
-  ],
+  "cSpell.userWords": ["cacl", "clangd"],
   "Lua.telemetry.enable": false,
   "python.formatting.provider": "autopep8",
   "python.linting.flake8Enabled": true,
