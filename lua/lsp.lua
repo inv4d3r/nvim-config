@@ -60,16 +60,20 @@ local lsp_flags = {
   debounce_text_changes = 150,
 }
 
+-- no omnifunc
+vim.opt.completeopt = {"menu", "menuone", "noselect"}
+
 ---- autocompletion via cmp-nvim ----
 vim.fn['minpac#add']('hrsh7th/cmp-nvim-lsp')
+vim.fn['minpac#add']('hrsh7th/cmp-nvim-lsp-signature-help')
 vim.fn['minpac#add']('hrsh7th/cmp-buffer')
 vim.fn['minpac#add']('hrsh7th/cmp-path')
 vim.fn['minpac#add']('hrsh7th/cmp-cmdline')
 vim.fn['minpac#add']('hrsh7th/nvim-cmp')
-vim.fn['minpac#add']('SirVer/ultisnips')
+vim.fn['minpac#add']('quangnguyen30192/cmp-nvim-ultisnips')
+vim.fn['minpac#add']('windwp/nvim-autopairs')
 
--- no omnifunc
-vim.opt.completeopt = {"menu", "menuone", "noselect"}
+require("nvim-autopairs").setup {}
 
 -- Set up nvim-cmp.
 local cmp = require('cmp')
@@ -91,13 +95,14 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<CR>'] = cmp.mapping.complete(),
+    ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
     ['<C-y>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    -- { name = 'vsnip' }, -- For vsnip users.
+     --{ name = 'vsnip' }, -- For vsnip users.
+     { name = 'nvim_lsp_signature_help' },
     -- { name = 'luasnip' }, -- For luasnip users.
     { name = 'ultisnips' }, -- For ultisnips users.
     -- { name = 'snippy' }, -- For snippy users.
@@ -133,44 +138,45 @@ cmp.setup.cmdline(':', {
   })
 })
 
+-- If you want insert `(` after select function or method item
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
+
 -- set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local lspconfig = require('lspconfig')
 
--- servers
-require('lspconfig')['bashls'].setup{
-  on_attach = on_attach,
-  flags = lsp_flags,
-  capabilities = capabilities
-}
-require('lspconfig')['clangd'].setup{
-  on_attach = on_attach,
-  flags = lsp_flags,
-  capabilities = capabilities
-}
-require('lspconfig')['cmake'].setup{
-  on_attach = on_attach,
-  flags = lsp_flags,
-  capabilities = capabilities
-}
-require('lspconfig')['marksman'].setup{
-  on_attach = on_attach,
-  flags = lsp_flags,
-  capabilities = capabilities
-}
-require('lspconfig')['pyright'].setup{
-  on_attach = on_attach,
-  flags = lsp_flags,
-  capabilities = capabilities
-}
-require('lspconfig')['rust_analyzer'].setup{
-  on_attach = on_attach,
-  flags = lsp_flags,
-  capabilities = capabilities,
-  -- Server-specific settings...
-  settings = {
-    ["rust-analyzer"] = {}
+vim.fn['minpac#add']('nvim-tree/nvim-web-devicons')
+vim.fn['minpac#add']('onsails/lspkind.nvim')
+local lspkind = require('lspkind')
+cmp.setup {
+  formatting = {
+    format = function(entry, vim_item)
+      if vim.tbl_contains({ 'path' }, entry.source.name) then
+        local icon, hl_group = require('nvim-web-devicons').get_icon(entry:get_completion_item().label)
+        if icon then
+          vim_item.kind = icon
+          vim_item.kind_hl_group = hl_group
+          return vim_item
+        end
+      end
+      return lspkind.cmp_format({ with_text = false })(entry, vim_item)
+    end
   }
 }
+
+-- servers
+local servers = { 'bashls', 'clangd', 'cmake', 'marksman', 'pyright', 'rust_analyzer', 'tsserver' }
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup {
+    on_attach = on_attach,
+    flags = lsp_flags,
+    capabilities = capabilities,
+  }
+end
 vim.fn["minpac#add"]("folke/neodev.nvim")
 -- IMPORTANT: make sure to setup neodev BEFORE lspconfig
 require("neodev").setup({
@@ -190,15 +196,22 @@ require('lspconfig')['sumneko_lua'].setup({
   }
 })
 -- configuration from lspconfig, does not work for neovim lua API
+--local runtime_path = vim.split(package.path, ";")
+--table.insert(runtime_path, "lua/?.lua")
+--table.insert(runtime_path, "lua/?/init.lua")
 --require('lspconfig')['sumneko_lua'].setup{
   --on_attach = on_attach,
   --flags = lsp_flags,
   --capabilities = capabilities,
   --settings = {
     --Lua = {
+      --completion = {
+        --callSnippet = "Replace"
+      --},
       --runtime = {
         ---- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
         --version = 'LuaJIT',
+        --path = runtime_path
       --},
       --diagnostics = {
         ---- Get the language server to recognize the `vim` global
@@ -215,11 +228,6 @@ require('lspconfig')['sumneko_lua'].setup({
     --},
   --},
 --}
-require('lspconfig')['tsserver'].setup{
-  on_attach = on_attach,
-  flags = lsp_flags,
-  capabilities = capabilities,
-}
 require('lspconfig')['yamlls'].setup {
   on_attach = on_attach,
   flags = lsp_flags,
@@ -232,5 +240,3 @@ require('lspconfig')['yamlls'].setup {
     },
   }
 }
-
-

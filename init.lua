@@ -1,4 +1,4 @@
--- rust --
+---- rust ----
 local rust_augroup = vim.api.nvim_create_augroup("Rust", { clear = true })
 vim.api.nvim_create_autocmd("filetype", {
   pattern = "*.rs",
@@ -26,7 +26,7 @@ vim.api.nvim_create_autocmd("filetype", {
   end
 })
 
--- robot framework --
+---- robot framework ----
 local robot_augroup = vim.api.nvim_create_augroup("Robot", { clear = true })
 vim.api.nvim_create_autocmd({"BufNewFile", "BufRead"}, {
   pattern = "*.robot",
