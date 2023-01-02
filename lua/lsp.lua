@@ -184,8 +184,12 @@ for _, lsp in ipairs(servers) do
     capabilities = capabilities,
   }
 end
----- python language server ----
+
+----- python language server ----
 require('lspconfig')['pylsp'].setup({
+  on_attach = default_on_attach,
+  flags = lsp_flags,
+  capabilities = capabilities,
   settings = {
     pylsp = {
       plugins = {
