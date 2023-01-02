@@ -42,7 +42,7 @@ vim.keymap.set("n", "<leader>dl", dap.run_last)
 dap.adapters.cppdbg = {
   id = 'cppdbg',
   type = 'executable',
-  command = '/home/silgurf/cpptools/extension/debugAdapters/bin/OpenDebugAD7',
+  command = vim.env.HOME .. '/cpptools/extension/debugAdapters/bin/OpenDebugAD7',
 }
 
 dap.adapters.lldb = {
@@ -80,14 +80,14 @@ dap.configurations.rust = dap.configurations.cpp
 require("dapui").setup()
 local dapui = require("dapui")
 dap.listeners.after.event_initialized["dapui_config"] = function()
-  dapui.open()
+  dapui.open({})
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close()
+  dapui.close({})
 end
 dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close()
+  dapui.close({})
 end
 
 -- evaluate expression under cursor or visually selected
-vim.keymap.set({ "n", "v" }, "<leader>de", dapui.eval)
+vim.keymap.set({ "n", "v" }, "<leader>e", dapui.eval)
