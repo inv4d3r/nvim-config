@@ -24,23 +24,24 @@ vim.api.nvim_create_autocmd( {'ColorScheme' }, {
 -- whitespaces
 vim.cmd.highlight({"ExtraWhitespace", "ctermfg=red", "guifg=red", "ctermbg=red", "guibg=red"})
 local whitespace_augroup = vim.api.nvim_create_augroup('ExtraWhitespace', { clear = true })
+local whitespace_patterns = { "*.c", "*.cpp", "*.h", "*.hpp", "*.rs", "*.py", "*.js", "*.ts"}
 vim.api.nvim_create_autocmd( {'ColorScheme' }, {
-  pattern = '*',
+  pattern = whitespace_patterns,
   group = whitespace_augroup,
   command = 'highlight ExtraWhitespace ctermbg=red guibg=red',
 })
 vim.api.nvim_create_autocmd( {'BufWinEnter' }, {
-  pattern = '*',
+  pattern = whitespace_patterns,
   group = whitespace_augroup,
   command = "match ExtraWhitespace /\\s\\+$/",
 })
 vim.api.nvim_create_autocmd( {'BufWinLeave' }, {
-  pattern = '*',
+  pattern = whitespace_patterns,
   group = whitespace_augroup,
   command = 'call clearmatches()',
 })
 vim.api.nvim_create_autocmd( {'BufWritePre' }, {
-  pattern = '*',
+  pattern = whitespace_patterns,
   group = whitespace_augroup,
   callback = function ()
       local ft = vim.bo.filetype

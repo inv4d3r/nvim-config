@@ -2,34 +2,33 @@
 
 ---- fzf plugins ----
 vim.fn["minpac#add"]('junegunn/fzf', { ['do'] = 'call fzf#install()' })
-vim.fn["minpac#add"]('junegunn/fzf.vim')
+vim.fn["minpac#add"]("ibhagwan/fzf-lua", { branch = "main"})
 
----- fzf config ----
-vim.g.fzf_command_prefix = "Fzf"
-vim.keymap.set("n", "<leader>za", "<cmd>FzfAg<CR>")
-vim.keymap.set("n", "<leader>zb", "<cmd>FzfBuffers<CR>")
-vim.keymap.set("n", "<leader>zB", "<cmd>FzfHistory<CR>")
-vim.keymap.set("n", "<leader>zc", "<cmd>FzfCommits<CR>")
-vim.keymap.set("n", "<leader>zd", "<cmd>FzfBCommits<CR>")
-vim.keymap.set("n", "<leader>ze", "<cmd>FzfCommands<CR>")
-vim.keymap.set("n", "<leader>zf", "<cmd>FzfFiles<CR>")
-vim.keymap.set("n", "<leader>zh", "<cmd>FzfHistory:<CR>")
-vim.keymap.set("n", "<leader>zH", "<cmd>FzfHistory/<CR>")
-vim.keymap.set("n", "<leader>zg", "<cmd>FzfGFiles<CR>")
-vim.keymap.set("n", "<leader>zG", "<cmd>FzfGFiles?<CR>")
-vim.keymap.set("n", "<leader>zm", "<cmd>FzfMarks<CR>")
-vim.keymap.set("n", "<leader>zs", "<cmd>FzfSnippets<CR>")
-vim.keymap.set("n", "<leader>zt", "<cmd>FzfTags<CR>")
-vim.keymap.set("n", "<leader>zu", "<cmd>FzfBTags<CR>")
+-- basic mappings
+local fzf = require("fzf-lua")
+vim.keymap.set("n", "<leader>za", fzf.args)
+vim.keymap.set("n", "<leader>zb", fzf.buffers)
+vim.keymap.set("n", "<leader>zB", fzf.oldfiles)
+vim.keymap.set("n", "<leader>ze", fzf.commands)
+vim.keymap.set("n", "<leader>zf", fzf.files)
+vim.keymap.set("n", "<leader>zh", fzf.command_history)
+vim.keymap.set("n", "<leader>zH", fzf.search_history)
+vim.keymap.set("n", "<leader>zl", fzf.loclist)
+vim.keymap.set("n", "<leader>zm", fzf.marks)
+vim.keymap.set("n", "<leader>zq", fzf.quickfix)
+vim.keymap.set("n", "<leader>zt", fzf.tabs)
 
--- fzf ag shortcuts
---vim.keymap.set("n", "<leader>ag", "<cmd>FzfAg <C-R><C-W><CR>")
---vim.keymap.set("n", "<leader>af", "<cmd>FzfAg <C-R><C-W>\\(<CR>")
---vim.keymap.set("n", "<leader>as", "<cmd>FzfAg struct <C-R><C-W> {<CR>")
+-- git mappings
+vim.keymap.set("n", "<leader>zgc", fzf.git_commits)
+vim.keymap.set("n", "<leader>zgb", fzf.git_bcommits)
+vim.keymap.set("n", "<leader>zgf", fzf.git_files)
 
--- fzf rg shortcuts
-vim.keymap.set("n", "<leader>rg", "<cmd>FzfRg <C-R><C-W><CR>")
-vim.keymap.set("n", "<leader>rf", "<cmd>FzfRg <C-R><C-W>\\(<CR>")
-vim.keymap.set("n", "<leader>rs", "<cmd>FzfRg struct <C-R><C-W> {<CR>")
-vim.keymap.set("n", "<leader>r<space>", ":FzfRg ")
-vim.keymap.set("n", "<leader>rg", "<cmd>FzfRg <C-R>=escape(@\",'/')<CR><CR>")
+-- grep mappings
+vim.keymap.set("n", "<leader>rg", fzf.grep)
+vim.keymap.set("n", "<leader>rw", fzf.grep_cword)
+vim.keymap.set("v", "<leader>rg", fzf.grep_visual)
+
+-- lsp mappings
+vim.keymap.set("n", "<leader>zd", fzf.lsp_document_symbols)
+vim.keymap.set("n", "<leader>zw", fzf.lsp_workspace_symbols)
+vim.keymap.set("n", "<leader>zs", fzf.lsp_live_workspace_symbols)
