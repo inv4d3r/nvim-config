@@ -9,11 +9,11 @@ local opts = { noremap=true, silent=true }
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
+vim.keymap.set('n', '<leader>s', vim.diagnostic.setloclist, opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
+local default_on_attach = function(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -24,18 +24,22 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>gD.', vim.lsp.buf.declaration, bufopts)
   vim.keymap.set('n', '<leader>gDs', '<cmd>belowright split | lua vim.lsp.buf.declaration()<cr>', bufopts)
   vim.keymap.set('n', '<leader>gDv', '<cmd>vsplit | lua vim.lsp.buf.declaration()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>gDt', '<cmd>tab split | lua vim.lsp.buf.declaration()<cr>', bufopts)
 
   vim.keymap.set('n', '<leader>gd.', vim.lsp.buf.definition, bufopts)
   vim.keymap.set('n', '<leader>gds', '<cmd>belowright split | lua vim.lsp.buf.definition()<cr>', bufopts)
   vim.keymap.set('n', '<leader>gdv', '<cmd>vsplit | lua vim.lsp.buf.definition()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>gdt', '<cmd>tab split | lua vim.lsp.buf.definition()<cr>', bufopts)
 
   vim.keymap.set('n', '<leader>gi.', vim.lsp.buf.implementation, bufopts)
   vim.keymap.set('n', '<leader>gis', '<cmd>belowright split | lua vim.lsp.buf.implementation()<cr>', bufopts)
   vim.keymap.set('n', '<leader>giv', '<cmd>vsplit | lua vim.lsp.buf.implementation()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>git', '<cmd>tab split | lua vim.lsp.buf.implementation()<cr>', bufopts)
 
   vim.keymap.set('n', '<leader>gt.', vim.lsp.buf.type_definition, bufopts)
   vim.keymap.set('n', '<leader>gts', '<cmd>belowright split | lua vim.lsp.buf.type_definition()<cr>', bufopts)
   vim.keymap.set('n', '<leader>gtv', '<cmd>vsplit | lua vim.lsp.buf.type_definition()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>gtt', '<cmd>tab split | lua vim.lsp.buf.type_definition()<cr>', bufopts)
 
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
@@ -50,7 +54,10 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 
   if client.name == "clangd" then
-    vim.keymap.set("n", "<leader>gs", "<cmd>ClangdSwitchSourceHeader<cr>")
+    vim.keymap.set("n", "<leader>gs.", "<cmd>ClangdSwitchSourceHeader<cr>")
+    vim.keymap.set("n", "<leader>gss", "<cmd>belowright split | ClangdSwitchSourceHeader<cr>")
+    vim.keymap.set("n", "<leader>gsv", "<cmd>vsplit | ClangdSwitchSourceHeader<cr>")
+    vim.keymap.set("n", "<leader>gst", "<cmd>tab split | ClangdSwitchSourceHeader<cr>")
   end
 end
 
@@ -169,14 +176,50 @@ cmp.setup {
 }
 
 -- servers
-local servers = { 'bashls', 'clangd', 'cmake', 'marksman', 'pyright', 'rust_analyzer', 'tsserver' }
+local servers = { 'bashls', 'clangd', 'cmake', 'marksman', 'tsserver' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
-    on_attach = on_attach,
+    on_attach = default_on_attach,
     flags = lsp_flags,
     capabilities = capabilities,
   }
 end
+---- python language server ----
+require('lspconfig')['pylsp'].setup({
+  settings = {
+    pylsp = {
+      plugins = {
+        jedi_completion = {
+          include_params = true,
+        },
+        pycodestyle = {
+          maxLineLength = 120,
+        },
+      },
+    },
+  },
+})
+---- rust-analyzer + rust-tools.nvim ----
+vim.fn['minpac#add']('simrat39/rust-tools.nvim')
+vim.fn['minpac#add']('nvim-lua/plenary.nvim')
+
+-- configuration
+local rt = require("rust-tools")
+rt.setup({
+  server = {
+    on_attach = function(client, bufnr)
+      -- Defaults
+      default_on_attach(client, bufnr)
+
+      -- Hover actions
+      vim.keymap.set("n", "<leader><space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- Code action groups
+      vim.keymap.set("n", "<leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+    end,
+  },
+})
+
+---- lua + neovim development ----
 vim.fn["minpac#add"]("folke/neodev.nvim")
 -- IMPORTANT: make sure to setup neodev BEFORE lspconfig
 require("neodev").setup({
@@ -184,7 +227,7 @@ require("neodev").setup({
 })
 -- setup sumneko and enable call snippets
 require('lspconfig')['sumneko_lua'].setup({
-  on_attach = on_attach,
+  on_attach = default_on_attach,
   flags = lsp_flags,
   capabilities = capabilities,
   settings = {
@@ -195,7 +238,7 @@ require('lspconfig')['sumneko_lua'].setup({
     }
   }
 })
--- configuration from lspconfig, does not work for neovim lua API
+-- manual configuration
 --local runtime_path = vim.split(package.path, ";")
 --table.insert(runtime_path, "lua/?.lua")
 --table.insert(runtime_path, "lua/?/init.lua")
@@ -229,7 +272,7 @@ require('lspconfig')['sumneko_lua'].setup({
   --},
 --}
 require('lspconfig')['yamlls'].setup {
-  on_attach = on_attach,
+  on_attach = default_on_attach,
   flags = lsp_flags,
   capabilities = capabilities,
   settings = {
