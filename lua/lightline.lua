@@ -30,6 +30,13 @@ vim.g.NearestMethodOrFunction = function()
   return vim.fn.getbufvar("", "vista_nearest_method_or_function", "")
 end
 
+vim.g.LspStatus = function()
+    if #vim.lsp.get_active_clients() > 0 then
+        return require("lsp-status").status_progress()
+    end
+    return ""
+end
+
 ---- lightline configution ----
 -- hybrid - (cocopon) hybrid, deus, one, solarized
 -- dracula - darcula
@@ -42,11 +49,11 @@ vim.g.lightline = {
       colorscheme = lightline_name,
       active = {
         left = { { "mode", "paste" },
-                  { "cocstatus", "vistamethod", "gitbranch", "readonly", "filename", "modified" } }
+                  { "lspstatus", "vistamethod", "gitbranch", "readonly", "filename", "modified" } }
       },
       component_function = {
         gitbranch = "FugitiveHead",
-        cocstatus = "coc#status",
+        lspstatus = "g:LspStatus",
         vistamethod = "g:NearestMethodOrFunction",
         sleuth = "SleuthIndicator"
       }

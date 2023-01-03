@@ -3,6 +3,13 @@
 -- nvim-lspconfig for LSP configurations
 vim.fn["minpac#add"]("neovim/nvim-lspconfig")
 
+---- lsp-status.nvim for LSP server status ----
+vim.fn["minpac#add"]("nvim-lua/lsp-status.nvim")
+
+local lsp_status = require('lsp-status')
+lsp_status.config({ show_filename = false })
+lsp_status.register_progress()
+
 -- mappings.
 -- see `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
@@ -10,62 +17,6 @@ vim.keymap.set('n', '<leader>go', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<leader>gq', vim.diagnostic.setloclist, opts)
-
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local default_on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  local bufopts = { noremap=true, silent=true, buffer=bufnr }
-
-  vim.keymap.set('n', '<leader>gD.', vim.lsp.buf.declaration, bufopts)
-  vim.keymap.set('n', '<leader>gDs', '<cmd>belowright split | lua vim.lsp.buf.declaration()<cr>', bufopts)
-  vim.keymap.set('n', '<leader>gDv', '<cmd>vsplit | lua vim.lsp.buf.declaration()<cr>', bufopts)
-  vim.keymap.set('n', '<leader>gDt', '<cmd>tab split | lua vim.lsp.buf.declaration()<cr>', bufopts)
-
-  vim.keymap.set('n', '<leader>gd.', vim.lsp.buf.definition, bufopts)
-  vim.keymap.set('n', '<leader>gds', '<cmd>belowright split | lua vim.lsp.buf.definition()<cr>', bufopts)
-  vim.keymap.set('n', '<leader>gdv', '<cmd>vsplit | lua vim.lsp.buf.definition()<cr>', bufopts)
-  vim.keymap.set('n', '<leader>gdt', '<cmd>tab split | lua vim.lsp.buf.definition()<cr>', bufopts)
-
-  vim.keymap.set('n', '<leader>gi.', vim.lsp.buf.implementation, bufopts)
-  vim.keymap.set('n', '<leader>gis', '<cmd>belowright split | lua vim.lsp.buf.implementation()<cr>', bufopts)
-  vim.keymap.set('n', '<leader>giv', '<cmd>vsplit | lua vim.lsp.buf.implementation()<cr>', bufopts)
-  vim.keymap.set('n', '<leader>git', '<cmd>tab split | lua vim.lsp.buf.implementation()<cr>', bufopts)
-
-  vim.keymap.set('n', '<leader>gt.', vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set('n', '<leader>gts', '<cmd>belowright split | lua vim.lsp.buf.type_definition()<cr>', bufopts)
-  vim.keymap.set('n', '<leader>gtv', '<cmd>vsplit | lua vim.lsp.buf.type_definition()<cr>', bufopts)
-  vim.keymap.set('n', '<leader>gtt', '<cmd>tab split | lua vim.lsp.buf.type_definition()<cr>', bufopts)
-
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-  vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-  vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-  vim.keymap.set('n', '<leader>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, bufopts)
-  vim.keymap.set('n', '<leader>gn', vim.lsp.buf.rename, bufopts)
-  vim.keymap.set('n', '<leader>ga', vim.lsp.buf.code_action, bufopts)
-  vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-
-  if client.name == "clangd" then
-    vim.keymap.set("n", "<leader>gs.", "<cmd>ClangdSwitchSourceHeader<cr>")
-    vim.keymap.set("n", "<leader>gss", "<cmd>belowright split | ClangdSwitchSourceHeader<cr>")
-    vim.keymap.set("n", "<leader>gsv", "<cmd>vsplit | ClangdSwitchSourceHeader<cr>")
-    vim.keymap.set("n", "<leader>gst", "<cmd>tab split | ClangdSwitchSourceHeader<cr>")
-  end
-end
-
--- flags
-local lsp_flags = {
-  -- This is the default in Nvim 0.7+
-  debounce_text_changes = 150,
-}
 
 -- no omnifunc
 vim.opt.completeopt = {"menu", "menuone", "noselect"}
@@ -152,10 +103,6 @@ cmp.event:on(
   cmp_autopairs.on_confirm_done()
 )
 
--- set up lspconfig.
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local lspconfig = require('lspconfig')
-
 vim.fn['minpac#add']('nvim-tree/nvim-web-devicons')
 vim.fn['minpac#add']('onsails/lspkind.nvim')
 local lspkind = require('lspkind')
@@ -175,8 +122,72 @@ cmp.setup {
   }
 }
 
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local default_on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+
+  vim.keymap.set('n', '<leader>gD.', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', '<leader>gDs', '<cmd>belowright split | lua vim.lsp.buf.declaration()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>gDv', '<cmd>vsplit | lua vim.lsp.buf.declaration()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>gDt', '<cmd>tab split | lua vim.lsp.buf.declaration()<cr>', bufopts)
+
+  vim.keymap.set('n', '<leader>gd.', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', '<leader>gds', '<cmd>belowright split | lua vim.lsp.buf.definition()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>gdv', '<cmd>vsplit | lua vim.lsp.buf.definition()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>gdt', '<cmd>tab split | lua vim.lsp.buf.definition()<cr>', bufopts)
+
+  vim.keymap.set('n', '<leader>gi.', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', '<leader>gis', '<cmd>belowright split | lua vim.lsp.buf.implementation()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>giv', '<cmd>vsplit | lua vim.lsp.buf.implementation()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>git', '<cmd>tab split | lua vim.lsp.buf.implementation()<cr>', bufopts)
+
+  vim.keymap.set('n', '<leader>gt.', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', '<leader>gts', '<cmd>belowright split | lua vim.lsp.buf.type_definition()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>gtv', '<cmd>vsplit | lua vim.lsp.buf.type_definition()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>gtt', '<cmd>tab split | lua vim.lsp.buf.type_definition()<cr>', bufopts)
+
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+  vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+  vim.keymap.set('n', '<leader>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, bufopts)
+  vim.keymap.set('n', '<leader>gn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<leader>ga', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+
+  if client.name == "clangd" then
+    vim.keymap.set("n", "<leader>gs.", "<cmd>ClangdSwitchSourceHeader<cr>")
+    vim.keymap.set("n", "<leader>gss", "<cmd>belowright split | ClangdSwitchSourceHeader<cr>")
+    vim.keymap.set("n", "<leader>gsv", "<cmd>vsplit | ClangdSwitchSourceHeader<cr>")
+    vim.keymap.set("n", "<leader>gst", "<cmd>tab split | ClangdSwitchSourceHeader<cr>")
+  end
+
+  lsp_status.on_attach(client)
+end
+
+local lspconfig = require('lspconfig')
+
+-- flags
+local lsp_flags = {
+  -- This is the default in Nvim 0.7+
+  debounce_text_changes = 150,
+}
+
+-- capabilities
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
+
 -- servers
-local servers = { 'bashls', 'clangd', 'cmake', 'marksman', 'tsserver' }
+local servers = { 'bashls', 'cmake', 'marksman', 'tsserver' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = default_on_attach,
@@ -185,8 +196,18 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+lspconfig['clangd'].setup({
+  on_attach = default_on_attach,
+  flags = lsp_flags,
+  capabilities = capabilities,
+  handlers = lsp_status.extensions.clangd.setup(),
+  init_options = {
+    clangdFileStatus = true,
+  },
+})
+
 ----- python language server ----
-require('lspconfig')['pylsp'].setup({
+lspconfig['pylsp'].setup({
   on_attach = default_on_attach,
   flags = lsp_flags,
   capabilities = capabilities,
@@ -220,6 +241,8 @@ rt.setup({
       -- Code action groups
       vim.keymap.set("n", "<leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
     end,
+    flags = lsp_flags,
+    capabilities = capabilities,
   },
 })
 
