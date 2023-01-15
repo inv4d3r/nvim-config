@@ -5,9 +5,9 @@ vim.keymap.set('n', '<leader>pc', '<cmd>cd %:p:h<cr>')
 -- edit (with netrw) current file's path
 vim.keymap.set('n', '<leader>pe', '<cmd>e %:p:h<cr>')
 -- copy current file path to clipboard register
-vim.keymap.set({'n', 'v'}, '<leader>py', '<cmd>let @+ = expand("%")<cr>', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>py', '<cmd>let @+ = expand("%")<cr>', { silent = true })
 -- absolute path
-vim.keymap.set({'n', 'v'}, '<leader>pY', '<cmd>let @+ = expand("%:p")<cr>', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>pY', '<cmd>let @+ = expand("%:p")<cr>', { silent = true })
 -- go to file - vertical
 vim.keymap.set('n', 'gv', '<cmd>vertical wincmd f', { silent = true })
 
@@ -49,7 +49,7 @@ vim.keymap.set("v", "*", "y/\\V<C-R>=escape(@\",'/\')<CR><CR>")
 
 -- show vertical lines for indentation level
 vim.fn["minpac#add"]('yggdroot/indentline')
-vim.g.vim_json_conceal=0
+vim.g.vim_json_conceal = 0
 
 -- utility plugins
 vim.fn["minpac#add"]('dhruvasagar/vim-zoom')
