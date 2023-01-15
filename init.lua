@@ -23,7 +23,7 @@ vim.cmd.packadd("minpac")
 vim.fn["minpac#init"]()
 vim.fn["minpac#add"]("k-takata/minpac", { type = 'opt' })
 
-require("clang")
+--require("clang")
 --require("coc")
 require("colorscheme")
 --require("cscope")

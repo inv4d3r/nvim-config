@@ -174,6 +174,27 @@ local default_on_attach = function(client, bufnr)
   lsp_status.on_attach(client)
 end
 
+vim.g.lsp_auto_format = true
+local lsp_auto_format_toggle = function()
+  vim.g.lsp_auto_format = not vim.g.lsp_auto_format
+  if vim.g.lsp_auto_format then
+    vim.api.nvim_command('echomsg "lsp auto format enabled"')
+  else
+    vim.api.nvim_command('echomsg "lsp auto format disabled"')
+  end
+end
+vim.keymap.set("n", "<leader>kt", lsp_auto_format_toggle, { silent = true })
+local lsp_format_augroup = vim.api.nvim_create_augroup("LspFormat", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  group = lsp_format_augroup,
+  callback = function()
+    if vim.g.lsp_auto_format then
+      vim.lsp.buf.format({ async = true })
+    end
+  end
+})
+
 local lspconfig = require('lspconfig')
 
 -- flags
