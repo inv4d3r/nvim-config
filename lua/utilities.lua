@@ -85,11 +85,9 @@ local SaveAndMake = function()
 end
 vim.keymap.set("n", "<leader>mk", SaveAndMake)
 
----- NERDCommenter ----
-vim.fn["minpac#add"]('scrooloose/nerdcommenter')
--- configuration
-vim.g.NERDCompactSexyComs = 1
-vim.g.NERDTrimTrailingWhitespace = 1
+---- comment.nvim ----
+vim.fn["minpac#add"]('numToStr/Comment.nvim')
+require('Comment').setup()
 
 ---- nvim-tree ----
 vim.fn["minpac#add"]('nvim-tree/nvim-tree.lua')
