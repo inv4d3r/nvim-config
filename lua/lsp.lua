@@ -130,7 +130,7 @@ local default_on_attach = function(client, bufnr)
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+  local bufopts = { noremap = true, silent = true, buffer = bufnr }
 
   vim.keymap.set('n', '<leader>gD.', vim.lsp.buf.declaration, bufopts)
   vim.keymap.set('n', '<leader>gDs', '<cmd>belowright split | lua vim.lsp.buf.declaration()<cr>', bufopts)
@@ -163,13 +163,6 @@ local default_on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>ga', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, bufopts)
   vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-
-  if client.name == "clangd" then
-    vim.keymap.set("n", "<leader>gs.", "<cmd>ClangdSwitchSourceHeader<cr>")
-    vim.keymap.set("n", "<leader>gss", "<cmd>belowright split | ClangdSwitchSourceHeader<cr>")
-    vim.keymap.set("n", "<leader>gsv", "<cmd>vsplit | ClangdSwitchSourceHeader<cr>")
-    vim.keymap.set("n", "<leader>gst", "<cmd>tab split | ClangdSwitchSourceHeader<cr>")
-  end
 
   lsp_status.on_attach(client)
 end
@@ -218,13 +211,32 @@ for _, lsp in ipairs(servers) do
 end
 
 lspconfig['clangd'].setup({
-  on_attach = default_on_attach,
+  on_attach = function(client, bufnr)
+    default_on_attach(client, bufnr)
+    if client.name == "clangd" then
+      vim.keymap.set("n", "<leader>gs.", "<cmd>ClangdSwitchSourceHeader<cr>")
+      vim.keymap.set("n", "<leader>gss", "<cmd>belowright split | ClangdSwitchSourceHeader<cr>")
+      vim.keymap.set("n", "<leader>gsv", "<cmd>vsplit | ClangdSwitchSourceHeader<cr>")
+      vim.keymap.set("n", "<leader>gst", "<cmd>tab split | ClangdSwitchSourceHeader<cr>")
+    end
+  end,
   flags = lsp_flags,
   capabilities = capabilities,
   handlers = lsp_status.extensions.clangd.setup(),
   init_options = {
     clangdFileStatus = true,
   },
+  cmd = {
+    "clangd",
+    "--background-index",
+    "--clang-tidy",
+    "--all-scopes-completion",
+    "--cross-file-rename",
+    "--completion-style=detailed",
+    "--header-insertion-decorators",
+    "--header-insertion=iwyu",
+    "--pch-storage=memory",
+  }
 })
 
 ----- python language server ----
