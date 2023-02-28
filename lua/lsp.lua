@@ -64,6 +64,7 @@ cmp.setup({
     -- { name = 'luasnip' }, -- For luasnip users.
     { name = 'ultisnips' }, -- For ultisnips users.
     -- { name = 'snippy' }, -- For snippy users.
+    { name = 'path' },
   }, {
     { name = 'buffer' },
   })
@@ -201,7 +202,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
 
 -- servers
-local servers = { 'bashls', 'cmake', 'marksman', 'tsserver' }
+local servers = { 'bashls', 'cmake', 'marksman', 'robotframework_ls', 'tsserver' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = default_on_attach,
@@ -213,12 +214,10 @@ end
 lspconfig['clangd'].setup({
   on_attach = function(client, bufnr)
     default_on_attach(client, bufnr)
-    if client.name == "clangd" then
-      vim.keymap.set("n", "<leader>gs.", "<cmd>ClangdSwitchSourceHeader<cr>")
-      vim.keymap.set("n", "<leader>gss", "<cmd>belowright split | ClangdSwitchSourceHeader<cr>")
-      vim.keymap.set("n", "<leader>gsv", "<cmd>vsplit | ClangdSwitchSourceHeader<cr>")
-      vim.keymap.set("n", "<leader>gst", "<cmd>tab split | ClangdSwitchSourceHeader<cr>")
-    end
+    vim.keymap.set("n", "<leader>gs.", "<cmd>ClangdSwitchSourceHeader<cr>")
+    vim.keymap.set("n", "<leader>gss", "<cmd>belowright split | ClangdSwitchSourceHeader<cr>")
+    vim.keymap.set("n", "<leader>gsv", "<cmd>vsplit | ClangdSwitchSourceHeader<cr>")
+    vim.keymap.set("n", "<leader>gst", "<cmd>tab split | ClangdSwitchSourceHeader<cr>")
   end,
   flags = lsp_flags,
   capabilities = capabilities,
