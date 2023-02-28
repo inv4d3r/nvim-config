@@ -91,9 +91,12 @@ require('Comment').setup()
 
 ---- nvim-tree ----
 vim.fn["minpac#add"]('nvim-tree/nvim-tree.lua')
-require("nvim-tree").setup()
-vim.keymap.set("n", "<leader>ge", require("nvim-tree").toggle)
-vim.keymap.set("n", "<leader>gf", require("nvim-tree").focus)
+local nvim_tree = require("nvim-tree")
+local nvim_tree_api = require("nvim-tree.api")
+nvim_tree.setup()
+vim.keymap.set("n", "<leader>ge", nvim_tree_api.tree.toggle)
+vim.keymap.set("n", "<leader>gf", nvim_tree_api.tree.focus)
+vim.keymap.set("n", "<leader>gF", function() nvim_tree_api.tree.open({ find_file = true }) end)
 
 ---- vim-gtest ----
 vim.fn["minpac#add"]('alepez/vim-gtest')
