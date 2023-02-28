@@ -51,7 +51,7 @@ cmp.setup({
     -- documentation = cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert({
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-b>'] = cmp.mapping.scroll_docs( -4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
@@ -278,60 +278,37 @@ rt.setup({
     capabilities = capabilities,
   },
 })
-
----- lua + neovim development ----
-vim.fn["minpac#add"]("folke/neodev.nvim")
--- IMPORTANT: make sure to setup neodev BEFORE lspconfig
-require("neodev").setup({
-  -- add any options here, or leave empty to use the default settings
-})
--- setup sumneko and enable call snippets
-require('lspconfig')['sumneko_lua'].setup({
+---- lua_ls ----
+lspconfig['lua_ls'].setup({
   on_attach = default_on_attach,
   flags = lsp_flags,
   capabilities = capabilities,
   settings = {
     Lua = {
-      completion = {
-        callSnippet = "Replace"
-      }
+      runtime = {
+        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+        version = 'LuaJIT',
+      },
+      diagnostics = {
+        -- Get the language server to recognize the `vim` global
+        globals = { 'vim' },
+      },
+      workspace = {
+        -- Make the server aware of Neovim runtime files
+        library = vim.api.nvim_get_runtime_file("", true),
+      },
+      -- Do not send telemetry data containing a randomized but unique identifier
+      telemetry = {
+        enable = false,
+      },
+      -- completion = {
+      --   callSnippet = "Replace"
+      -- }
     }
   }
 })
--- manual configuration
---local runtime_path = vim.split(package.path, ";")
---table.insert(runtime_path, "lua/?.lua")
---table.insert(runtime_path, "lua/?/init.lua")
---require('lspconfig')['sumneko_lua'].setup{
---on_attach = on_attach,
---flags = lsp_flags,
---capabilities = capabilities,
---settings = {
---Lua = {
---completion = {
---callSnippet = "Replace"
---},
---runtime = {
----- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
---version = 'LuaJIT',
---path = runtime_path
---},
---diagnostics = {
----- Get the language server to recognize the `vim` global
---globals = {'vim'},
---},
---workspace = {
----- Make the server aware of Neovim runtime files
---library = vim.api.nvim_get_runtime_file("", true),
---},
----- Do not send telemetry data containing a randomized but unique identifier
---telemetry = {
---enable = false,
---},
---},
---},
---}
-require('lspconfig')['yamlls'].setup {
+---- yaml ----
+lspconfig['yamlls'].setup {
   on_attach = default_on_attach,
   flags = lsp_flags,
   capabilities = capabilities,
