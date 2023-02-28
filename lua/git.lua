@@ -10,3 +10,7 @@ vim.keymap.set("n", "<leader>gm", "<cmd>GitMessenger<CR>")
 
 ---- fugitive - abstract git commands ----
 vim.fn["minpac#add"]('tpope/vim-fugitive')
+
+---- blamer.nvim ----
+vim.fn["minpac#add"]('APZelos/blamer.nvim')
+vim.g.blamer_enabled = 1
