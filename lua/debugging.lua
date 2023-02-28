@@ -2,11 +2,14 @@ vim.fn['minpac#add']('mfussenegger/nvim-dap')
 vim.fn['minpac#add']('rcarriga/nvim-dap-ui')
 
 local dap = require('dap')
+-- set log level (for troubleshooting)
+-- dap.set_log_level("TRACE")
 local continue = function()
   if vim.fn.filereadable('.vscode/launch.json') then
     require('dap.ext.vscode').load_launchjs(nil, {
       cppdbg = { "c", "cpp", "rust" },
       lldb = { "c", "cpp", "rust" },
+      codelldb = { "c", "cpp", "rust" },
     })
   end
   require('dap').continue()
@@ -51,6 +54,22 @@ dap.adapters.lldb = {
   name = "lldb"
 }
 
+local extension_path = vim.env.HOME .. '/codelldb/extension'
+local codelldb_path = extension_path .. '/adapter/codelldb'
+local liblldb_path = extension_path .. '/lldb/lib/liblldb.so'
+dap.adapters.codelldb = {
+  type = 'server',
+  port = "${port}",
+  executable = {
+    -- CHANGE THIS to your path!
+    command = codelldb_path,
+    args = { "--liblldb", liblldb_path, "--port", "${port}" },
+
+    -- On windows you may have to uncomment this:
+    -- detached = false,
+  }
+}
+
 dap.configurations.cpp = {
   {
     name = "[lldb] LaunchAny",
@@ -60,7 +79,7 @@ dap.configurations.cpp = {
       return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
     end,
     cwd = "${workspaceFolder}",
-    stopOnEntry = true,
+    stopOnEntry = false,
   },
   {
     name = "[cppdbg] LaunchAny",
@@ -72,6 +91,49 @@ dap.configurations.cpp = {
     cwd = '${workspaceFolder}',
     stopAtEntry = true,
   },
+  {
+    name = "[codelldb] LaunchAny",
+    type = "codelldb",
+    request = "launch",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+  },
+  {
+    name = "[lldb] AttachAny",
+    type = "lldb",
+    request = "attach",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    pid = "${command:pickProcess}",
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+  },
+  {
+    name = "[cppdbg] AttachAny",
+    type = "cppdbg",
+    request = "attach",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    processId = "${command:pickProcess}",
+    cwd = '${workspaceFolder}',
+    stopAtEntry = false,
+  },
+  {
+    name = "[codelldb] AttachAny",
+    type = "codelldb",
+    request = "attach",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    pid = "${command:pickProcess}",
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+  },
 }
 
 dap.configurations.c = dap.configurations.cpp
@@ -80,14 +142,17 @@ dap.configurations.rust = dap.configurations.cpp
 require("dapui").setup()
 local dapui = require("dapui")
 dap.listeners.after.event_initialized["dapui_config"] = function()
-  dapui.open({})
+  dapui.open()
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close({})
+  dapui.close()
 end
 dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close({})
+  dapui.close()
 end
+
+-- toggle (in case not closed automatically using event)
+vim.keymap.set({ "n" }, "<leader>dt", dapui.toggle)
 
 -- evaluate expression under cursor or visually selected
 vim.keymap.set({ "n", "v" }, "<leader>e", dapui.eval)
