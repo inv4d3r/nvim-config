@@ -183,7 +183,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   group = lsp_format_augroup,
   callback = function()
     if vim.g.lsp_auto_format then
-      vim.lsp.buf.format({ async = true })
+      vim.lsp.buf.format()
     end
   end
 })
@@ -301,9 +301,6 @@ lspconfig['lua_ls'].setup({
       telemetry = {
         enable = false,
       },
-      -- completion = {
-      --   callSnippet = "Replace"
-      -- }
     }
   }
 })
