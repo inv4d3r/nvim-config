@@ -51,7 +51,7 @@ cmp.setup({
     -- documentation = cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert({
-    ['<C-b>'] = cmp.mapping.scroll_docs( -4),
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
@@ -152,6 +152,16 @@ local default_on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>gts', '<cmd>belowright split | lua vim.lsp.buf.type_definition()<cr>', bufopts)
   vim.keymap.set('n', '<leader>gtv', '<cmd>vsplit | lua vim.lsp.buf.type_definition()<cr>', bufopts)
   vim.keymap.set('n', '<leader>gtt', '<cmd>tab split | lua vim.lsp.buf.type_definition()<cr>', bufopts)
+
+  vim.keymap.set('n', '<leader>gc.', vim.lsp.buf.incoming_calls, bufopts)
+  vim.keymap.set('n', '<leader>gcs', '<cmd>belowright split | lua vim.lsp.buf.incoming_calls()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>gcv', '<cmd>vsplit split | lua vim.lsp.buf.incoming_calls()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>gct', '<cmd>tab split | lua vim.lsp.buf.incoming_calls()<cr>', bufopts)
+
+  vim.keymap.set('n', '<leader>go.', vim.lsp.buf.outgoing_calls, bufopts)
+  vim.keymap.set('n', '<leader>gos', '<cmd>belowright split | lua vim.lsp.buf.outgoing_calls()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>gov', '<cmd>vsplit split | lua vim.lsp.buf.outgoing_calls()<cr>', bufopts)
+  vim.keymap.set('n', '<leader>got', '<cmd>tab split | lua vim.lsp.buf.outgoing_calls()<cr>', bufopts)
 
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
