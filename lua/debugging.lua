@@ -1,3 +1,4 @@
+vim.fn['minpac#add']('nvim-neotest/nvim-nio')
 vim.fn['minpac#add']('mfussenegger/nvim-dap')
 vim.fn['minpac#add']('rcarriga/nvim-dap-ui')
 
