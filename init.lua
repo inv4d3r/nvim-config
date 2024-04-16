@@ -29,6 +29,7 @@ require("colorscheme")
 --require("cscope")
 --require("ctags")
 require("debugging")
+require("diagnostics")
 require("documentation") -- markdown, plantuml, doxygen
 --require("fswitch")
 require("fzf")
