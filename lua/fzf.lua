@@ -1,8 +1,7 @@
 -- file & fuzzy navigation
 
 ---- fzf plugins ----
-vim.fn["minpac#add"]('junegunn/fzf', { ['do'] = 'call fzf#install()' })
-vim.fn["minpac#add"]("ibhagwan/fzf-lua", { branch = "main"})
+vim.fn["minpac#add"]("ibhagwan/fzf-lua", { branch = "main" })
 
 -- basic mappings
 local fzf = require("fzf-lua")
