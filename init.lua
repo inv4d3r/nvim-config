@@ -34,7 +34,7 @@ require("documentation") -- markdown, plantuml, doxygen
 require("fzf")
 require("git")
 require("highlight")
-require("lightline")
+require("lualine_plugin")
 --require("linux")
 require("lsp")
 require("options")
