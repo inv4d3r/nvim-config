@@ -30,14 +30,17 @@ vim.opt.hidden = true
 vim.opt.showcmd = true
 vim.opt.background = "dark"
 vim.opt.hlsearch = true
-vim.opt.sessionoptions:append({"buffers", "curdir", "tabpages", "winpos", "winsize"})
+vim.opt.sessionoptions:append({ "buffers", "curdir", "tabpages", "winpos", "winsize" })
 
 vim.opt.list = true
-vim.opt.listchars={tab = "→ ", nbsp = "¬"}
+vim.opt.listchars = { tab = "→ ", nbsp = "¬" }
 
-vim.opt.clipboard:append({"unnamed", "unnamedplus"})
+vim.opt.clipboard:append({ "unnamed", "unnamedplus" })
 
-vim.opt.colorcolumn = {"121"}
+vim.opt.colorcolumn = { "121" }
+
+-- no omnifunc
+vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
 ---- latex configuration ----
 vim.g.tex_flavor = "latex"
