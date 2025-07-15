@@ -145,7 +145,17 @@ return {
     "nvim-tree/nvim-tree.lua",
     config = function()
       local nvim_tree = require("nvim-tree")
-      nvim_tree.setup()
+      nvim_tree.setup({
+        -- hijack_cursor = true,
+        -- respect_buf_cwd = true,
+        -- sync_root_with_cwd = true,
+        -- auto_reload_on_write = true,
+        -- reload_on_bufenter = true,
+        update_focused_file = {
+          enable = true,
+          update_cwd = false,
+        },
+      })
 
       local nvim_tree_api = require("nvim-tree.api")
       vim.keymap.set("n", "<leader>ge", nvim_tree_api.tree.toggle)
