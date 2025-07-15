@@ -6,13 +6,15 @@ return {
       -- set log level (for troubleshooting)
       -- dap.set_log_level("TRACE")
       local continue = function()
-        if vim.fn.filereadable('.vscode/launch.json') then
-          require('dap.ext.vscode').load_launchjs(nil, {
-            cppdbg = { "c", "cpp", "rust" },
-            lldb = { "c", "cpp", "rust" },
-            codelldb = { "c", "cpp", "rust" },
-          })
-        end
+        -- [[ FOR DEBUGGING PURPOSES
+        -- if vim.fn.filereadable('.vscode/launch.json') then
+        --   require('dap.ext.vscode').load_launchjs(nil, {
+        --     cppdbg = { "c", "cpp", "rust" },
+        --     lldb = { "c", "cpp", "rust" },
+        --     codelldb = { "c", "cpp", "rust" },
+        --   })
+        -- end
+        -- ]]
         require('dap').continue()
       end
 
@@ -27,6 +29,7 @@ return {
       vim.keymap.set("n", "<F4>", dap.restart)
       vim.keymap.set("n", "<F5>", continue)
       vim.keymap.set("n", "<F6>", dap.pause)
+      vim.keymap.set("n", "<F7>", dap.terminate)
       -- function breakpoint not yet supported
       --vim.keymap.set("n", "<F8>", dap.?)
       vim.keymap.set("n", "<leader><F8>", dap.run_to_cursor)
@@ -71,14 +74,21 @@ return {
         }
       }
 
+      local pickProgram = function()
+        local path = vim.fn.input({
+          prompt = 'Path to executable: ',
+          default = vim.fn.getcwd() .. '/',
+          completion = 'file'
+        })
+        return (path and path ~= "") and path or dap.ABORT
+      end
+
       dap.configurations.cpp = {
         {
           name = "[lldb] LaunchAny",
           type = "lldb",
           request = "launch",
-          program = function()
-            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-          end,
+          program = pickProgram,
           cwd = "${workspaceFolder}",
           stopOnEntry = false,
         },
@@ -86,9 +96,7 @@ return {
           name = "[cppdbg] LaunchAny",
           type = "cppdbg",
           request = "launch",
-          program = function()
-            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-          end,
+          program = pickProgram,
           cwd = '${workspaceFolder}',
           stopAtEntry = true,
         },
@@ -96,9 +104,7 @@ return {
           name = "[codelldb] LaunchAny",
           type = "codelldb",
           request = "launch",
-          program = function()
-            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-          end,
+          program = pickProgram,
           cwd = '${workspaceFolder}',
           stopOnEntry = false,
         },
@@ -106,9 +112,7 @@ return {
           name = "[lldb] AttachAny",
           type = "lldb",
           request = "attach",
-          program = function()
-            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-          end,
+          program = pickProgram,
           pid = "${command:pickProcess}",
           cwd = '${workspaceFolder}',
           stopOnEntry = false,
@@ -117,9 +121,7 @@ return {
           name = "[cppdbg] AttachAny",
           type = "cppdbg",
           request = "attach",
-          program = function()
-            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-          end,
+          program = pickProgram,
           processId = "${command:pickProcess}",
           cwd = '${workspaceFolder}',
           stopAtEntry = false,
@@ -128,9 +130,7 @@ return {
           name = "[codelldb] AttachAny",
           type = "codelldb",
           request = "attach",
-          program = function()
-            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-          end,
+          program = pickProgram,
           pid = "${command:pickProcess}",
           cwd = '${workspaceFolder}',
           stopOnEntry = false,
