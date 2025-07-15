@@ -17,6 +17,10 @@ return {
         return ''
       end
 
+      local copilot_status = function()
+        return vim.api.nvim_exec2('Copilot status', { output = true })
+      end
+
       require('lualine').setup({
         options = {
           icons_enabled = true,
@@ -28,7 +32,7 @@ return {
           lualine_a = { 'mode' },
           lualine_b = { 'branch', 'diff' },
           lualine_c = { 'filename', lsp_current_function },
-          lualine_x = { 'diagnostics', lsp_status_progress, 'encoding', 'fileformat', 'filetype' },
+          lualine_x = { copilot_status, lsp_status_progress, 'diagnostics', 'encoding', 'fileformat', 'filetype' },
           lualine_y = { 'progress' },
           lualine_z = { 'location' }
         },

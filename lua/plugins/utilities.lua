@@ -1,4 +1,34 @@
 return {
+  ---- Github Copilot ---
+  {
+    "github/copilot.vim",
+    enabled = false,
+    init = function()
+      vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-word)')
+      vim.keymap.set('i', '<M-j>', '<Plug>(copilot-accept-line)')
+      vim.keymap.set('i', '<M-m>', 'copilot#Accept("\\<CR>")', {
+        expr = true,
+        replace_keycodes = false
+      })
+      vim.g.copilot_no_tab_map = true
+    end,
+    config = function()
+      -- vim.fn.execute("Copilot setup")
+    end,
+  },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    enabled = false, -- requires neovim > 0.10.0
+    dependencies = {
+      { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
+      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+    },
+    build = "make tiktoken", -- Only on MacOS or Linux
+    opts = {
+      -- See Configuration section for options
+    },
+    -- See Commands section for default commands if you want to lazy load on them
+  },
   ---- whitespace handling ----
   { "ntpeters/vim-better-whitespace" },
   ---- tmux integration ----
