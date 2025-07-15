@@ -11,7 +11,7 @@ return {
       end
 
       local lsp_status_progress = function()
-        if #vim.lsp.get_active_clients() > 0 then
+        if #vim.lsp.get_clients() > 0 then
           return lsp_status.status_progress()
         end
         return ''

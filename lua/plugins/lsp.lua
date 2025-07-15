@@ -188,7 +188,7 @@ return {
           print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
         end, bufopts)
         vim.keymap.set('n', '<leader>gn', vim.lsp.buf.rename, bufopts)
-        vim.keymap.set('n', '<leader>ga', vim.lsp.buf.code_action, bufopts)
+        vim.keymap.set({ 'n', 'v' }, '<leader>ga', vim.lsp.buf.code_action, bufopts)
         vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, bufopts)
         vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 
@@ -206,7 +206,7 @@ return {
       capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
 
       -- servers
-      local servers = { 'bashls', 'cmake', 'marksman', 'robotframework_ls', 'ts_ls' }
+      local servers = { 'bashls', 'cmake', 'marksman', 'ts_ls', 'jdtls' }
       for _, lsp in ipairs(servers) do
         lspconfig[lsp].setup {
           on_attach = default_on_attach,
@@ -222,6 +222,7 @@ return {
           vim.keymap.set("n", "<leader>gss", "<cmd>belowright split | ClangdSwitchSourceHeader<cr>")
           vim.keymap.set("n", "<leader>gsv", "<cmd>vsplit | ClangdSwitchSourceHeader<cr>")
           vim.keymap.set("n", "<leader>gst", "<cmd>tab split | ClangdSwitchSourceHeader<cr>")
+          vim.keymap.set("n", "<leader>gk", "<cmd>ClangdShowSymbolInfo<cr>")
         end,
         flags = lsp_flags,
         capabilities = capabilities,
@@ -242,7 +243,7 @@ return {
         }
       })
 
-      ----- python language server ----
+      --- python language server ---
       lspconfig['pylsp'].setup({
         on_attach = default_on_attach,
         flags = lsp_flags,
@@ -255,6 +256,20 @@ return {
               },
               pycodestyle = {
                 maxLineLength = 120,
+              },
+              ruff = {
+                enabled = true, -- Enable the plugin
+                formatEnabled = true, -- Enable formatting using ruffs formatter
+                unsafeFixes = true, -- Whether or not to offer unsafe fixes as code actions. Ignored with the "Fix All" action
+
+                -- Rules that are ignored when a pyproject.toml or ruff.toml is present:
+                lineLength = 120, -- Line length to pass to ruff checking and formatting
+                exclude = { "__about__.py" }, -- Files to be excluded by ruff checking
+                select = { "ALL" }, -- Rules to be enabled by ruff
+                ignore = {}, -- Rules to be ignored by ruff
+                perFileIgnores = { ["__init__.py"] = "CPY001" }, -- Rules that should be ignored for specific files
+                preview = true, -- Whether to enable the preview style linting and formatting.
+                fixable = { "ALL" },
               },
             },
           },
@@ -277,30 +292,54 @@ return {
           capabilities = capabilities,
         },
       })
+      ---- robotframework_ls ----
+      lspconfig['robotframework_ls'].setup({
+        on_attach = default_on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+        settings = {
+          robot = { lint = { robocop = { enabled = true } } },
+        }
+      })
       ---- lua_ls ----
       lspconfig['lua_ls'].setup({
         on_attach = default_on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
-        settings = {
-          Lua = {
-            runtime = {
-              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-              version = 'LuaJIT',
-            },
+        on_init = function(client)
+          -- if client.workspace_folders then
+          --   local path = client.workspace_folders[1].name
+          --   if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+          --     return
+          --   end
+          -- end
+
+          client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
             diagnostics = {
               -- Get the language server to recognize the `vim` global
               globals = { 'vim' },
             },
+            runtime = {
+              -- Tell the language server which version of Lua you're using
+              -- (most likely LuaJIT in the case of Neovim)
+              version = 'LuaJIT'
+            },
+            -- Make the server aware of Neovim runtime files
             workspace = {
-              -- Make the server aware of Neovim runtime files
-              library = vim.api.nvim_get_runtime_file("", true),
-            },
-            -- Do not send telemetry data containing a randomized but unique identifier
-            telemetry = {
-              enable = false,
-            },
-          }
+              checkThirdParty = false,
+              -- library = {
+              -- vim.env.VIMRUNTIME
+              -- Depending on the usage, you might want to add additional paths here.
+              -- "${3rd}/luv/library"
+              -- "${3rd}/busted/library",
+              -- }
+              -- or pull in all of 'runtimepath'. NOTE: this is a lot slower and will cause issues when working on your own configuration (see https://github.com/neovim/nvim-lspconfig/issues/3189)
+              library = vim.api.nvim_get_runtime_file("", true)
+            }
+          })
+        end,
+        settings = {
+          Lua = {}
         }
       })
       ---- yaml ----
