@@ -8,6 +8,10 @@ vim.keymap.set('n', '<leader>pe', '<cmd>e %:p:h<cr>')
 vim.keymap.set({ 'n', 'v' }, '<leader>py', '<cmd>let @+ = expand("%")<cr>', { silent = true })
 -- absolute path
 vim.keymap.set({ 'n', 'v' }, '<leader>pY', '<cmd>let @+ = expand("%:p")<cr>', { silent = true })
+-- copy current file path with line number to clipboard register
+vim.keymap.set({ 'n', 'v' }, '<leader>pl', '<cmd>let @+ = expand("%").":".line(".")<cr>', { silent = true })
+-- absolute path
+vim.keymap.set({ 'n', 'v' }, '<leader>pL', '<cmd>let @+ = expand("%:p").":".line(".")<cr>', { silent = true })
 -- go to file - vertical
 vim.keymap.set('n', 'gv', '<cmd>vertical wincmd f', { silent = true })
 
