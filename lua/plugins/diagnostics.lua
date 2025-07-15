@@ -16,6 +16,16 @@ return {
         desc = "Buffer Diagnostics (Trouble)",
       },
       {
+        "[X",
+        "<cmd>Trouble diagnostics prev<cr>",
+        desc = "Go to previous diagnostic",
+      },
+      {
+        "]X",
+        "<cmd>Trouble diagnostics next<cr>",
+        desc = "Go to next diagnostic",
+      },
+      {
         "<leader>cs",
         "<cmd>Trouble symbols toggle focus=false<cr>",
         desc = "Symbols (Trouble)",
