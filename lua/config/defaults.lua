@@ -4,6 +4,9 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+vim.opt.cursorline = true
+vim.opt.cursorlineopt = "number"
+
 vim.opt.termguicolors = true
 
 vim.opt.autoread = true
