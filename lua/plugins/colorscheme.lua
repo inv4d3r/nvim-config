@@ -3,12 +3,16 @@ local system_theme = vim.env.THEME
 return {
   {
     "arcticicestudio/nord-vim",
-    lazy = system_theme == "nord"
+    lazy = system_theme == "nord",
+    priority = 1000,
+    init = function()
+      vim.g.nord_italic = 1
+    end
   },
   {
     "dracula/vim",
     lazy = system_theme == "dracula",
-    priority = 1000
+    priority = 1000,
   },
   {
     -- Changed in diffs are not higlighted correctly: https://github.com/Mofiqul/dracula.nvim/issues/75
