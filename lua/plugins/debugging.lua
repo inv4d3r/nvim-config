@@ -39,8 +39,8 @@ return {
       vim.keymap.set("n", "<F11>", dap.step_into)
       vim.keymap.set("n", "<F12>", dap.step_out)
 
-      vim.keymap.set("n", "<leader>db", dap.list_breakpoints)
-      vim.keymap.set("n", "<leader>dc", dap.clear_breakpoints)
+      vim.keymap.set("n", "<leader>dbl", dap.list_breakpoints)
+      vim.keymap.set("n", "<leader>dbc", dap.clear_breakpoints)
       vim.keymap.set("n", "<leader>dd", dap.down)
       vim.keymap.set("n", "<leader>du", dap.up)
       vim.keymap.set("n", "<leader>dr", dap.repl.open)
@@ -139,6 +139,47 @@ return {
 
       dap.configurations.c = dap.configurations.cpp
       dap.configurations.rust = dap.configurations.cpp
+    end,
+  },
+  {
+    "mfussenegger/nvim-dap-python",
+    dependencies = { "mfussenegger/nvim-dap" },
+    config = function()
+      local get_python_path = function()
+        local venv_env_path = os.getenv('VIRTUAL_ENV')
+        local conda_env_path = os.getenv("CONDA_PREFIX")
+        for _, folder in ipairs({ venv_env_path, conda_env_path }) do
+          local python_path = folder .. "/bin/python3"
+          if vim.fn.filereadable(python_path) then
+            return python_path
+          end
+        end
+
+        for _, folder in ipairs({ "venv", ".venv", "env", ".env" }) do
+          local python_path = vim.fn.getcwd() .. "/" .. folder .. "/bin/python3"
+          if vim.fn.filereadable(python_path) then
+            return python_path
+          end
+        end
+
+        return "python3"
+      end
+      local python_path = get_python_path()
+      local dap = require("dap")
+      local dap_python = require("dap-python")
+      dap_python.setup(python_path)
+      table.insert(dap.configurations.python, {
+        name = "pytest: current file",
+        type = "python",
+        request = "launch",
+        module = "pytest",
+        args = {
+          "${file}",
+        },
+        console = "integratedTerminal",
+      })
+      vim.keymap.set("n", "<leader>dm", dap_python.test_method)
+      vim.keymap.set("n", "<leader>dc", dap_python.test_class)
     end,
   },
   {
