@@ -23,8 +23,7 @@ return {
       vim.g.markdown_syntax_conceal = 0
     end,
     config = function()
-      vim.keymap.set("n", "<leader>mb", "<cmd>MarkdownPreview<CR>", { silent = true })
-      vim.keymap.set("n", "<leader>mp", "<cmd>PreviewMarkdown<CR>", { silent = true })
+      vim.keymap.set("n", "<leader>mb", "<Plug>MarkdownPreviewToggle", { silent = true })
     end
   },
   -- glow
