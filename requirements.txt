@@ -1,0 +1,5 @@
+neovim
+# python development
+python-lsp-server
+python-lsp-ruff
+pylsp-mypy
