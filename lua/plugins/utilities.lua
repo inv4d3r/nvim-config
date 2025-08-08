@@ -2,7 +2,7 @@ return {
   ---- Github Copilot ---
   {
     "github/copilot.vim",
-    enabled = false,
+    enabled = true,
     init = function()
       vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-word)')
       vim.keymap.set('i', '<M-j>', '<Plug>(copilot-accept-line)')
@@ -13,12 +13,12 @@ return {
       vim.g.copilot_no_tab_map = true
     end,
     config = function()
-      -- vim.fn.execute("Copilot setup")
+      vim.fn.execute("Copilot setup")
     end,
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    enabled = false, -- requires neovim > 0.10.0
+    enabled = true,
     dependencies = {
       { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
       { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions

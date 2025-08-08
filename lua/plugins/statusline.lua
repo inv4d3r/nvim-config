@@ -18,7 +18,7 @@ return {
       end
 
       local copilot_status = function()
-        return vim.api.nvim_exec2('Copilot status', { output = true })
+        return vim.api.nvim_exec2('Copilot status', { output = true }).output
       end
 
       require('lualine').setup({
