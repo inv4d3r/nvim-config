@@ -257,6 +257,9 @@ return {
               pycodestyle = {
                 maxLineLength = 120,
               },
+              flake8 = {
+                enabled = true,
+              },
               ruff = {
                 enabled = true, -- Enable the plugin
                 formatEnabled = true, -- Enable formatting using ruffs formatter
