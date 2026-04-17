@@ -11,7 +11,7 @@ return {
       "quangnguyen30192/cmp-nvim-ultisnips",
       "windwp/nvim-autopairs",
       "nvim-tree/nvim-web-devicons",
-      "onsails/lspkind.nvim"
+      "onsails/lspkind.nvim", -- VS Code–style pictograms for Neovim completion items
     },
     lazy = true,
     config = function()
@@ -113,8 +113,26 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    dependencies = { "hrsh7th/nvim-cmp", "simrat39/rust-tools.nvim", "nvim-lua/plenary.nvim", "nvim-lua/lsp-status.nvim" },
+    dependencies = { "hrsh7th/nvim-cmp", "nvim-lua/plenary.nvim", "nvim-lua/lsp-status.nvim" },
     init = function()
+      vim.diagnostic.config({
+        virtual_text = {
+          prefix = '●', -- Could be '■', '▎', 'x'
+        },
+        signs = true,
+        underline = true,
+        update_in_insert = false,
+        severity_sort = true,
+        float = {
+          format = function(diagnostic)
+            if diagnostic.source then
+              return string.format("%s [%s]", diagnostic.message, diagnostic.source)
+            end
+            return diagnostic.message
+          end,
+        },
+      })
+
       vim.g.lsp_auto_format = true
       local lsp_auto_format_toggle = function()
         vim.g.lsp_auto_format = not vim.g.lsp_auto_format
@@ -124,7 +142,7 @@ return {
           vim.api.nvim_command('echomsg "lsp auto format disabled"')
         end
       end
-      vim.keymap.set("n", "<leader>kt", lsp_auto_format_toggle, { silent = true })
+      vim.keymap.set("n", "<leader>ft", lsp_auto_format_toggle, { silent = true, desc = "Toggle LSP auto-format" })
       local lsp_format_augroup = vim.api.nvim_create_augroup("LspFormat", { clear = true })
       vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = "*",
@@ -137,7 +155,6 @@ return {
       })
     end,
     config = function()
-      local lspconfig = require('lspconfig')
       local lsp_status = require('lsp-status')
 
       -- Use an on_attach function to only map the following keys
@@ -148,49 +165,58 @@ return {
 
         -- Mappings.
         -- See `:help vim.lsp.*` for documentation on any of the below functions
-        local bufopts = { noremap = true, silent = true, buffer = bufnr }
+        local map = function(mode, lhs, rhs, desc)
+          vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = bufnr, desc = desc })
+        end
 
-        vim.keymap.set('n', '<leader>gD.', vim.lsp.buf.declaration, bufopts)
-        vim.keymap.set('n', '<leader>gDs', '<cmd>belowright split | lua vim.lsp.buf.declaration()<cr>', bufopts)
-        vim.keymap.set('n', '<leader>gDv', '<cmd>vsplit | lua vim.lsp.buf.declaration()<cr>', bufopts)
-        vim.keymap.set('n', '<leader>gDt', '<cmd>tab split | lua vim.lsp.buf.declaration()<cr>', bufopts)
-
-        vim.keymap.set('n', '<leader>gd.', vim.lsp.buf.definition, bufopts)
-        vim.keymap.set('n', '<leader>gds', '<cmd>belowright split | lua vim.lsp.buf.definition()<cr>', bufopts)
-        vim.keymap.set('n', '<leader>gdv', '<cmd>vsplit | lua vim.lsp.buf.definition()<cr>', bufopts)
-        vim.keymap.set('n', '<leader>gdt', '<cmd>tab split | lua vim.lsp.buf.definition()<cr>', bufopts)
-
-        vim.keymap.set('n', '<leader>gi.', vim.lsp.buf.implementation, bufopts)
-        vim.keymap.set('n', '<leader>gis', '<cmd>belowright split | lua vim.lsp.buf.implementation()<cr>', bufopts)
-        vim.keymap.set('n', '<leader>giv', '<cmd>vsplit | lua vim.lsp.buf.implementation()<cr>', bufopts)
-        vim.keymap.set('n', '<leader>git', '<cmd>tab split | lua vim.lsp.buf.implementation()<cr>', bufopts)
-
-        vim.keymap.set('n', '<leader>gt.', vim.lsp.buf.type_definition, bufopts)
-        vim.keymap.set('n', '<leader>gts', '<cmd>belowright split | lua vim.lsp.buf.type_definition()<cr>', bufopts)
-        vim.keymap.set('n', '<leader>gtv', '<cmd>vsplit | lua vim.lsp.buf.type_definition()<cr>', bufopts)
-        vim.keymap.set('n', '<leader>gtt', '<cmd>tab split | lua vim.lsp.buf.type_definition()<cr>', bufopts)
-
-        vim.keymap.set('n', '<leader>gc.', vim.lsp.buf.incoming_calls, bufopts)
-        vim.keymap.set('n', '<leader>gcs', '<cmd>belowright split | lua vim.lsp.buf.incoming_calls()<cr>', bufopts)
-        vim.keymap.set('n', '<leader>gcv', '<cmd>vsplit split | lua vim.lsp.buf.incoming_calls()<cr>', bufopts)
-        vim.keymap.set('n', '<leader>gct', '<cmd>tab split | lua vim.lsp.buf.incoming_calls()<cr>', bufopts)
-
-        vim.keymap.set('n', '<leader>go.', vim.lsp.buf.outgoing_calls, bufopts)
-        vim.keymap.set('n', '<leader>gos', '<cmd>belowright split | lua vim.lsp.buf.outgoing_calls()<cr>', bufopts)
-        vim.keymap.set('n', '<leader>gov', '<cmd>vsplit split | lua vim.lsp.buf.outgoing_calls()<cr>', bufopts)
-        vim.keymap.set('n', '<leader>got', '<cmd>tab split | lua vim.lsp.buf.outgoing_calls()<cr>', bufopts)
-
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-        vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-        vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-        vim.keymap.set('n', '<leader>wl', function()
+        -- goto declaration
+        map('n', '<leader>gD.', vim.lsp.buf.declaration, "Go to declaration")
+        map('n', '<leader>gDs', '<cmd>belowright split | lua vim.lsp.buf.declaration()<cr>', "Go to declaration (split)")
+        map('n', '<leader>gDv', '<cmd>vsplit | lua vim.lsp.buf.declaration()<cr>', "Go to declaration (vsplit)")
+        map('n', '<leader>gDt', '<cmd>tab split | lua vim.lsp.buf.declaration()<cr>', "Go to declaration (tab)")
+        -- goto definition
+        map('n', '<leader>gd.', vim.lsp.buf.definition, "Go to definition")
+        map('n', '<leader>gds', '<cmd>belowright split | lua vim.lsp.buf.definition()<cr>', "Go to definition (split)")
+        map('n', '<leader>gdv', '<cmd>vsplit | lua vim.lsp.buf.definition()<cr>', "Go to definition (vsplit)")
+        map('n', '<leader>gdt', '<cmd>tab split | lua vim.lsp.buf.definition()<cr>', "Go to definition (tab)")
+        -- goto implementation
+        map('n', '<leader>gi.', vim.lsp.buf.implementation, "Go to implementation")
+        map('n', '<leader>gis', '<cmd>belowright split | lua vim.lsp.buf.implementation()<cr>',
+          "Go to implementation (split)")
+        map('n', '<leader>giv', '<cmd>vsplit | lua vim.lsp.buf.implementation()<cr>', "Go to implementation (vsplit)")
+        map('n', '<leader>git', '<cmd>tab split | lua vim.lsp.buf.implementation()<cr>', "Go to implementation (tab)")
+        -- goto type definition
+        map('n', '<leader>gt.', vim.lsp.buf.type_definition, "Go to type definition")
+        map('n', '<leader>gts', '<cmd>belowright split | lua vim.lsp.buf.type_definition()<cr>',
+          "Go to type definition (split)")
+        map('n', '<leader>gtv', '<cmd>vsplit | lua vim.lsp.buf.type_definition()<cr>', "Go to type definition (vsplit)")
+        map('n', '<leader>gtt', '<cmd>tab split | lua vim.lsp.buf.type_definition()<cr>', "Go to type definition (tab)")
+        -- goto incoming calls
+        map('n', '<leader>gc.', vim.lsp.buf.incoming_calls, "Incoming calls")
+        map('n', '<leader>gcs', '<cmd>belowright split | lua vim.lsp.buf.incoming_calls()<cr>', "Incoming calls (split)")
+        map('n', '<leader>gcv', '<cmd>vsplit split | lua vim.lsp.buf.incoming_calls()<cr>', "Incoming calls (vsplit)")
+        map('n', '<leader>gct', '<cmd>tab split | lua vim.lsp.buf.incoming_calls()<cr>', "Incoming calls (tab)")
+        -- goto outgoing calls
+        map('n', '<leader>go.', vim.lsp.buf.outgoing_calls, "Outgoing calls")
+        map('n', '<leader>gos', '<cmd>belowright split | lua vim.lsp.buf.outgoing_calls()<cr>', "Outgoing calls (split)")
+        map('n', '<leader>gov', '<cmd>vsplit split | lua vim.lsp.buf.outgoing_calls()<cr>', "Outgoing calls (vsplit)")
+        map('n', '<leader>got', '<cmd>tab split | lua vim.lsp.buf.outgoing_calls()<cr>', "Outgoing calls (tab)")
+        -- info
+        map('n', 'K', vim.lsp.buf.hover, "Hover documentation")
+        map('n', '<C-k>', vim.lsp.buf.signature_help, "Signature help")
+        -- workspace
+        map('n', '<leader>waf', vim.lsp.buf.add_workspace_folder, "Add workspace folder")
+        map('n', '<leader>wrf', vim.lsp.buf.remove_workspace_folder, "Remove workspace folder")
+        map('n', '<leader>wlf', function()
           print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, bufopts)
-        vim.keymap.set('n', '<leader>gn', vim.lsp.buf.rename, bufopts)
-        vim.keymap.set({ 'n', 'v' }, '<leader>ga', vim.lsp.buf.code_action, bufopts)
-        vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, bufopts)
-        vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+        end, "List workspace folders")
+        -- refactor
+        map('n', '<leader>gn', vim.lsp.buf.rename, "Rename symbol")
+        map({ 'n', 'v' }, '<leader>ga', vim.lsp.buf.code_action, "Code action")
+        -- references
+        map('n', '<leader>gr', vim.lsp.buf.references, "References")
+        -- formatting
+        map('n', '<leader>fb', function() vim.lsp.buf.format { async = true } end, "Format buffer")
 
         lsp_status.on_attach(client)
       end
@@ -205,24 +231,33 @@ return {
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
       capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
 
-      -- servers
-      local servers = { 'bashls', 'cmake', 'marksman', 'ts_ls', 'jdtls' }
+      -- servers with default config
+      -- local servers = { 'bashls', 'cmake', 'marksman', 'ts_ls', 'jdtls' }
+      local servers = { 'bashls', 'cmake', 'marksman', 'ts_ls' }
+      -- servers.insert('pyright')
+      -- servers.insert('ruff')
       for _, lsp in ipairs(servers) do
-        lspconfig[lsp].setup {
+        vim.lsp.config[lsp] = {
           on_attach = default_on_attach,
           flags = lsp_flags,
           capabilities = capabilities,
         }
+        vim.lsp.enable(lsp)
       end
 
-      lspconfig['clangd'].setup({
+      vim.lsp.config.clangd = {
         on_attach = function(client, bufnr)
           default_on_attach(client, bufnr)
-          vim.keymap.set("n", "<leader>gs.", "<cmd>ClangdSwitchSourceHeader<cr>")
-          vim.keymap.set("n", "<leader>gss", "<cmd>belowright split | ClangdSwitchSourceHeader<cr>")
-          vim.keymap.set("n", "<leader>gsv", "<cmd>vsplit | ClangdSwitchSourceHeader<cr>")
-          vim.keymap.set("n", "<leader>gst", "<cmd>tab split | ClangdSwitchSourceHeader<cr>")
-          vim.keymap.set("n", "<leader>gk", "<cmd>ClangdShowSymbolInfo<cr>")
+          vim.keymap.set("n", "<leader>gs.", "<cmd>ClangdSwitchSourceHeader<cr>",
+            { buffer = bufnr, desc = "Clangd: switch source/header" })
+          vim.keymap.set("n", "<leader>gss", "<cmd>belowright split | ClangdSwitchSourceHeader<cr>",
+            { buffer = bufnr, desc = "Clangd: switch source/header (split)" })
+          vim.keymap.set("n", "<leader>gsv", "<cmd>vsplit | ClangdSwitchSourceHeader<cr>",
+            { buffer = bufnr, desc = "Clangd: switch source/header (vsplit)" })
+          vim.keymap.set("n", "<leader>gst", "<cmd>tab split | ClangdSwitchSourceHeader<cr>",
+            { buffer = bufnr, desc = "Clangd: switch source/header (tab)" })
+          vim.keymap.set("n", "<leader>gk", "<cmd>ClangdShowSymbolInfo<cr>",
+            { buffer = bufnr, desc = "Clangd: symbol info" })
         end,
         flags = lsp_flags,
         capabilities = capabilities,
@@ -241,10 +276,11 @@ return {
           "--header-insertion=iwyu",
           "--pch-storage=memory",
         }
-      })
+      }
+      vim.lsp.enable("clangd")
 
       --- python language server ---
-      lspconfig['pylsp'].setup({
+      vim.lsp.config.pylsp = {
         on_attach = default_on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
@@ -259,6 +295,7 @@ return {
               },
               flake8 = {
                 enabled = true,
+                maxLineLength = 120,
               },
               ruff = {
                 enabled = true, -- Enable the plugin
@@ -277,35 +314,21 @@ return {
             },
           },
         },
-      })
-      ---- rust-analyzer + rust-tools.nvim ----
-      local rt = require("rust-tools")
-      rt.setup({
-        server = {
-          on_attach = function(client, bufnr)
-            -- Defaults
-            default_on_attach(client, bufnr)
-
-            -- Hover actions
-            vim.keymap.set("n", "<leader><space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-            -- Code action groups
-            vim.keymap.set("n", "<leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-          end,
-          flags = lsp_flags,
-          capabilities = capabilities,
-        },
-      })
+      }
+      vim.lsp.enable('pylsp')
       ---- robotframework_ls ----
-      lspconfig['robotframework_ls'].setup({
+      vim.lsp.config.robotframework_ls = {
         on_attach = default_on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
         settings = {
           robot = { lint = { robocop = { enabled = true } } },
         }
-      })
+      }
+      vim.lsp.enable("robotframework_ls")
+
       ---- lua_ls ----
-      lspconfig['lua_ls'].setup({
+      vim.lsp.config.lua_ls = {
         on_attach = default_on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
@@ -344,9 +367,10 @@ return {
         settings = {
           Lua = {}
         }
-      })
+      }
+      vim.lsp.enable('lua_ls')
       ---- yaml ----
-      lspconfig['yamlls'].setup {
+      vim.lsp.config.yamlls = {
         on_attach = default_on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
@@ -358,6 +382,27 @@ return {
           },
         }
       }
+      vim.lsp.enable('yamlls')
+      ---- groovy ----
+      vim.lsp.config.groovyls = {
+        on_attach = default_on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+        cmd = { "java", "-jar", vim.env.HOME .. "/repos/groovy-language-server/build/libs/groovy-language-server-all.jar" },
+      }
+      vim.lsp.enable('groovyls')
+      -- java language server
+      vim.lsp.config.java_language_server = {
+        on_attach = default_on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+        cmd = { "java", "-jar", vim.env.HOME .. "/repos/java-language-server/dist/classpath/java-language-server.jar" },
+      }
+      vim.lsp.enable('java_language_server')
     end,
   },
+  {
+    'mrcjkb/rustaceanvim',
+    lazy = false, -- This plugin is already lazy
+  }
 }

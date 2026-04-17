@@ -201,17 +201,4 @@ return {
       })
     end,
   },
-  {
-    "simrat39/rust-tools.nvim",
-    config = function()
-      local rust_augroup = vim.api.nvim_create_augroup("Rust", { clear = true })
-      vim.api.nvim_create_autocmd("filetype", {
-        pattern = "rust",
-        group = rust_augroup,
-        callback = function()
-          vim.opt_local.makeprg = "cargo build"
-        end
-      })
-    end,
-  }
 }
