@@ -4,3 +4,4 @@ python-lsp-server
 python-lsp-ruff
 pylsp-mypy
 pyls-flake8
+debugpy
