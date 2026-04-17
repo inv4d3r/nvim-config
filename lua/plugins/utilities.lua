@@ -4,11 +4,12 @@ return {
     "github/copilot.vim",
     enabled = true,
     init = function()
-      vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-word)')
-      vim.keymap.set('i', '<M-j>', '<Plug>(copilot-accept-line)')
+      vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-word)', { desc = "Copilot: accept word" })
+      vim.keymap.set('i', '<M-j>', '<Plug>(copilot-accept-line)', { desc = "Copilot: accept line" })
       vim.keymap.set('i', '<M-m>', 'copilot#Accept("\\<CR>")', {
         expr = true,
-        replace_keycodes = false
+        replace_keycodes = false,
+        desc = "Copilot: accept suggestion",
       })
       vim.g.copilot_no_tab_map = true
     end,
@@ -24,8 +25,25 @@ return {
       { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
     },
     build = "make tiktoken", -- Only on MacOS or Linux
+    init = function()
+      vim.keymap.set("n", "<leader>ca", "<cmd>CopilotChatToggle<CR>", { desc = "CopilotChat: Toggle" })
+      vim.keymap.set("n", "<leader>cm", "<cmd>CopilotChatModels<CR>", { desc = "CopilotChat: Models" })
+      vim.keymap.set("n", "<leader>cc", "<cmd>CopilotChatCommit<CR>", { desc = "CopilotChat: Commit" })
+      vim.keymap.set({ "n", "v" }, "<leader>cd", "<cmd>CopilotChatDocs<CR>", { desc = "CopilotChat: Docs" })
+      vim.keymap.set({ "n", "v" }, "<leader>ce", "<cmd>CopilotChatExplain<CR>", { desc = "CopilotChat: Explain" })
+      vim.keymap.set({ "n", "v" }, "<leader>cf", "<cmd>CopilotChatFix<CR>", { desc = "CopilotChat: Fix" })
+      vim.keymap.set({ "n", "v" }, "<leader>co", "<cmd>CopilotChatOptimize<CR>", { desc = "CopilotChat: Optimize" })
+      vim.keymap.set({ "n", "v" }, "<leader>cp", "<cmd>CopilotChatPrompts<CR>", { desc = "CopilotChat: Prompts" })
+      vim.keymap.set({ "n", "v" }, "<leader>cr", "<cmd>CopilotChatReview<CR>", { desc = "CopilotChat: Review" })
+      vim.keymap.set({ "n", "v" }, "<leader>ct", "<cmd>CopilotChatTests<CR>", { desc = "CopilotChat: Tests" })
+    end,
     opts = {
       -- See Configuration section for options
+      providers = {
+        github_models = {
+          disabled = true,
+        },
+      }
     },
     -- See Commands section for default commands if you want to lazy load on them
   },
