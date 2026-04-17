@@ -47,6 +47,24 @@ return {
     },
     -- See Commands section for default commands if you want to lazy load on them
   },
+  ---- indent lines ----
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    ---@module "ibl"
+    ---@type ibl.config
+    opts = {
+      enabled = false,
+      indent = { char = "│" },
+    },
+    keys = {
+      {
+        "<leader>it",
+        "<cmd>IBLToggle<cr>",
+        desc = "Toggle Indent Lines",
+      },
+    },
+  },
   ---- whitespace handling ----
   { "ntpeters/vim-better-whitespace" },
   ---- tmux integration ----
