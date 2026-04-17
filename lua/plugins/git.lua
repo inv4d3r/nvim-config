@@ -10,7 +10,7 @@ return {
   {
     "rhysd/git-messenger.vim",
     config = function()
-      vim.keymap.set("n", "<leader>gm", "<cmd>GitMessenger<CR>")
+      vim.keymap.set("n", "<leader>gm", "<cmd>GitMessenger<CR>", { desc = "Git messenger" })
     end,
   },
 

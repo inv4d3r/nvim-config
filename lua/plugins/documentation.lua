@@ -7,7 +7,7 @@ return {
       vim.g.doge_enable_mappings = 0
     end,
     config = function()
-      vim.keymap.set("n", "<leader>doc", "<Plug>(doge-generate)")
+      vim.keymap.set("n", "<leader>md", "<Plug>(doge-generate)", { desc = "Generate documentation" })
     end
   },
   ---- Markdown previewer ----
@@ -23,7 +23,8 @@ return {
       vim.g.markdown_syntax_conceal = 0
     end,
     config = function()
-      vim.keymap.set("n", "<leader>mb", "<Plug>MarkdownPreviewToggle", { silent = true })
+      vim.keymap.set("n", "<leader>mb", "<Plug>MarkdownPreviewToggle",
+        { silent = true, desc = "Markdown preview toggle" })
     end
   },
   -- render-markdown
@@ -36,7 +37,8 @@ return {
     config = function()
       local rm = require('render-markdown')
       rm.setup({ enabled = false })
-      vim.keymap.set("n", "<leader>rm", "<cmd>RenderMarkdown toggle<CR>", { silent = true })
+      vim.keymap.set("n", "<leader>mr", "<cmd>RenderMarkdown toggle<CR>",
+        { silent = true, desc = "Render markdown toggle" })
     end
   },
   -- glow
@@ -44,7 +46,7 @@ return {
     "ellisonleao/glow.nvim",
     config = function()
       require("glow").setup()
-      vim.keymap.set("n", "<leader>mp", "<cmd>Glow<CR>", { silent = true })
+      vim.keymap.set("n", "<leader>mp", "<cmd>Glow<CR>", { silent = true, desc = "Glow markdown preview" })
     end
   },
   ---- UML ----
@@ -62,7 +64,7 @@ return {
   {
     "weirongxu/plantuml-previewer.vim",
     config = function()
-      vim.keymap.set("n", "<leader>pp", "<cmd>PlantumlOpen<cr>")
+      vim.keymap.set("n", "<leader>mo", "<cmd>PlantumlOpen<cr>", { desc = "PlantUML open preview" })
     end
   },
 }

@@ -75,11 +75,11 @@ return {
       vim.g.tmux_navigator_no_mappings = 1
     end,
     config = function()
-      vim.keymap.set('n', '<m-h>', '<cmd>TmuxNavigateLeft<cr>')
-      vim.keymap.set('n', '<m-j>', '<cmd>TmuxNavigateDown<cr>')
-      vim.keymap.set('n', '<m-k>', '<cmd>TmuxNavigateUp<cr>')
-      vim.keymap.set('n', '<m-l>', '<cmd>TmuxNavigateRight<cr>')
-      vim.keymap.set('n', '<m-p>', '<cmd>TmuxNavigatePrevious<cr>')
+      vim.keymap.set('n', '<m-h>', '<cmd>TmuxNavigateLeft<cr>', { desc = "Tmux: navigate left" })
+      vim.keymap.set('n', '<m-j>', '<cmd>TmuxNavigateDown<cr>', { desc = "Tmux: navigate down" })
+      vim.keymap.set('n', '<m-k>', '<cmd>TmuxNavigateUp<cr>', { desc = "Tmux: navigate up" })
+      vim.keymap.set('n', '<m-l>', '<cmd>TmuxNavigateRight<cr>', { desc = "Tmux: navigate right" })
+      vim.keymap.set('n', '<m-p>', '<cmd>TmuxNavigatePrevious<cr>', { desc = "Tmux: navigate previous" })
     end,
   },
   {
@@ -105,10 +105,10 @@ return {
       vim.g.vista_default_executive = 'nvim_lsp'
     end,
     config = function()
-      vim.keymap.set("n", "<leader>vo", "<cmd>Vista<CR>")
-      vim.keymap.set("n", "<leader>vc", "<cmd>Vista!<CR>")
-      vim.keymap.set("n", "<leader>vt", "<cmd>Vista!!<CR>")
-      vim.keymap.set("n", "<leader>vf", "<cmd>Vista finder<CR>")
+      vim.keymap.set("n", "<leader>vo", "<cmd>Vista<CR>", { desc = "Vista: open" })
+      vim.keymap.set("n", "<leader>vc", "<cmd>Vista!<CR>", { desc = "Vista: close" })
+      vim.keymap.set("n", "<leader>vt", "<cmd>Vista!!<CR>", { desc = "Vista: toggle" })
+      vim.keymap.set("n", "<leader>vf", "<cmd>Vista finder<CR>", { desc = "Vista: finder" })
 
       --local vista_augroup = vim.api.nvim_create_augroup("Vista", { clear = true })
       --vim.api.nvim_create_autocmd({"VimEnter"}, {
@@ -150,14 +150,14 @@ return {
   {
     "mbbill/undotree",
     config = function()
-      vim.keymap.set("n", "<leader>U", "<cmd>UndotreeToggle<CR>")
+      vim.keymap.set("n", "<leader>U", "<cmd>UndotreeToggle<CR>", { desc = "UndoTree: toggle" })
     end,
   },
   ---- Substitute configuration ----
   {
     "tpope/vim-abolish",
     config = function()
-      vim.keymap.set("n", "<leader>/", ":S/")
+      vim.keymap.set("n", "<leader>ss", ":S/", { desc = "Substitute (Abolish)" })
     end,
   },
   -- dispatch compiler
@@ -168,7 +168,7 @@ return {
         vim.fn.execute("wa")
         vim.fn.execute("silent Make")
       end
-      vim.keymap.set("n", "<leader>mk", SaveAndMake)
+      vim.keymap.set("n", "<leader>mk", SaveAndMake, { desc = "Save all and make" })
     end,
   },
   ---- comment.nvim ----
@@ -194,11 +194,12 @@ return {
       })
 
       local nvim_tree_api = require("nvim-tree.api")
-      vim.keymap.set("n", "<leader>ge", nvim_tree_api.tree.toggle)
-      vim.keymap.set("n", "<leader>gf", nvim_tree_api.tree.focus)
-      vim.keymap.set("n", "<leader>gF", function() nvim_tree_api.tree.open({ find_file = true }) end)
-      vim.keymap.set("n", "<leader>ti", "<cmd>NvimTreeResize +10<CR>")
-      vim.keymap.set("n", "<leader>td", "<cmd>NvimTreeResize -10<CR>")
+      vim.keymap.set("n", "<leader>tre", nvim_tree_api.tree.toggle, { desc = "NvimTree: toggle" })
+      vim.keymap.set("n", "<leader>trf", nvim_tree_api.tree.focus, { desc = "NvimTree: focus" })
+      vim.keymap.set("n", "<leader>trF", function() nvim_tree_api.tree.open({ find_file = true }) end,
+        { desc = "NvimTree: find file" })
+      vim.keymap.set("n", "<leader>tri", "<cmd>NvimTreeResize +10<CR>", { desc = "NvimTree: resize +" })
+      vim.keymap.set("n", "<leader>trd", "<cmd>NvimTreeResize -10<CR>", { desc = "NvimTree: resize -" })
     end,
   },
   ---- vim-gtest ----
@@ -208,11 +209,11 @@ return {
       vim.g["gtest#hightlight_failing_tests"] = 1
     end,
     init = function()
-      vim.keymap.set("n", "]G", "<cmd>GTestNext<CR>")
-      vim.keymap.set("n", "[G", "<cmd>GTestPrev<CR>")
-      vim.keymap.set("n", "<leader>Gt", "<cmd>GTestRun<CR>")
-      vim.keymap.set("n", "<leader>Gu", "<cmd>GTestRunUnderCursor<CR>")
-      vim.keymap.set("n", "<leader>zT", "<cmd>FZFGTest<CR>")
+      vim.keymap.set("n", "]G", "<cmd>GTestNext<CR>", { desc = "GTest: next" })
+      vim.keymap.set("n", "[G", "<cmd>GTestPrev<CR>", { desc = "GTest: previous" })
+      vim.keymap.set("n", "<leader>Gt", "<cmd>GTestRun<CR>", { desc = "GTest: run" })
+      vim.keymap.set("n", "<leader>Gu", "<cmd>GTestRunUnderCursor<CR>", { desc = "GTest: run under cursor" })
+      vim.keymap.set("n", "<leader>zT", "<cmd>FZFGTest<CR>", { desc = "FZF: GTest" })
     end,
   },
   ---- highlight plugins ----
